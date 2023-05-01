@@ -1,16 +1,16 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../Controllers/cart_controller.dart';
 import '../Controllers/order_controller.dart';
 import '../Coupons.dart';
+import '../Notification.dart';
 import '../OrdersHistory.dart';
 import '../PatientHome.dart';
-import '../Widgets/Cart_Badge.dart';
+import 'package:badges/badges.dart' as badges;
 import '../Widgets/cart_items.dart';
-
-import '../MyBookings.dart';
-
 import 'dart:convert';
 import '../globals.dart' as globals;
 import 'package:http/http.dart' as http;
@@ -26,6 +26,22 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  DateTime selectedDate = DateTime.now();
+  _selectDate(BuildContext context) async {
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2010),
+      lastDate: DateTime(2025),
+    );
+    if (selected != null && selected != selectedDate) {
+      setState(() {
+        selectedDate = selected;
+        globals.selectDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+      });
+    }
+  }
+
   var _selectedItem;
   @override
   Widget build(BuildContext context) {
@@ -175,6 +191,8 @@ class _CartScreenState extends State<CartScreen> {
         "IP_OUTSTANDING_DUE": cartController.totalAmount.toStringAsFixed(0),
         "connection": globals.Patient_App_Connection_String,
         "loc_id": globals.SelectedlocationId,
+        "IP_SLOT": globals.Slot_id,
+        "IP_DATE": "${selectedDate.toLocal()}".split(' ')[0],
         //"Server_Flag":""
       };
 
@@ -196,98 +214,128 @@ class _CartScreenState extends State<CartScreen> {
         globals.SelectedlocationId = "";
         // globals.Preferedsrvs = jsonDecode(response.body);
 
-        return showDialog<String>(
-            context: context,
-            builder: (BuildContext context) =>
-                // {
-                //   Future.delayed(Duration(seconds: 10), () {
-                //     Navigator.of(context).pop(true);
-                //   });
-                //   return
-                AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                  //  title: const Text('Ordered Sucessfully'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            'Booked Sucessfully',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          Icon(Icons.verified_rounded,
-                              color: Colors.green, size: 25),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 0, 4),
-                        child: Row(
-                          children: [
-                            Text("Your Booking Id : " + globals.Bill_No),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  actions: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                      child: Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PatientHome()));
-                              cartController.clear();
-                              productcontroller.resetAll();
-                              globals.GlobalDiscountCoupons = '';
-                            },
-                            // textColor: Theme.of(context).primaryColor,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Home',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 30, 78, 122),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                  )),
-                            ),
-                          ),
-                          Spacer(),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => OredersHistory()));
-                              cartController.clear();
-                              productcontroller.resetAll();
-                              globals.GlobalDiscountCoupons = '';
-                            },
-                            // textColor: Theme.of(context).primaryColor,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Go to Orders',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 30, 78, 122),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                  )),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ));
+        return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Booked Successfully! ${globals.Bill_No}'),
+          backgroundColor: Color.fromARGB(255, 26, 177, 122),
+          action: SnackBarAction(
+            label: "View",
+            textColor: Colors.white,
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => notifiCation()));
+              cartController.clear();
+              productcontroller.resetAll();
+              globals.GlobalDiscountCoupons = "";
+            },
+          ),
+          duration: const Duration(seconds: 15),
+          //width: 320.0, // Width of the SnackBar.
+          padding: const EdgeInsets.symmetric(
+            horizontal: 4.0, // Inner padding for SnackBar content.
+          ),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ));
+        // return showDialog<String>(
+        //     context: context,
+        //     builder: (BuildContext context) =>
+        //         // {
+        //         //   Future.delayed(Duration(seconds: 10), () {
+        //         //     Navigator.of(context).pop(true);
+        //         //   });
+        //         //   return
+        //         WillPopScope(
+        //           onWillPop: () async {
+        //             return false;
+        //           },
+        //           child: AlertDialog(
+        //             shape: RoundedRectangleBorder(
+        //                 borderRadius: BorderRadius.all(Radius.circular(16.0))),
+        //             //  title: const Text('Ordered Sucessfully'),
+        //             content: Column(
+        //               mainAxisSize: MainAxisSize.min,
+        //               crossAxisAlignment: CrossAxisAlignment.center,
+        //               children: <Widget>[
+        //                 Row(
+        //                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //                   children: [
+        //                     Text(
+        //                       'Booked Sucessfully',
+        //                       style: TextStyle(
+        //                         fontSize: 18,
+        //                       ),
+        //                     ),
+        //                     Icon(Icons.verified_rounded,
+        //                         color: Colors.green, size: 25),
+        //                   ],
+        //                 ),
+        //                 Padding(
+        //                   padding: const EdgeInsets.fromLTRB(16, 8, 0, 4),
+        //                   child: Row(
+        //                     children: [
+        //                       Text("Your Booking Id : " + globals.Bill_No),
+        //                     ],
+        //                   ),
+        //                 )
+        //               ],
+        //             ),
+        //             actions: <Widget>[
+        //               Padding(
+        //                 padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+        //                 child: Row(
+        //                   children: [
+        //                     InkWell(
+        //                       onTap: () {
+        //                         Navigator.push(
+        //                             context,
+        //                             MaterialPageRoute(
+        //                                 builder: (context) => PatientHome()));
+        //                         cartController.clear();
+        //                         productcontroller.resetAll();
+        //                         globals.GlobalDiscountCoupons = '';
+        //                       },
+        //                       // textColor: Theme.of(context).primaryColor,
+        //                       child: Padding(
+        //                         padding: const EdgeInsets.all(8.0),
+        //                         child: Text('Home',
+        //                             style: TextStyle(
+        //                               color: Color.fromARGB(255, 30, 78, 122),
+        //                               fontWeight: FontWeight.w500,
+        //                               fontSize: 14,
+        //                             )),
+        //                       ),
+        //                     ),
+        //                     Spacer(),
+        //                     InkWell(
+        //                       onTap: () {
+        //                         Navigator.push(
+        //                             context,
+        //                             MaterialPageRoute(
+        //                                 builder: (context) =>
+        //                                     OredersHistory()));
+        //                         cartController.clear();
+        //                         productcontroller.resetAll();
+        //                         globals.GlobalDiscountCoupons = '';
+        //                       },
+        //                       // textColor: Theme.of(context).primaryColor,
+        //                       child: Padding(
+        //                         padding: const EdgeInsets.all(8.0),
+        //                         child: Text('Go to Orders',
+        //                             style: TextStyle(
+        //                               color: Color.fromARGB(255, 30, 78, 122),
+        //                               fontWeight: FontWeight.w500,
+        //                               fontSize: 14,
+        //                             )),
+        //                       ),
+        //                     ),
+        //                   ],
+        //                 ),
+        //               ),
+        //             ],
+        //           ),
+        //         ));
 
         // return jsonResponse
         //     .map((managers) => PreferredServices.fromJson(managers))
@@ -297,300 +345,476 @@ class _CartScreenState extends State<CartScreen> {
       }
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back_rounded, color: Colors.white)),
-        backgroundColor: Color(0xff123456),
-        title: Text("Test Cart", style: TextStyle(color: Colors.white)),
-        actions: [
-          GetBuilder<CartController>(
-              init: CartController(),
-              builder: (contex) {
-                return Badge(
-                  child: IconButton(
-                      icon: Icon(
-                        Icons.shopping_cart,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        // Get.to(() => CartScreen());
-                      }),
-                  value: cartController.itemCount.toString(),
-                  color: Color.fromARGB(255, 27, 165, 114),
-                );
-              })
-        ],
-      ),
-      body: GetBuilder<CartController>(
-        init: CartController(),
-        builder: (cont) => Container(
-          color: Color.fromARGB(220, 241, 241, 241),
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: ListView.builder(
-                    itemCount: cartController.items.length,
-                    itemBuilder: (context, index) => CartItem(
-                        cartController.items.values.toList()[index].id,
-                        cartController.items.values.toList()[index].price,
-                        cartController.items.values.toList()[index].quantity,
-                        cartController.items.values.toList()[index].title,
-                        cartController.items.values.toList()[index].Service_Id,
-                        cartController.items.keys.toList()[index])),
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(17, 0, 0, 0),
-                    child: Text(
-                      'Offers & Benifits',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                ],
-              ),
-              InkWell(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0.0, 9, 8.0),
-                    child: Card(
-                      elevation: 2.0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(13.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Apply Coupon',
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w500)),
-                            Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 12,
-                            ),
-                          ],
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back_rounded, color: Colors.white)),
+          backgroundColor: Color(0xff123456),
+          title: Text("Test Cart", style: TextStyle(color: Colors.white)),
+          actions: [
+            GetBuilder<CartController>(
+                init: CartController(),
+                builder: (contex) {
+                  return badges.Badge(
+                    position: BadgePosition.topStart(start: 1, top: 2),
+                    child: IconButton(
+                        icon: Icon(
+                          Icons.shopping_cart,
+                          color: Colors.white,
                         ),
-                      ),
+                        onPressed: () {
+                          // Get.to(() => CartScreen());
+                        }),
+                    badgeContent: Text(
+                      cartController.itemCount.toString(),
                     ),
-                  ),
-                  onTap: () {
-                    _CouponsBottomPicker(context);
-                  }),
-              locationDropdwon,
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(17, 4, 0, 0),
-                    child: Text(
-                      'Payments Instruction',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                ],
-              ),
-              InkWell(
-                  onTap: () {
-                    // Navigator.push(
-                    //     context, MaterialPageRoute(builder: (context) => CartScreen()));
-                  },
-                  child: GetBuilder<CartController>(
-                      init: CartController(),
-                      builder: (cont) => SizedBox(
-                            height: 120,
+
+                    // color: Color.fromARGB(255, 27, 165, 114),
+                  );
+                })
+          ],
+        ),
+        body: GetBuilder<CartController>(
+          init: CartController(),
+          builder: (cont) => Container(
+            color: Color.fromARGB(220, 241, 241, 241),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: cartController.items.length,
+                      itemBuilder: (context, index) => CartItem(
+                          cartController.items.values.toList()[index].id,
+                          cartController.items.values.toList()[index].price,
+                          cartController.items.values.toList()[index].quantity,
+                          cartController.items.values.toList()[index].title,
+                          cartController.items.values
+                              .toList()[index]
+                              .Service_Id,
+                          cartController.items.keys.toList()[index])),
+                ),
+                globals.Location_BookedTest == ""
+                    ? Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(17, 0, 0, 0),
+                            child: Text(
+                              'Offers & Benifits',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(),
+                globals.Location_BookedTest == ""
+                    ? InkWell(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 0.0, 9, 8.0),
+                          child: Card(
+                            elevation: 2.0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(8, 0.0, 8, 0.0),
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12)),
-                                color: Colors.white,
-                                // margin: EdgeInsets.all(15),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Total Amount :',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          Text(
-                                            '\u{20B9} ' +
-                                                '${cartController.totalAmount.toStringAsFixed(2)}',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Discount Amount :',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          (globals.Discount_Amount_Coupon
-                                                          .toString() ==
-                                                      null ||
-                                                  globals.Discount_Amount_Coupon
-                                                          .toString() ==
-                                                      "null")
-                                              ? Text(
-                                                  '\u{20B9} ' + '0',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                )
-                                              : Text(
-                                                  '\u{20B9} ' +
-                                                      globals.Discount_Amount_Coupon
-                                                          .toString(),
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Net. Amount :',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          (globals.Net_Amount_Coupon
-                                                          .toString() ==
-                                                      null ||
-                                                  globals.Net_Amount_Coupon
-                                                          .toString() ==
-                                                      "null")
-                                              ? Text(
-                                                  '\u{20B9} ' + '0',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                )
-                                              : Text(
-                                                  '\u{20B9} ' +
-                                                      globals.Net_Amount_Coupon
-                                                          .toString(),
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                            height: 40,
-                                            width: 120,
-                                            child: Card(
-                                              color: Color.fromARGB(
-                                                  255, 27, 165, 114),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                              child: TextButton(
-                                                onPressed: () {
-                                                  //  OrderPayments();
-                                                  //    _buildUserBookingPopup(context);
-                                                  (globals
-                                                              .selectedLogin_Data[
-                                                                  "Data"]
-                                                              .length >
-                                                          1)
-                                                      ? _UserListBookingsBottomPicker(
-                                                          context)
-                                                      : SingleUserOrderPayments();
-                                                  // cartController.clear();
-                                                  // productcontroller.resetAll();
-                                                  // Navigator.pop(context, true);
-                                                },
-                                                child: Text(
-                                                  'Pay Later',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 40,
-                                            width: 120,
-                                            child: Card(
-                                              color: Color.fromARGB(
-                                                  255, 27, 165, 114),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                              child: TextButton(
-                                                onPressed: () {
-                                                  //  OrderPayments();
-                                                  //    _buildUserBookingPopup(context);
-                                                  // (globals
-                                                  //             .selectedLogin_Data[
-                                                  //                 "Data"]
-                                                  //             .length >
-                                                  //         1)
-                                                  //     ? _UserListBookingsBottomPicker(
-                                                  //         context)
-                                                  //     : OrderPayments();
-                                                  // cartController.clear();
-                                                  // productcontroller.resetAll();
-                                                  // Navigator.pop(context, true);
-                                                },
-                                                child: Text(
-                                                  'Pay Now',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
+                              padding: const EdgeInsets.all(13.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Apply Coupon',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500)),
+                                  Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    size: 12,
                                   ),
-                                ),
+                                ],
                               ),
                             ),
-                          )))
-            ],
+                          ),
+                        ),
+                        onTap: () {
+                          globals.SelectedlocationId = "";
+                          _CouponsBottomPicker(context);
+                        })
+                    : Container(),
+                globals.Location_BookedTest == ""
+                    ? locationDropdwon
+                    : Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          height: 120,
+                          width: 340,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 16.0, left: 16.0, right: 16.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        width: 150,
+                                        child: Text(
+                                          "Slot Date And Time:",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                    globals.selectDate == ""
+                                        ? Text(
+                                            "${selectedDate.toLocal()}"
+                                                .split(' ')[0],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        : Text(
+                                            globals.selectDate,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                    Text("/"),
+                                    Text(
+                                      globals.SlotsBooked,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 10, left: 16.0, right: 16.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        width: 150,
+                                        child: Text("Location:",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold))),
+                                    Text(globals.Location_BookedTest,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                globals.Location_BookedTest == ""
+                    ? Column(
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(17, 4, 0, 0),
+                                child: Text(
+                                  'Payments Instruction',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ],
+                          ),
+                          InkWell(
+                              onTap: () {
+                                // Navigator.push(
+                                //     context, MaterialPageRoute(builder: (context) => CartScreen()));
+                              },
+                              child: GetBuilder<CartController>(
+                                  init: CartController(),
+                                  builder: (cont) => SizedBox(
+                                        height: 120,
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              8, 0.0, 8, 0.0),
+                                          child: Card(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12)),
+                                            color: Colors.white,
+                                            // margin: EdgeInsets.all(15),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        'Total Amount :',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      Text(
+                                                        '\u{20B9} ' +
+                                                            '${cartController.totalAmount.toStringAsFixed(2)}',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        'Discount Amount :',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      (globals.Discount_Amount_Coupon
+                                                                      .toString() ==
+                                                                  null ||
+                                                              globals.Discount_Amount_Coupon
+                                                                      .toString() ==
+                                                                  "null")
+                                                          ? Text(
+                                                              '\u{20B9} ' + '0',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            )
+                                                          : Text(
+                                                              '\u{20B9} ' +
+                                                                  globals.Discount_Amount_Coupon
+                                                                      .toString(),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        'Net. Amount :',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      (globals.Net_Amount_Coupon
+                                                                      .toString() ==
+                                                                  null ||
+                                                              globals.Net_Amount_Coupon
+                                                                      .toString() ==
+                                                                  "null")
+                                                          ? Text(
+                                                              '\u{20B9} ' + '0',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            )
+                                                          : Text(
+                                                              '\u{20B9} ' +
+                                                                  globals.Net_Amount_Coupon
+                                                                      .toString(),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                    ],
+                                                  ),
+                                                  Spacer(),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 40,
+                                                        width: 120,
+                                                        child: Card(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              27,
+                                                              165,
+                                                              114),
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                          child: TextButton(
+                                                            onPressed: () {
+                                                              //  OrderPayments();
+                                                              //    _buildUserBookingPopup(context);
+                                                              (globals.selectedLogin_Data["Data"].length >
+                                                                      1)
+                                                                  ? _UserListBookingsBottomPicker(
+                                                                      context)
+                                                                  : (globals.Booking_Status_Flag ==
+                                                                          "0")
+                                                                      ? Fluttertoast.showToast(
+                                                                          msg:
+                                                                              "Booking InProgress",
+                                                                          toastLength: Toast
+                                                                              .LENGTH_SHORT,
+                                                                          gravity: ToastGravity
+                                                                              .CENTER,
+                                                                          timeInSecForIosWeb:
+                                                                              1,
+                                                                          backgroundColor: Color.fromARGB(
+                                                                              230,
+                                                                              228,
+                                                                              55,
+                                                                              32),
+                                                                          textColor: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              16.0)
+                                                                      : SingleUserOrderPayments();
+                                                              // cartController.clear();
+                                                              // productcontroller.resetAll();
+                                                              // Navigator.pop(context, true);
+                                                            },
+                                                            child: Text(
+                                                              'Pay Later',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 40,
+                                                        width: 120,
+                                                        child: Card(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              27,
+                                                              165,
+                                                              114),
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                          child: TextButton(
+                                                            onPressed: () {
+                                                              //  OrderPayments();
+                                                              //    _buildUserBookingPopup(context);
+                                                              // (globals
+                                                              //             .selectedLogin_Data[
+                                                              //                 "Data"]
+                                                              //             .length >
+                                                              //         1)
+                                                              //     ? _UserListBookingsBottomPicker(
+                                                              //         context)
+                                                              //     : OrderPayments();
+                                                              // cartController.clear();
+                                                              // productcontroller.resetAll();
+                                                              // Navigator.pop(context, true);
+                                                            },
+                                                            child: Text(
+                                                              'Pay Now',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )))
+                        ],
+                      )
+                    : Container(
+                        color: Color(0xff123456),
+                        width: 350,
+                        child: TextButton(
+                            onPressed: () {
+                              //  OrderPayments();
+                              //    _buildUserBookingPopup(context);
+                              (globals.selectedLogin_Data["Data"].length > 1)
+                                  ? _UserListBookingsBottomPicker(context)
+                                  : (globals.Booking_Status_Flag == "0")
+                                      ? Fluttertoast.showToast(
+                                          msg: "Booking InProgress",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.CENTER,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor:
+                                              Color.fromARGB(230, 228, 55, 32),
+                                          textColor: Colors.white,
+                                          fontSize: 16.0)
+                                      : SingleUserOrderPayments();
+                              // cartController.clear();
+                              // productcontroller.resetAll();
+                              // Navigator.pop(context, true);
+                            },
+                            child: Center(
+                                child: Text(
+                              "OK",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 20),
+                            ))))
+              ],
+            ),
           ),
         ),
       ),
@@ -628,21 +852,26 @@ class UserlistBottomPopup extends StatefulWidget {
 class _UserlistBottomPopupState extends State<UserlistBottomPopup> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: Colors.white,
-            )),
-        // automaticallyImplyLeading: false,
-        title: Text('User List', style: TextStyle(color: Colors.white)),
-        backgroundColor: Color(0xff123456),
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.white,
+              )),
+          // automaticallyImplyLeading: false,
+          title: Text('User List', style: TextStyle(color: Colors.white)),
+          backgroundColor: Color(0xff123456),
+        ),
+        body: UserListBookings(globals.selectedLogin_Data, context),
       ),
-      body: UserListBookings(globals.selectedLogin_Data, context),
     );
   }
 }
@@ -667,6 +896,7 @@ Widget userBookings(
   context,
 ) {
   MultiUserOrderPayments() async {
+    DateTime selectedDate = DateTime.now();
     if (globals.SelectedlocationId == "" || globals.SelectedlocationId == "0") {
       return Fluttertoast.showToast(
           msg: "Select the Location",
@@ -684,7 +914,6 @@ Widget userBookings(
     String test_concession = '';
     String Test_net = "";
     int i;
-    // var cartController = Get.put(CartController());
     var dataset = null;
     cartController.items.forEach((key, cartItem) {
       test_ids += cartItem.Service_Id.toString() + ',';
@@ -698,10 +927,7 @@ Widget userBookings(
               .toString() +
           ',';
     });
-    // dataset = cartController.items;
-    // for (i = 0; i <= dataset.length; i++) {
-    //   test_ids += dataset[i];
-    // }
+
     if (globals.Discount_Amount_Coupon == "" ||
         globals.Discount_Amount_Coupon == null) {
       globals.Discount_Amount_Coupon = "0";
@@ -729,16 +955,13 @@ Widget userBookings(
       "IP_PAID_AMOUNT": "0",
       "IP_OUTSTANDING_DUE": cartController.totalAmount.toStringAsFixed(0),
       "loc_id": globals.SelectedlocationId,
+      "IP_SLOT": globals.Slot_id,
+      "IP_DATE": "${selectedDate.toLocal()}".split(' ')[0],
       "connection": globals.Patient_App_Connection_String,
-
-      //"Server_Flag":""
     };
 
-    final jobsListAPIUrl =
-        //  Uri.parse(
-        //     'http://115.112.254.129/MobileSalesApi/PatinetMobileApp/PreferedServices');
-        Uri.parse(globals.Global_Patient_Api_URL +
-            '/PatinetMobileApp/NewRegistration');
+    final jobsListAPIUrl = Uri.parse(
+        globals.Global_Patient_Api_URL + '/PatinetMobileApp/NewRegistration');
 
     var response = await http.post(jobsListAPIUrl,
         headers: {
@@ -752,104 +975,34 @@ Widget userBookings(
       Map<String, dynamic> resposne = jsonDecode(response.body);
       List jsonResponse = resposne["Data"];
       globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
-      // globals.Preferedsrvs = jsonDecode(response.body);
+      globals.Slot_id = "";
       globals.SelectedlocationId = "";
-      return showDialog<String>(
-          context: context,
-          builder: (BuildContext context) =>
-              //  {
-              //   Future.delayed(Duration(seconds: 10), () {
-              //     Navigator.of(context).pop(true);
-              //   });
-              //   return
-              AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                //  title: const Text('Ordered Sucessfully'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          'Booked Sucessfully',
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        Icon(Icons.verified_rounded,
-                            color: Colors.green, size: 25),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 0, 4),
-                      child: Row(
-                        children: [
-                          Text("Your Booking Id : " + globals.Bill_No),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                actions: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PatientHome()));
-                            cartController.clear();
-                            productcontroller.resetAll();
-                            globals.GlobalDiscountCoupons = "";
-                          },
-                          // textColor: Theme.of(context).primaryColor,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Home',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 30, 78, 122),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                )),
-                          ),
-                        ),
-                        Spacer(),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => OredersHistory()));
-                            cartController.clear();
-                            productcontroller.resetAll();
-                            globals.GlobalDiscountCoupons = "";
-                          },
-                          // textColor: Theme.of(context).primaryColor,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Go to Orders',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 30, 78, 122),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                )),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ));
 
-      // return jsonResponse
-      //     .map((managers) => PreferredServices.fromJson(managers))
-      //     .toList();
+      globals.SelectedlocationId = "";
+      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Booked Successfully! ${globals.Bill_No}'),
+        backgroundColor: Color.fromARGB(255, 26, 177, 122),
+        action: SnackBarAction(
+          label: "View",
+          textColor: Colors.white,
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => notifiCation()));
+            cartController.clear();
+            productcontroller.resetAll();
+            globals.GlobalDiscountCoupons = "";
+          },
+        ),
+        duration: const Duration(seconds: 15),
+        //width: 320.0, // Width of the SnackBar.
+        padding: const EdgeInsets.symmetric(
+          horizontal: 4.0, // Inner padding for SnackBar content.
+        ),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ));
     } else {
       throw Exception('Failed to load jobs from API');
     }
@@ -858,8 +1011,19 @@ Widget userBookings(
   return InkWell(
     onTap: () {
       globals.umr_no = data["UMR_NO"].toString();
-      // globals.Booking_Id = globals.Bill_No.toString();
-      MultiUserOrderPayments();
+      if (globals.Booking_Status_Flag == "0") {
+        Fluttertoast.showToast(
+            msg: "Booking InProgress",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Color.fromARGB(230, 228, 55, 32),
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        MultiUserOrderPayments();
+        // _onLoading();
+      }
     },
     child: Column(
       children: [
