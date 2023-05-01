@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:badges/badges.dart';
+
 import './OrdersHistory.dart';
 import './UserProfile.dart';
 
 import 'ClientCodeLogin.dart';
 import 'Screens/Book_Test_screen.dart';
+import 'Widgets/cart_items.dart';
+import 'book_home_visit.dart';
 import 'globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -99,6 +102,29 @@ class _PatientHomeState extends State<PatientHome> {
     }
   }
 
+  HomeVisitBook() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    globals.logindata1 = (prefs.getString('email') ?? '');
+    globals.mobNO = (prefs.getString('Mobileno') ?? '');
+    if (prefs.getString('data2') != null && prefs.getString('data2') != "") {
+      Map<String, dynamic> resposne =
+          (jsonDecode(prefs.getString('data2') ?? ''));
+      globals.selectedLogin_Data = resposne;
+    }
+    if (globals.Session_ID != "0" &&
+        globals.Session_ID != "" &&
+        globals.Session_ID != null) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Book_Home_Visit(0)));
+    } else {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => PatientLogin("H")));
+    }
+  }
+
+  int counter = 0;
+
   @override
   Widget build(BuildContext context) {
     Widget myBottomNavigationBar = Container(
@@ -113,6 +139,7 @@ class _PatientHomeState extends State<PatientHome> {
               padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
               child: InkWell(
                 onTap: () {
+                  globals.SelectedlocationId = "";
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PatientHome()));
                 },
@@ -172,6 +199,7 @@ class _PatientHomeState extends State<PatientHome> {
               padding: const EdgeInsets.fromLTRB(0, 5, 30, 0),
               child: InkWell(
                 onTap: () async {
+                  globals.umr_no = "";
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   prefs.setString("Msg_id", "");
@@ -286,6 +314,7 @@ class _PatientHomeState extends State<PatientHome> {
                 ),
               ),
               Spacer(),
+
               // SizedBox(
               //     height: 35,
               //     width: 60,
@@ -294,6 +323,52 @@ class _PatientHomeState extends State<PatientHome> {
             ],
           ),
           centerTitle: true,
+          actions: <Widget>[
+            // Using Stack to show Notification Badge
+            new Stack(
+              children: <Widget>[
+                new IconButton(
+                    icon: Icon(
+                      Icons.notifications,
+                    ),
+                    color: Colors.white,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => notifiCation()));
+                      setState(() {
+                        counter = 0;
+                      });
+                    }),
+                counter != 0
+                    ? new Positioned(
+                        right: 11,
+                        top: 11,
+                        child: new Container(
+                          padding: EdgeInsets.all(2),
+                          decoration: new BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          constraints: BoxConstraints(
+                            minWidth: 14,
+                            minHeight: 14,
+                          ),
+                          child: Text(
+                            '$counter',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 8,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
+                    : new Container()
+              ],
+            ),
+          ],
         ),
         drawer: Drawer(
           backgroundColor: Colors.white,
@@ -906,7 +981,12 @@ class _PatientHomeState extends State<PatientHome> {
                                     ],
                                   ),
                                   onTap: () {
+                                    globals.Location_BookedTest = "";
+
                                     _SaveLoginDataBookATest();
+                                    cartController.clear();
+                                    productcontroller.resetAll();
+                                    globals.GlobalDiscountCoupons = '';
                                   },
                                 ),
                               ),
@@ -982,10 +1062,12 @@ class _PatientHomeState extends State<PatientHome> {
                                     ],
                                   ),
                                   onTap: () {
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) => BookTest()));
+                                    globals.selectDate = "";
+                                    globals.SelectedlocationId = "";
+                                    HomeVisitBook();
+                                    cartController.clear();
+                                    productcontroller.resetAll();
+                                    globals.GlobalDiscountCoupons = '';
                                   },
                                 ),
                               ),
