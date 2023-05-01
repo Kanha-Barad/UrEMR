@@ -7,6 +7,7 @@ import './PatientHome.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'ClientCodeLogin.dart';
 import 'PatientLogin.dart';
 import 'UserProfile.dart';
 import 'globals.dart' as globals;
@@ -184,6 +185,7 @@ class _MyTrendsState extends State<MyTrends> {
               padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
               child: InkWell(
                 onTap: () {
+                  globals.SelectedlocationId = "";
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PatientHome()));
                 },
@@ -234,6 +236,7 @@ class _MyTrendsState extends State<MyTrends> {
               padding: const EdgeInsets.fromLTRB(0, 5, 30, 0),
               child: InkWell(
                 onTap: () async {
+                  globals.umr_no = "";
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   prefs.setString("Msg_id", "");
@@ -250,12 +253,12 @@ class _MyTrendsState extends State<MyTrends> {
                   (prefs.setString('OTPURL', ''));
                   (prefs.setString('PatientAppApiURL', ''));
                   (prefs.setString('ConnectionString', ''));
-                  if (prefs.getString('Mobileno') != "") {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PatientLogin("")),
-                    );
-                  }
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AccessClientCodeLogin()),
+                  );
                 },
                 child: Column(children: [
                   Icon(
