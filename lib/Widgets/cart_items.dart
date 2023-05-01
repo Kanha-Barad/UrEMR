@@ -78,7 +78,10 @@ class CartItem extends StatelessWidget {
                                         //       Color.fromARGB(255, 56, 108, 187),
                                         // ),
                                       ),
-                                      Text(title,
+                                      Text(
+                                          title.length <= 43
+                                              ? title
+                                              : title.substring(0, 43),
                                           style: TextStyle(
                                               fontSize: 15,
                                               color: Colors.black)),
