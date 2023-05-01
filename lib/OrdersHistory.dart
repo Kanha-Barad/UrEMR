@@ -4,6 +4,7 @@ import './MyTrends.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'ClientCodeLogin.dart';
 import 'PatientHome.dart';
 import 'PatientLogin.dart';
 
@@ -56,7 +57,7 @@ class _OredersHistoryState extends State<OredersHistory> {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Padding(
-          padding: EdgeInsets.all(1.5),
+          padding: EdgeInsets.all(1.6),
           child: InkWell(
             child: Card(
                 elevation: 0,
@@ -262,6 +263,7 @@ class _OredersHistoryState extends State<OredersHistory> {
               padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
               child: InkWell(
                 onTap: () {
+                  globals.SelectedlocationId = "";
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PatientHome()));
                 },
@@ -329,12 +331,11 @@ class _OredersHistoryState extends State<OredersHistory> {
                   (prefs.setString('PatientAppApiURL', ''));
                   (prefs.setString('ConnectionString', ''));
 
-                  if (prefs.getString('Mobileno') != "") {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PatientLogin("")),
-                    );
-                  }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AccessClientCodeLogin()),
+                  );
                 },
                 child: Column(children: [
                   Icon(
@@ -360,7 +361,7 @@ class _OredersHistoryState extends State<OredersHistory> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Color(0xff123456),
-          toolbarHeight: 105,
+          toolbarHeight: 115,
           leadingWidth: 0,
           bottom: TabBar(
               labelColor: Colors.white,
@@ -423,7 +424,7 @@ class _OredersHistoryState extends State<OredersHistory> {
               SizedBox(
                 height: 1,
               ),
-              SizedBox(height: 54, child: PatientSelection),
+              SizedBox(height: 56, child: PatientSelection),
             ],
           ),
         ),
@@ -753,23 +754,21 @@ Widget _OrderListDetails(var data, BuildContext context, flg) {
                           Padding(
                             padding:
                                 const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 5.0),
-                            child: Expanded(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    data.display_name,
-                                    style: TextStyle(
-                                        color: Colors.indigo,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    data.gender.toString(),
-                                    style: TextStyle(fontSize: 12),
-                                  )
-                                ],
-                              ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  data.display_name,
+                                  style: TextStyle(
+                                      color: Colors.indigo,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Spacer(),
+                                Text(
+                                  data.gender.toString(),
+                                  style: TextStyle(fontSize: 12),
+                                )
+                              ],
                             ),
                           ),
                           SizedBox(
@@ -812,34 +811,34 @@ Widget _OrderListDetails(var data, BuildContext context, flg) {
                                 //   'Track',
                                 //   style: TextStyle(fontSize: 12),
                                 // ),
-                                (double.parse(data.outstanding_due) > 0)
-                                    ? SizedBox(
-                                        height: 33,
-                                        width: 69,
-                                        child: InkWell(
-                                            child: Card(
-                                              color: Color.fromARGB(
-                                                  255, 226, 145, 24),
-                                              elevation: 2.0,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(4)),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(3.0),
-                                                child: Center(
-                                                    child: Text("Pay Now",
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500))),
-                                              ),
-                                            ),
-                                            onTap: () {}),
-                                      )
-                                    : SizedBox()
+                                // (double.parse(data.outstanding_due) > 0)
+                                //     ? SizedBox(
+                                //         height: 33,
+                                //         width: 69,
+                                //         child: InkWell(
+                                //             child: Card(
+                                //               color: Color.fromARGB(
+                                //                   255, 226, 145, 24),
+                                //               elevation: 2.0,
+                                //               shape: RoundedRectangleBorder(
+                                //                   borderRadius:
+                                //                       BorderRadius.circular(4)),
+                                //               child: Padding(
+                                //                 padding:
+                                //                     const EdgeInsets.all(3.0),
+                                //                 child: Center(
+                                //                     child: Text("Pay Now",
+                                //                         style: TextStyle(
+                                //                             color: Colors.white,
+                                //                             fontSize: 14,
+                                //                             fontWeight:
+                                //                                 FontWeight
+                                //                                     .w500))),
+                                //               ),
+                                //             ),
+                                //             onTap: () {}),
+                                //       )
+                                //     : SizedBox()
                               ],
                             ),
                           ),
@@ -993,34 +992,34 @@ Widget _OrderListDetails(var data, BuildContext context, flg) {
                                       fontSize: 13,
                                       fontWeight: FontWeight.w500),
                                 ),
-                                (double.parse(data.outstanding_due) > 0)
-                                    ? SizedBox(
-                                        height: 33,
-                                        width: 69,
-                                        child: InkWell(
-                                            child: Card(
-                                              color: Color.fromARGB(
-                                                  255, 226, 145, 24),
-                                              elevation: 2.0,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(4)),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(3.0),
-                                                child: Center(
-                                                    child: Text("Pay Now",
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500))),
-                                              ),
-                                            ),
-                                            onTap: () {}),
-                                      )
-                                    : SizedBox()
+                                // (double.parse(data.outstanding_due) > 0)
+                                //     ? SizedBox(
+                                //         height: 33,
+                                //         width: 69,
+                                //         child: InkWell(
+                                //             child: Card(
+                                //               color: Color.fromARGB(
+                                //                   255, 226, 145, 24),
+                                //               elevation: 2.0,
+                                //               shape: RoundedRectangleBorder(
+                                //                   borderRadius:
+                                //                       BorderRadius.circular(4)),
+                                //               child: Padding(
+                                //                 padding:
+                                //                     const EdgeInsets.all(3.0),
+                                //                 child: Center(
+                                //                     child: Text("Pay Now",
+                                //                         style: TextStyle(
+                                //                             color: Colors.white,
+                                //                             fontSize: 14,
+                                //                             fontWeight:
+                                //                                 FontWeight
+                                //                                     .w500))),
+                                //               ),
+                                //             ),
+                                //             onTap: () {}),
+                                //       )
+                                //     : SizedBox()
                               ],
                             ),
                           ),
