@@ -10,7 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'MyTrends.dart';
 import 'OrdersHistory.dart';
 
+import 'PatientHome.dart';
 import 'Screens/Book_Test_screen.dart';
+import 'book_home_visit.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
@@ -63,7 +65,7 @@ class _ValidateOTPState extends State<ValidateOTP> {
         // Navigator.push(
         //     context, MaterialPageRoute(builder: (context) => OredersHistory()));
       }
-
+      globals.Booking_Status_Flag = resposne["Data"][0]['STATUS_FLAG'].toString();
       globals.Session_ID = resposne["Data"][0]['SESSION_ID'].toString();
       globals.selectedLogin_Data = jsonDecode(response.body);
       globals.umr_no = resposne["Data"][0]['UMR_NO'].toString();
@@ -87,6 +89,9 @@ class _ValidateOTPState extends State<ValidateOTP> {
         } else if (ValiDate_Flag == "T") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => MyTrends()));
+        } else if (ValiDate_Flag == "H") {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => Book_Home_Visit(0)));
         } else if (ValiDate_Flag == "UP") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => UsersProfile()));
