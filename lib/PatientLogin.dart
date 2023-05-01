@@ -281,6 +281,7 @@ class _PatientLoginState extends State<PatientLogin> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => PatientHome()));
+                              // MobileNocontroller.clear();
                             },
                             child: Text('Cancel',
                                 style: TextStyle(
@@ -298,7 +299,9 @@ class _PatientLoginState extends State<PatientLogin> {
                   InkWell(
                       child: Text('Register',
                           style: TextStyle(
-                              color: Color(0xff123579), fontSize: 15,fontWeight: FontWeight.w500)),
+                              color: Color(0xff123579),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500)),
                       onTap: () {
                         NameController.text = '';
                         MobNoController.text = '';
