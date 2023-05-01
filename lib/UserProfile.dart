@@ -5,6 +5,7 @@ import './OrdersHistory.dart';
 import './PatientHome.dart';
 import './PatientLogin.dart';
 import 'package:http/http.dart' as http;
+import 'ClientCodeLogin.dart';
 import 'globals.dart' as globals;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -93,6 +94,7 @@ class _UsersProfileState extends State<UsersProfile> {
               padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
               child: InkWell(
                 onTap: () {
+                  globals.SelectedlocationId = "";
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PatientHome()));
                 },
@@ -143,13 +145,15 @@ class _UsersProfileState extends State<UsersProfile> {
               padding: const EdgeInsets.fromLTRB(0, 5, 30, 0),
               child: InkWell(
                 onTap: () async {
+                  globals.umr_no = "";
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
 
                   if (prefs.getString('Mobileno') != "") {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PatientLogin("")),
+                      MaterialPageRoute(
+                          builder: (context) => AccessClientCodeLogin()),
                     );
                   } else {
                     prefs.setString("Msg_id", "");
