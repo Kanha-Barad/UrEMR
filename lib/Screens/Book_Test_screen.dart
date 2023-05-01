@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../ClientCodeLogin.dart';
 import '../Controllers/cart_controller.dart';
 import '../Controllers/product_controller.dart';
 import 'Test_Cart_screen.dart';
@@ -43,6 +44,7 @@ class ProductOverviewPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
               child: InkWell(
                 onTap: () {
+                  globals.SelectedlocationId = "";
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PatientHome()));
                 },
@@ -93,6 +95,7 @@ class ProductOverviewPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(0, 5, 30, 0),
               child: InkWell(
                 onTap: () async {
+                  globals.umr_no = "";
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   prefs.setString("Msg_id", "");
@@ -109,12 +112,12 @@ class ProductOverviewPage extends StatelessWidget {
                   (prefs.setString('OTPURL', ''));
                   (prefs.setString('PatientAppApiURL', ''));
                   (prefs.setString('ConnectionString', ''));
-                  if (prefs.getString('Mobileno') != "") {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PatientLogin("")),
-                    );
-                  }
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AccessClientCodeLogin()),
+                  );
                 },
                 child: Column(children: [
                   Icon(
@@ -137,16 +140,26 @@ class ProductOverviewPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff123456),
-        title: Text('Book A Test', style: TextStyle(color: Colors.white)),
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu_rounded, color: Colors.white),
-            onPressed: () => Scaffold.of(context).openDrawer(),
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: Color(0xff123456),
+          title: Text('Book A Test', style: TextStyle(color: Colors.white)),
+          leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ))
+
+          // Builder(
+          //   builder: (context) => IconButton(
+          //     icon: Icon(Icons.menu_rounded, color: Colors.white),
+          //     onPressed: () => Scaffold.of(context).openDrawer(),
+          //   ),
+          // ),
           ),
-        ),
-      ),
-      drawer: AppDrawer(),
+      endDrawer: AppDrawer(),
       body: (!_showOnlyFavourites)
           ? ProductsGrid(_showOnlyFavourites)
           : Text('Done'),
