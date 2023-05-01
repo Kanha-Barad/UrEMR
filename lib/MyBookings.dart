@@ -32,6 +32,7 @@ class _MyBookingState extends State<MyBooking> {
               padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
               child: InkWell(
                 onTap: () {
+                  globals.SelectedlocationId = "";
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PatientHome()));
                 },
@@ -82,6 +83,7 @@ class _MyBookingState extends State<MyBooking> {
               padding: const EdgeInsets.fromLTRB(0, 5, 30, 0),
               child: InkWell(
                 onTap: () async {
+                  globals.umr_no = "";
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   prefs.setString("Msg_id", "");
