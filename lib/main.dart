@@ -10,7 +10,6 @@ void main() async {
 
 class PatientApp extends StatefulWidget {
   const PatientApp({Key? key}) : super(key: key);
-
   @override
   State<PatientApp> createState() => _PatientAppState();
 }
@@ -19,7 +18,6 @@ class _PatientAppState extends State<PatientApp> {
   @override
   Future<bool> setUserStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     if (prefs.getString('AppCODE') != "" &&
         prefs.getString('AppCODE') != null) {
       globals.Client_App_Code = (prefs.getString('AppCODE') ?? '');
