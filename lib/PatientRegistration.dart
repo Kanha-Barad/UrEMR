@@ -60,6 +60,17 @@ class _PatientRegisterState extends State<PatientRegister> {
       globals.patient_id =
           resposne["Data"][0]['PATIENT_ID'].toString().split('.')[0];
       globals.Session_ID = resposne["Data"][0]['SESSION_ID'].toString();
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      //     setState(() {
+      //       prefs.setString('Patient_ID',
+      //           jsonDecode(response.body)['PATIENT_ID'].toString().split('.')[0]);
+      //       prefs.setString(
+      //           'SeSSion_ID', jsonDecode(response.body)['Data'][0]['SESSION_ID'].toString());
+      //           });
+      // globals.patient_id = (prefs.getString('Patient_ID') ?? '');
+      //   //  resposne["Data"][0]['PATIENT_ID'].toString().split('.')[0];
+      // globals.Session_ID = (prefs.getString('SeSSion_ID') ?? '');
+
       // globals.selectedLogin_Data = jsonDecode(response.body);
       Fluttertoast.showToast(
           msg: "Registered Sucessfully",
@@ -74,11 +85,6 @@ class _PatientRegisterState extends State<PatientRegister> {
           context,
           MaterialPageRoute(
               builder: (context) => PatientLogin(MobNoController.text)));
-      // NameController.text = '';
-      // MobNoController.text = '';
-      // AgeController.text = '';
-      // MailIdController.text = '';
-      // AddressController.text = '';
     } else {
       Fluttertoast.showToast(
           msg: "Registration Failed",
