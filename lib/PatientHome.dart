@@ -7,6 +7,7 @@ import './UserProfile.dart';
 
 import 'ClientCodeLogin.dart';
 import 'Screens/Book_Test_screen.dart';
+import 'Widgets/BottomNavigation.dart';
 import 'Widgets/cart_items.dart';
 import 'book_home_visit.dart';
 import 'globals.dart' as globals;
@@ -42,7 +43,7 @@ class _PatientHomeState extends State<PatientHome> {
     setState(() {});
   }
 
-  _incrementCounter() async {
+  _SaveOrderHIStroy() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     globals.logindata1 = (prefs.getString('email') ?? '');
@@ -72,10 +73,10 @@ class _PatientHomeState extends State<PatientHome> {
       globals.selectedLogin_Data = resposne;
     }
 
-    if (globals.umr_no != "") {
+    if (globals.mobNO != "" && globals.mobNO != null) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MyTrends()));
-    } else if (globals.umr_no == "") {
+    } else if (globals.mobNO == "") {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => PatientLogin("T")));
     }
@@ -86,17 +87,19 @@ class _PatientHomeState extends State<PatientHome> {
 
     globals.logindata1 = (prefs.getString('email') ?? '');
     globals.mobNO = (prefs.getString('Mobileno') ?? '');
+
     if (prefs.getString('data1') != null && prefs.getString('data1') != "") {
       Map<String, dynamic> resposne =
           (jsonDecode(prefs.getString('data1') ?? ''));
       globals.selectedLogin_Data = resposne;
     }
-    if (globals.Session_ID != "0" &&
-        globals.Session_ID != "" &&
-        globals.Session_ID != null) {
+    if (globals.mobNO != "" && globals.mobNO != null) {
+      // (globals.Session_ID != "0" &&
+      //     globals.Session_ID != "" &&
+      //     globals.Session_ID != null) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => ProductOverviewPage()));
-    } else {
+    } else if (globals.mobNO == "") {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => PatientLogin("B")));
     }
@@ -112,12 +115,13 @@ class _PatientHomeState extends State<PatientHome> {
           (jsonDecode(prefs.getString('data2') ?? ''));
       globals.selectedLogin_Data = resposne;
     }
-    if (globals.Session_ID != "0" &&
-        globals.Session_ID != "" &&
-        globals.Session_ID != null) {
+    if (globals.mobNO != "" && globals.mobNO != null) {
+      // (globals.Session_ID != "0" &&
+      //     globals.Session_ID != "" &&
+      //     globals.Session_ID != null) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Book_Home_Visit(0)));
-    } else {
+    } else if (globals.mobNO == "") {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => PatientLogin("H")));
     }
@@ -127,121 +131,6 @@ class _PatientHomeState extends State<PatientHome> {
 
   @override
   Widget build(BuildContext context) {
-    Widget myBottomNavigationBar = Container(
-        // height: 150,
-        width: MediaQuery.of(context).size.width,
-        height: 48,
-        color: Color(0xff123456),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
-              child: InkWell(
-                onTap: () {
-                  globals.SelectedlocationId = "";
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PatientHome()));
-                },
-                child: Column(children: [
-                  Icon(
-                    Icons.home,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "Home",
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  )
-                ]),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-              child: InkWell(
-                onTap: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  if (prefs.getString('Mobileno') == "") {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PatientLogin("")),
-                    );
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => UsersProfile()),
-                    );
-                  }
-                },
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      "Profile",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 30, 0),
-              child: InkWell(
-                onTap: () async {
-                  globals.umr_no = "";
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.setString("Msg_id", "");
-                  prefs.setString('Mobileno', "");
-
-                  prefs.setString('email', "");
-                  //     prefs.setString('Mobileno', MobNocontroller.text.toString()).toString();
-                  prefs.setString("Otp", "");
-                  // prefs.getStringList('data1') ?? [];
-                  (prefs.setString('data1', ""));
-                  (prefs.setString('AppCODE', ''));
-                  (prefs.setString('CompanyLogo', ''));
-                  (prefs.setString('ReportURL', ''));
-                  (prefs.setString('OTPURL', ''));
-                  (prefs.setString('PatientAppApiURL', ''));
-                  (prefs.setString('ConnectionString', ''));
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AccessClientCodeLogin()),
-                  );
-                },
-                child: Column(children: [
-                  Icon(
-                    Icons.logout_rounded,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "Log Out",
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  )
-                ]),
-              ),
-            )
-          ],
-        ));
-
     Future<List<PreferredServices>> _fetchManagerDetails() async {
       Map data = {
         "connection": globals.Patient_App_Connection_String,
@@ -565,7 +454,7 @@ class _PatientHomeState extends State<PatientHome> {
                         padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
                         child: TextButton(
                           onPressed: () {
-                            _incrementCounter();
+                            _SaveOrderHIStroy();
                           },
                           child: Text(
                             'My Reports',
@@ -1204,7 +1093,7 @@ class _PatientHomeState extends State<PatientHome> {
             ],
           ),
         ),
-        bottomNavigationBar: myBottomNavigationBar,
+        bottomNavigationBar: AllBottOMNaviGAtionBar(),
       ),
     );
   }
