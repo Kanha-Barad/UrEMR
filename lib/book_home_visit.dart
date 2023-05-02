@@ -171,30 +171,37 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
   }
 
   void _onLoading() {
+    // SizedBox(
+    //   height: 100,
+    //   width: 100,
+    //   child: Center(
+    //     child: LoadingIndicator(
+    //       indicatorType: Indicator.ballClipRotateMultiple,
+    //       colors: Colors.primaries,
+    //       strokeWidth: 4.0,
+    //       //   pathBackgroundColor:ColorSwatch(Action[])
+    //     ),
+    //   ),
+    // );
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async {
-            return true;
-          },
-          child: AlertDialog(
-            title: Container(
-              height: 200,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new CircularProgressIndicator(),
-                  new Text("Loading"),
-                ],
-              ),
+        return Center(
+          child: SizedBox(
+            width: 100,
+            height: 100,
+            child: LoadingIndicator(
+              indicatorType: Indicator.ballClipRotateMultiple,
+              colors: Colors.primaries,
+              strokeWidth: 4.0,
+              //   pathBackgroundColor:ColorSwatch(Action[])
             ),
           ),
         );
       },
     );
-    new Future.delayed(new Duration(seconds: 1), () {
+     Future.delayed(new Duration(seconds: 1), () {
       Navigator.pop(context); //pop dialog
     });
   }
