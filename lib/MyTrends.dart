@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uremr/Widgets/BottomNavigation.dart';
 import './OrdersHistory.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
@@ -173,112 +174,6 @@ class _MyTrendsState extends State<MyTrends> {
       );
     }
 
-    Widget myBottomNavigationBar = Container(
-        // height: 150,
-        width: MediaQuery.of(context).size.width,
-        height: 48,
-        color: Color(0xff123456),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
-              child: InkWell(
-                onTap: () {
-                  globals.SelectedlocationId = "";
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PatientHome()));
-                },
-                child: Column(children: [
-                  Icon(
-                    Icons.home,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "Home",
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  )
-                ]),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => UsersProfile()),
-                  );
-                },
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      "Profile",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 30, 0),
-              child: InkWell(
-                onTap: () async {
-                  globals.umr_no = "";
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.setString("Msg_id", "");
-                  prefs.setString('Mobileno', "");
-
-                  prefs.setString('email', "");
-                  //     prefs.setString('Mobileno', MobNocontroller.text.toString()).toString();
-                  prefs.setString("Otp", "");
-                  // prefs.getStringList('data1') ?? [];
-                  (prefs.setString('data1', ""));
-                  (prefs.setString('AppCODE', ''));
-                  (prefs.setString('CompanyLogo', ''));
-                  (prefs.setString('ReportURL', ''));
-                  (prefs.setString('OTPURL', ''));
-                  (prefs.setString('PatientAppApiURL', ''));
-                  (prefs.setString('ConnectionString', ''));
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AccessClientCodeLogin()),
-                  );
-                },
-                child: Column(children: [
-                  Icon(
-                    Icons.logout_rounded,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "Log Out",
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  )
-                ]),
-              ),
-            )
-          ],
-        ));
-
     Future<List<ManagerDetails>> _fetchManagerDetails() async {
       Map data = {
         "patient_id": globals.umr_no,
@@ -383,7 +278,7 @@ class _MyTrendsState extends State<MyTrends> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color(0xff123456),
-        toolbarHeight: 130,
+        toolbarHeight: 140,
         leadingWidth: 0,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -454,26 +349,10 @@ class _MyTrendsState extends State<MyTrends> {
                       ],
                     ),
                   ),
-                  // Text(
-                  //   // "  My Trends",
-                  //   globals.dis_name,
-                  //   style: TextStyle(
-                  //     color: Colors.black,
-                  //     fontSize: 15,
-                  //   ),
-                  // ),
-                  // Text(
-                  //   // "  My Trends",
-                  //   globals.umr_no,
-                  //   style: TextStyle(
-                  //     color: Colors.black,
-                  //     fontSize: 15,
-                  //   ),
-                  // ),
                 ],
               ),
             ),
-            SizedBox(height: 54, child: MyTrendsIconDetails),
+            SizedBox(height: 60, child: MyTrendsIconDetails),
           ],
         ),
       ),
@@ -491,7 +370,7 @@ class _MyTrendsState extends State<MyTrends> {
           ],
         ),
       ),
-      bottomNavigationBar: myBottomNavigationBar,
+      bottomNavigationBar: AllBottOMNaviGAtionBar(),
     );
   }
 }
