@@ -128,6 +128,30 @@ class _PatientHomeState extends State<PatientHome> {
     }
   }
 
+  InProgressNotofication() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    globals.logindata1 = (prefs.getString('email') ?? '');
+    globals.mobNO = (prefs.getString('Mobileno') ?? '');
+    if (prefs.getString('data2') != null && prefs.getString('data2') != "") {
+      Map<String, dynamic> resposne =
+          (jsonDecode(prefs.getString('data2') ?? ''));
+      globals.selectedLogin_Data = resposne;
+    }
+    if (globals.mobNO != "" && globals.mobNO != null) {
+      // (globals.Session_ID != "0" &&
+      //     globals.Session_ID != "" &&
+      //     globals.Session_ID != null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => BookingINProgressNotification()));
+    } else if (globals.mobNO == "") {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => PatientLogin("N")));
+    }
+  }
+
   int counter = 0;
 
   @override
@@ -223,10 +247,7 @@ class _PatientHomeState extends State<PatientHome> {
                     ),
                     color: Colors.white,
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => notifiCation()));
+                      InProgressNotofication();
                       setState(() {
                         counter = 0;
                       });
