@@ -7,6 +7,7 @@ import './UserProfile.dart';
 
 import 'ClientCodeLogin.dart';
 import 'Screens/Book_Test_screen.dart';
+import 'Upload_Prescription.dart';
 import 'Widgets/BottomNavigation.dart';
 import 'Widgets/cart_items.dart';
 import 'book_home_visit.dart';
@@ -1059,7 +1060,13 @@ class _PatientHomeState extends State<PatientHome> {
                                       )
                                     ],
                                   ),
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                UpLoadPrescrIPtioN()));
+                                  },
                                 ),
                               ),
                             ],
