@@ -2,24 +2,22 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uremr/Widgets/BottomNavigation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './PatientHome.dart';
-import 'ClientCodeLogin.dart';
-import 'PatientLogin.dart';
-import 'UserProfile.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
-class notifiCation extends StatefulWidget {
-  const notifiCation({Key? key}) : super(key: key);
+class BookingINProgressNotification extends StatefulWidget {
+  const BookingINProgressNotification({Key? key}) : super(key: key);
 
   @override
-  State<notifiCation> createState() => _notifiCation();
+  State<BookingINProgressNotification> createState() =>
+      _BookingINProgressNotification();
 }
 
-class _notifiCation extends State<notifiCation> {
+class _BookingINProgressNotification
+    extends State<BookingINProgressNotification> {
   // List of items in our dropdown menu
 
   @override
@@ -201,22 +199,12 @@ ListView _ProgressNotiFicationListView(data, BuildContext contex) {
 
 //String Number = "08456849320";
 Widget _ProgressNotiFication(var data, BuildContext context) {
-  Future<void> launchPhoneDialer(String contactNumber) async {
-    final Uri _phoneUri = Uri(scheme: "tel", path: contactNumber);
-    try {
-      if (await canLaunch(_phoneUri.toString()))
-        await launch(_phoneUri.toString());
-    } catch (error) {
-      throw ("Cannot dial");
-    }
-  }
-
   //bool _customTileExpanded = false;
   return GestureDetector(
       child: Column(
     children: [
       Padding(
-          padding: const EdgeInsets.fromLTRB(8, 4, 8, 0.0),
+          padding: const EdgeInsets.fromLTRB(8, 16, 8, 0.0),
           child: Card(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -383,7 +371,7 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
           )),
       data.Reject_DT == null || data.Reject_DT == "null"
           ? Padding(
-              padding: const EdgeInsets.fromLTRB(8, 4, 8, 0.0),
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0.0),
               child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -397,11 +385,11 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
                         child: Container(
-                          height: 50,
+                          height: 38,
                           width: MediaQuery.of(context).size.width,
                           // color: Color.fromARGB(255, 16, 59, 135),
                           decoration: BoxDecoration(
-                            color: Color(0xff123456),
+                            color: Color.fromARGB(255, 176, 185, 193),
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(12.0),
                               bottomRight: Radius.circular(12.0),
@@ -684,7 +672,7 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
               ),
             )
           : Padding(
-              padding: const EdgeInsets.fromLTRB(8, 4, 8, 0.0),
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0.0),
               child: Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -698,11 +686,11 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
                             Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
                               child: Container(
-                                height: 50,
+                                height: 38,
                                 width: MediaQuery.of(context).size.width,
                                 // color: Color.fromARGB(255, 16, 59, 135),
                                 decoration: BoxDecoration(
-                                  color: Color(0xff123456),
+                                  color: Color.fromARGB(255, 176, 185, 193),
                                   borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(12.0),
                                     bottomRight: Radius.circular(12.0),
@@ -767,9 +755,10 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
                               ],
                             ),
                           ])))),
-      data.Assigned_DT != null && data.Assigned_DT != "null"
+      data.Assigned_DT != null && data.Assigned_DT != "null" ||
+              data.Completed_DT != "null" && data.Completed_DT != null
           ? Padding(
-              padding: const EdgeInsets.fromLTRB(8, 4, 8, 0.0),
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0.0),
               child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -778,10 +767,10 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
                 child: Column(
                   children: [
                     Container(
-                      height: 50,
+                      height: 36,
                       // color: Color.fromARGB(255, 16, 59, 135),
                       decoration: BoxDecoration(
-                        color: Color(0xff123456),
+                        color: Color.fromARGB(255, 176, 185, 193),
                         borderRadius: BorderRadius.only(
                           topRight: Radius.circular(12.0),
                           topLeft: Radius.circular(12.0),
@@ -835,8 +824,8 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
                               color: Colors.green,
                             ),
                             onTap: () {
-                              String Number = '08456849320';
-                              launchPhoneDialer(Number);
+                              String Number = data.Employee_Mob_No.toString();
+                              _callNumber(Number);
                               // UrlLauncher.launch('tel:+ $Number');
                               //launchDialer(Number);
                               // callNumber();
@@ -853,28 +842,6 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
     ],
   ));
 }
-
-// launchDialer(String number) async {
-//   String url = 'tel:' + number;
-//   if (await launch('$url')) {
-//     await launch(url);
-//   } else {
-//     throw 'Application unable to open dialer.';
-//   }
-// }
-// callNumber() async{
-//   const number = '08456849320'; //set the number here
-//   bool? call = await FlutterPhoneDirectCaller.callNumber(number);
-// }
-
-// _launchPhoneURL(String phoneNumber) async {
-//   String url = 'tel:' + phoneNumber;
-//   if (await canLaunch(url)) {
-//     await launch(url);
-//   } else {
-//     throw 'Could not launch $url';
-//   }
-// }
 
 _callNumber(String phoneNumber) async {
   String number = phoneNumber;
