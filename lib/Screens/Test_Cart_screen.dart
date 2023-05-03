@@ -193,6 +193,9 @@ class _CartScreenState extends State<CartScreen> {
         "loc_id": globals.SelectedlocationId,
         "IP_SLOT": globals.Slot_id,
         "IP_DATE": "${selectedDate.toLocal()}".split(' ')[0],
+        "IP_UPLOAD_IMG": "",
+        "IP_PRESCRIPTION": "",
+        "IP_REMARKS": "",
         //"Server_Flag":""
       };
 
@@ -221,14 +224,16 @@ class _CartScreenState extends State<CartScreen> {
             label: "View",
             textColor: Colors.white,
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => notifiCation()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BookingINProgressNotification()));
               cartController.clear();
               productcontroller.resetAll();
               globals.GlobalDiscountCoupons = "";
             },
           ),
-          duration: const Duration(seconds: 15),
+          // duration: const Duration(seconds: 15),
           //width: 320.0, // Width of the SnackBar.
           padding: const EdgeInsets.symmetric(
             horizontal: 4.0, // Inner padding for SnackBar content.
@@ -958,6 +963,9 @@ Widget userBookings(
       "IP_SLOT": globals.Slot_id,
       "IP_DATE": "${selectedDate.toLocal()}".split(' ')[0],
       "connection": globals.Patient_App_Connection_String,
+      "IP_UPLOAD_IMG": "",
+      "IP_PRESCRIPTION": "",
+      "IP_REMARKS": "",
     };
 
     final jobsListAPIUrl = Uri.parse(
@@ -986,14 +994,16 @@ Widget userBookings(
           label: "View",
           textColor: Colors.white,
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => notifiCation()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => BookingINProgressNotification()));
             cartController.clear();
             productcontroller.resetAll();
             globals.GlobalDiscountCoupons = "";
           },
         ),
-        duration: const Duration(seconds: 15),
+        // duration: const Duration(seconds: 15),
         //width: 320.0, // Width of the SnackBar.
         padding: const EdgeInsets.symmetric(
           horizontal: 4.0, // Inner padding for SnackBar content.

@@ -8,6 +8,7 @@ import './UserProfile.dart';
 import './PatientLogin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'MyTrends.dart';
+import 'Notification.dart';
 import 'OrdersHistory.dart';
 
 import 'PatientHome.dart';
@@ -65,13 +66,18 @@ class _ValidateOTPState extends State<ValidateOTP> {
         // Navigator.push(
         //     context, MaterialPageRoute(builder: (context) => OredersHistory()));
       }
-      globals.Booking_Status_Flag = resposne["Data"][0]['STATUS_FLAG'].toString();
+      globals.Booking_Status_Flag =
+          resposne["Data"][0]['STATUS_FLAG'].toString();
       globals.Session_ID = resposne["Data"][0]['SESSION_ID'].toString();
       globals.selectedLogin_Data = jsonDecode(response.body);
       globals.umr_no = resposne["Data"][0]['UMR_NO'].toString();
       Map<String, dynamic> map = jsonDecode(response.body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       setState(() {
+        // prefs.setString('Status_FLag', globals.Booking_Status_Flag).toString();
+        // prefs.setString('SeSSion_ID', globals.Session_ID).toString();
+        // prefs.setString('SELECTED_loginData', globals.selectedLogin_Data).toString();
+        // prefs.setString('UMr_No', globals.umr_no).toString();
         prefs.setString('email', globals.Session_ID).toString();
 
         prefs.setString("Otp", OTPController.text);
@@ -95,6 +101,11 @@ class _ValidateOTPState extends State<ValidateOTP> {
         } else if (ValiDate_Flag == "UP") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => UsersProfile()));
+        }else if (ValiDate_Flag == "N") {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BookingINProgressNotification()));
         } else {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => OredersHistory()));
