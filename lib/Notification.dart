@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uremr/Widgets/BottomNavigation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './PatientHome.dart';
 import 'ClientCodeLogin.dart';
@@ -23,121 +24,6 @@ class _notifiCation extends State<notifiCation> {
 
   @override
   Widget build(BuildContext context) {
-    Widget myBottomNavigationBar = Container(
-        // height: 150,
-        width: MediaQuery.of(context).size.width,
-        height: 48,
-        color: Color(0xff123456),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
-              child: InkWell(
-                onTap: () {
-                  globals.SelectedlocationId = "";
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PatientHome()));
-                },
-                child: Column(children: [
-                  Icon(
-                    Icons.home,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "Home",
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  )
-                ]),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-              child: InkWell(
-                onTap: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  if (prefs.getString('Mobileno') == "") {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PatientLogin("")),
-                    );
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => UsersProfile()),
-                    );
-                  }
-                },
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      "Profile",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 30, 0),
-              child: InkWell(
-                onTap: () async {
-                  globals.umr_no = "";
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.setString("Msg_id", "");
-                  prefs.setString('Mobileno', "");
-
-                  prefs.setString('email', "");
-                  //     prefs.setString('Mobileno', MobNocontroller.text.toString()).toString();
-                  prefs.setString("Otp", "");
-                  // prefs.getStringList('data1') ?? [];
-                  (prefs.setString('data1', ""));
-                  (prefs.setString('AppCODE', ''));
-                  (prefs.setString('CompanyLogo', ''));
-                  (prefs.setString('ReportURL', ''));
-                  (prefs.setString('OTPURL', ''));
-                  (prefs.setString('PatientAppApiURL', ''));
-                  (prefs.setString('ConnectionString', ''));
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AccessClientCodeLogin()),
-                  );
-                },
-                child: Column(children: [
-                  Icon(
-                    Icons.logout_rounded,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "Log Out",
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  )
-                ]),
-              ),
-            )
-          ],
-        ));
-
     Future<List<ProgressNotification>> _FetchProgressNotification() async {
       Map data = {
         "MobileNo": globals.mobNO,
@@ -239,7 +125,7 @@ class _notifiCation extends State<notifiCation> {
       body: SingleChildScrollView(
         child: Container(child: ListProgressNotification),
       ),
-      bottomNavigationBar: myBottomNavigationBar,
+      bottomNavigationBar: AllBottOMNaviGAtionBar(),
     );
   }
 }
@@ -313,7 +199,7 @@ ListView _ProgressNotiFicationListView(data, BuildContext contex) {
   );
 }
 
-String Number = "08456849320";
+//String Number = "08456849320";
 Widget _ProgressNotiFication(var data, BuildContext context) {
   Future<void> launchPhoneDialer(String contactNumber) async {
     final Uri _phoneUri = Uri(scheme: "tel", path: contactNumber);
@@ -491,356 +377,479 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 12, 10, 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            data.Assigned_DT != null &&
-                                    data.Assigned_DT != "null"
-                                ? Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
-                                    size: 20,
-                                  )
-                                : Container(
-                                    height: 20,
-                                    child: CircleAvatar(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 33, 94, 150),
-                                        radius: 9.0,
-                                        child: ClipRRect(
-                                          child: Text(
-                                            "1",
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.white),
-                                          ),
-                                        ))),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(" Assigned :"),
-                            ),
-                            data.Assigned_DT != null &&
-                                    data.Assigned_DT != "null"
-                                ? Padding(
-                                    padding: const EdgeInsets.only(left: 18.0),
-                                    child: Text(data.Assigned_DT),
-                                  )
-                                : Text("")
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 2.0),
-                          child: SizedBox(
-                            height: 30,
-                            child: VerticalDivider(
-                              color: Colors.black,
-                              thickness: 1,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            data.Accepted_DT != null &&
-                                    data.Accepted_DT != "null"
-                                ? Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
-                                    size: 20,
-                                  )
-                                : Container(
-                                    height: 20,
-                                    child: CircleAvatar(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 33, 94, 150),
-                                        radius: 9.0,
-                                        child: ClipRRect(
-                                          child: Text(
-                                            "2",
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.white),
-                                          ),
-                                        ))),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(" Accepted :"),
-                            ),
-                            data.Accepted_DT != null &&
-                                    data.Accepted_DT != "null"
-                                ? Padding(
-                                    padding: const EdgeInsets.only(left: 18.0),
-                                    child: Text(data.Accepted_DT),
-                                  )
-                                : Text("")
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 2.0),
-                          child: SizedBox(
-                            height: 30,
-                            child: VerticalDivider(
-                              color: Colors.black,
-                              thickness: 1,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            data.Started_DT != null && data.Started_DT != "null"
-                                ? Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
-                                    size: 20,
-                                  )
-                                : Container(
-                                    height: 20,
-                                    child: CircleAvatar(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 33, 94, 150),
-                                        radius: 9.0,
-                                        child: ClipRRect(
-                                          child: Text(
-                                            "3",
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.white),
-                                          ),
-                                        ))),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(" Started :"),
-                            ),
-                            data.Started_DT != null && data.Started_DT != "null"
-                                ? Padding(
-                                    padding: const EdgeInsets.only(left: 18.0),
-                                    child: Text(data.Started_DT),
-                                  )
-                                : Text("")
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 2.0),
-                          child: SizedBox(
-                            height: 30,
-                            child: VerticalDivider(
-                              color: Colors.black,
-                              thickness: 1,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            data.Reached_DT != null && data.Reached_DT != "null"
-                                ? Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
-                                    size: 20,
-                                  )
-                                : Container(
-                                    height: 20,
-                                    child: CircleAvatar(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 33, 94, 150),
-                                        radius: 9.0,
-                                        child: ClipRRect(
-                                          child: Text(
-                                            "4",
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.white),
-                                          ),
-                                        ))),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(" Reached :"),
-                            ),
-                            data.Reached_DT != null && data.Reached_DT != "null"
-                                ? Padding(
-                                    padding: const EdgeInsets.only(left: 18.0),
-                                    child: Text(data.Reached_DT),
-                                  )
-                                : Text("")
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 2.0),
-                          child: SizedBox(
-                            height: 30,
-                            child: VerticalDivider(
-                              color: Colors.black,
-                              thickness: 1,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            data.Completed_DT != null &&
-                                    data.Completed_DT != "null"
-                                ? Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
-                                    size: 20,
-                                  )
-                                : Container(
-                                    height: 20,
-                                    child: CircleAvatar(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 33, 94, 150),
-                                        radius: 9.0,
-                                        child: ClipRRect(
-                                          child: Text(
-                                            "5",
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.white),
-                                          ),
-                                        ))),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(" Completed :"),
-                            ),
-                            data.Completed_DT != null &&
-                                    data.Completed_DT != "null"
-                                ? Padding(
-                                    padding: const EdgeInsets.only(left: 18.0),
-                                    child: Text(data.Completed_DT),
-                                  )
-                                : Text("")
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 2.0),
-                          child: SizedBox(
-                            height: 30,
-                            child: VerticalDivider(
-                              color: Colors.black,
-                              thickness: 1,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            data.Reject_DT != null && data.Reject_DT != "null"
-                                ? Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
-                                    size: 20,
-                                  )
-                                : Container(
-                                    height: 20,
-                                    child: CircleAvatar(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 33, 94, 150),
-                                        radius: 9.0,
-                                        child: ClipRRect(
-                                          child: Text(
-                                            "6",
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.white),
-                                          ),
-                                        ))),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(" Rejected :"),
-                            ),
-                            data.Reject_DT != null && data.Reject_DT != "null"
-                                ? Padding(
-                                    padding: const EdgeInsets.only(left: 18.0),
-                                    child: Text(data.Reject_DT),
-                                  )
-                                : Text("")
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ),
           )),
-      Padding(
-          padding: const EdgeInsets.fromLTRB(8, 4, 8, 0.0),
-          child: Card(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: Colors.grey)),
-            elevation: 4.0,
-            child: Column(
-              children: [
-                Container(
-                  height: 35,
-                  // color: Color.fromARGB(255, 16, 59, 135),
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 25, 60, 120),
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(12.0),
-                      topLeft: Radius.circular(12.0),
-                    ),
-                  ),
-                  child: Center(
-                      child: Text(
-                    "Phlebostomist",
-                    style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.w600),
-                  )),
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 8, 10, 6),
-                      child: Icon(Icons.person,
-                          color: Color.fromARGB(255, 153, 182, 209)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(data.Employee.toString(),
-                          style: TextStyle(
-                              color: Color(0xff123456),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13.0)),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 12.0, bottom: 6),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+      data.Reject_DT == null || data.Reject_DT == "null"
+          ? Padding(
+              padding: const EdgeInsets.fromLTRB(8, 4, 8, 0.0),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: Colors.grey)),
+                elevation: 4.0,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 12, 10, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 12, 10, 8),
-                        child: Text(
-                          "Make a Phone Call",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 15, 103, 170),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                        child: Container(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width,
+                          // color: Color.fromARGB(255, 16, 59, 135),
+                          decoration: BoxDecoration(
+                            color: Color(0xff123456),
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(12.0),
+                              bottomRight: Radius.circular(12.0),
+                              bottomLeft: Radius.circular(12.0),
+                              topLeft: Radius.circular(12.0),
+                            ),
+                          ),
+                          child: Center(
+                              child: Text(
+                            "Booking Status",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
+                          )),
                         ),
                       ),
-                      InkWell(
-                        child: Icon(
-                          Icons.call,
-                          size: 18,
-                          color: Colors.green,
+                      Row(
+                        children: [
+                          data.Assigned_DT != null && data.Assigned_DT != "null"
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 20,
+                                )
+                              : Container(
+                                  height: 20,
+                                  child: CircleAvatar(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 33, 94, 150),
+                                      radius: 9.0,
+                                      child: ClipRRect(
+                                        child: Text(
+                                          "1",
+                                          style: TextStyle(
+                                              fontSize: 11,
+                                              color: Colors.white),
+                                        ),
+                                      ))),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              " Assigned :",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black),
+                            ),
+                          ),
+                          data.Assigned_DT != null && data.Assigned_DT != "null"
+                              ? Padding(
+                                  padding: const EdgeInsets.only(left: 18.0),
+                                  child: Text(data.Assigned_DT,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color.fromARGB(
+                                              255, 128, 125, 125))),
+                                )
+                              : Text("")
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 2.0),
+                        child: SizedBox(
+                          height: 30,
+                          child: VerticalDivider(
+                            color: Colors.black,
+                            thickness: 1,
+                          ),
                         ),
-                        onTap: () {
-                          String Number = '08456849320';
-                          launchPhoneDialer(Number);
-                          // UrlLauncher.launch('tel:+ $Number');
-                          //launchDialer(Number);
-                          // callNumber();
-                          // _launchPhoneURL("8456849320");
-                        },
-                      )
+                      ),
+                      Row(
+                        children: [
+                          data.Accepted_DT != null && data.Accepted_DT != "null"
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 20,
+                                )
+                              : Container(
+                                  height: 20,
+                                  child: CircleAvatar(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 33, 94, 150),
+                                      radius: 9.0,
+                                      child: ClipRRect(
+                                        child: Text(
+                                          "2",
+                                          style: TextStyle(
+                                              fontSize: 11,
+                                              color: Colors.white),
+                                        ),
+                                      ))),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(" Accepted :",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black)),
+                          ),
+                          data.Accepted_DT != null && data.Accepted_DT != "null"
+                              ? Padding(
+                                  padding: const EdgeInsets.only(left: 16.0),
+                                  child: Text(data.Accepted_DT,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color.fromARGB(
+                                              255, 128, 125, 125))),
+                                )
+                              : Text("")
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 2.0),
+                        child: SizedBox(
+                          height: 30,
+                          child: VerticalDivider(
+                            color: Colors.black,
+                            thickness: 1,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          data.Started_DT != null && data.Started_DT != "null"
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 20,
+                                )
+                              : Container(
+                                  height: 20,
+                                  child: CircleAvatar(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 33, 94, 150),
+                                      radius: 9.0,
+                                      child: ClipRRect(
+                                        child: Text(
+                                          "3",
+                                          style: TextStyle(
+                                              fontSize: 11,
+                                              color: Colors.white),
+                                        ),
+                                      ))),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(" Started :",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black)),
+                          ),
+                          data.Started_DT != null && data.Started_DT != "null"
+                              ? Padding(
+                                  padding: const EdgeInsets.only(left: 30.0),
+                                  child: Text(data.Started_DT,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color.fromARGB(
+                                              255, 128, 125, 125))),
+                                )
+                              : Text("")
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 2.0),
+                        child: SizedBox(
+                          height: 30,
+                          child: VerticalDivider(
+                            color: Colors.black,
+                            thickness: 1,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          data.Reached_DT != null && data.Reached_DT != "null"
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 20,
+                                )
+                              : Container(
+                                  height: 20,
+                                  child: CircleAvatar(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 33, 94, 150),
+                                      radius: 9.0,
+                                      child: ClipRRect(
+                                        child: Text(
+                                          "4",
+                                          style: TextStyle(
+                                              fontSize: 11,
+                                              color: Colors.white),
+                                        ),
+                                      ))),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(" Reached :",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black)),
+                          ),
+                          data.Reached_DT != null && data.Reached_DT != "null"
+                              ? Padding(
+                                  padding: const EdgeInsets.only(left: 22.0),
+                                  child: Text(data.Reached_DT,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color.fromARGB(
+                                              255, 128, 125, 125))),
+                                )
+                              : Text("")
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 2.0),
+                        child: SizedBox(
+                          height: 30,
+                          child: VerticalDivider(
+                            color: Colors.black,
+                            thickness: 1,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          data.Completed_DT != null &&
+                                  data.Completed_DT != "null"
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 20,
+                                )
+                              : Container(
+                                  height: 20,
+                                  child: CircleAvatar(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 33, 94, 150),
+                                      radius: 9.0,
+                                      child: ClipRRect(
+                                        child: Text(
+                                          "5",
+                                          style: TextStyle(
+                                              fontSize: 11,
+                                              color: Colors.white),
+                                        ),
+                                      ))),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(" Completed :",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black)),
+                          ),
+                          data.Completed_DT != null &&
+                                  data.Completed_DT != "null"
+                              ? Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(data.Completed_DT,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color.fromARGB(
+                                              255, 128, 125, 125))),
+                                )
+                              : Text("")
+                        ],
+                      ),
                     ],
                   ),
-                )
-              ],
-            ),
-          ))
+                ),
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.fromLTRB(8, 4, 8, 0.0),
+              child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: BorderSide(color: Colors.grey)),
+                  elevation: 4.0,
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 12, 10, 10),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                              child: Container(
+                                height: 50,
+                                width: MediaQuery.of(context).size.width,
+                                // color: Color.fromARGB(255, 16, 59, 135),
+                                decoration: BoxDecoration(
+                                  color: Color(0xff123456),
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(12.0),
+                                    bottomRight: Radius.circular(12.0),
+                                    bottomLeft: Radius.circular(12.0),
+                                    topLeft: Radius.circular(12.0),
+                                  ),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  "Booking Status",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600),
+                                )),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                data.Reject_DT != null &&
+                                        data.Reject_DT != "null"
+                                    ? Icon(
+                                        Icons.check_circle,
+                                        color: Colors.green,
+                                        size: 20,
+                                      )
+                                    : Container(
+                                        height: 20,
+                                        child: CircleAvatar(
+                                            backgroundColor: Color.fromARGB(
+                                                255, 33, 94, 150),
+                                            radius: 9.0,
+                                            child: ClipRRect(
+                                              child: Text(
+                                                "6",
+                                                style: TextStyle(
+                                                    fontSize: 11,
+                                                    color: Colors.white),
+                                              ),
+                                            ))),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(" Rejected :",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black)),
+                                ),
+                                data.Reject_DT != null &&
+                                        data.Reject_DT != "null"
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 18.0),
+                                        child: Text(data.Reject_DT,
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color.fromARGB(
+                                                    255, 128, 125, 125))),
+                                      )
+                                    : Text("")
+                              ],
+                            ),
+                          ])))),
+      data.Assigned_DT != null && data.Assigned_DT != "null"
+          ? Padding(
+              padding: const EdgeInsets.fromLTRB(8, 4, 8, 0.0),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: Colors.grey)),
+                elevation: 4.0,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 50,
+                      // color: Color.fromARGB(255, 16, 59, 135),
+                      decoration: BoxDecoration(
+                        color: Color(0xff123456),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(12.0),
+                          topLeft: Radius.circular(12.0),
+                        ),
+                      ),
+                      child: Center(
+                          child: Text(
+                        "Phlebotomist",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                      )),
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 8, 10, 6),
+                          child: Icon(Icons.person,
+                              color: Color.fromARGB(255, 153, 182, 209)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(data.Employee.toString(),
+                              style: TextStyle(
+                                  color: Color(0xff123456),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13.0)),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 12.0, bottom: 6),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 12, 10, 8),
+                            child: Text(
+                              "Make a Phone Call",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 15, 103, 170),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          InkWell(
+                            child: Icon(
+                              Icons.call,
+                              size: 18,
+                              color: Colors.green,
+                            ),
+                            onTap: () {
+                              String Number = '08456849320';
+                              launchPhoneDialer(Number);
+                              // UrlLauncher.launch('tel:+ $Number');
+                              //launchDialer(Number);
+                              // callNumber();
+                              // _launchPhoneURL("8456849320");
+                            },
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ))
+          : Text("")
     ],
   ));
 }
