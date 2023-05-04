@@ -107,7 +107,7 @@ class _AllBottOMNaviGAtionBarState extends State<AllBottOMNaviGAtionBar> {
                   (prefs.setString('OTPURL', ''));
                   (prefs.setString('PatientAppApiURL', ''));
                   (prefs.setString('ConnectionString', ''));
-                  // (prefs.setString('Status_FLag', ''));
+                  (prefs.setString('Status_FLag', ''));
                   // (prefs.setString('SeSSion_ID', ''));
                   // (prefs.setString('SELECTED_loginData', ''));
                   // (prefs.setString('UMr_No', ''));
