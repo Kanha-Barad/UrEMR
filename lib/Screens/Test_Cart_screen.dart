@@ -213,12 +213,12 @@ class _CartScreenState extends State<CartScreen> {
       if (response.statusCode == 200) {
         Map<String, dynamic> resposne = jsonDecode(response.body);
         List jsonResponse = resposne["Data"];
-        globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
+       // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
         globals.SelectedlocationId = "";
         // globals.Preferedsrvs = jsonDecode(response.body);
 
         return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Booked Successfully! ${globals.Bill_No}'),
+          content: Text('Booked Successfully!'),
           backgroundColor: Color.fromARGB(255, 26, 177, 122),
           action: SnackBarAction(
             label: "View",
@@ -243,108 +243,7 @@ class _CartScreenState extends State<CartScreen> {
             borderRadius: BorderRadius.circular(10.0),
           ),
         ));
-        // return showDialog<String>(
-        //     context: context,
-        //     builder: (BuildContext context) =>
-        //         // {
-        //         //   Future.delayed(Duration(seconds: 10), () {
-        //         //     Navigator.of(context).pop(true);
-        //         //   });
-        //         //   return
-        //         WillPopScope(
-        //           onWillPop: () async {
-        //             return false;
-        //           },
-        //           child: AlertDialog(
-        //             shape: RoundedRectangleBorder(
-        //                 borderRadius: BorderRadius.all(Radius.circular(16.0))),
-        //             //  title: const Text('Ordered Sucessfully'),
-        //             content: Column(
-        //               mainAxisSize: MainAxisSize.min,
-        //               crossAxisAlignment: CrossAxisAlignment.center,
-        //               children: <Widget>[
-        //                 Row(
-        //                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-        //                   children: [
-        //                     Text(
-        //                       'Booked Sucessfully',
-        //                       style: TextStyle(
-        //                         fontSize: 18,
-        //                       ),
-        //                     ),
-        //                     Icon(Icons.verified_rounded,
-        //                         color: Colors.green, size: 25),
-        //                   ],
-        //                 ),
-        //                 Padding(
-        //                   padding: const EdgeInsets.fromLTRB(16, 8, 0, 4),
-        //                   child: Row(
-        //                     children: [
-        //                       Text("Your Booking Id : " + globals.Bill_No),
-        //                     ],
-        //                   ),
-        //                 )
-        //               ],
-        //             ),
-        //             actions: <Widget>[
-        //               Padding(
-        //                 padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-        //                 child: Row(
-        //                   children: [
-        //                     InkWell(
-        //                       onTap: () {
-        //                         Navigator.push(
-        //                             context,
-        //                             MaterialPageRoute(
-        //                                 builder: (context) => PatientHome()));
-        //                         cartController.clear();
-        //                         productcontroller.resetAll();
-        //                         globals.GlobalDiscountCoupons = '';
-        //                       },
-        //                       // textColor: Theme.of(context).primaryColor,
-        //                       child: Padding(
-        //                         padding: const EdgeInsets.all(8.0),
-        //                         child: Text('Home',
-        //                             style: TextStyle(
-        //                               color: Color.fromARGB(255, 30, 78, 122),
-        //                               fontWeight: FontWeight.w500,
-        //                               fontSize: 14,
-        //                             )),
-        //                       ),
-        //                     ),
-        //                     Spacer(),
-        //                     InkWell(
-        //                       onTap: () {
-        //                         Navigator.push(
-        //                             context,
-        //                             MaterialPageRoute(
-        //                                 builder: (context) =>
-        //                                     OredersHistory()));
-        //                         cartController.clear();
-        //                         productcontroller.resetAll();
-        //                         globals.GlobalDiscountCoupons = '';
-        //                       },
-        //                       // textColor: Theme.of(context).primaryColor,
-        //                       child: Padding(
-        //                         padding: const EdgeInsets.all(8.0),
-        //                         child: Text('Go to Orders',
-        //                             style: TextStyle(
-        //                               color: Color.fromARGB(255, 30, 78, 122),
-        //                               fontWeight: FontWeight.w500,
-        //                               fontSize: 14,
-        //                             )),
-        //                       ),
-        //                     ),
-        //                   ],
-        //                 ),
-        //               ),
-        //             ],
-        //           ),
-        //         ));
-
-        // return jsonResponse
-        //     .map((managers) => PreferredServices.fromJson(managers))
-        //     .toList();
+        
       } else {
         throw Exception('Failed to load jobs from API');
       }
@@ -982,13 +881,13 @@ Widget userBookings(
     if (response.statusCode == 200) {
       Map<String, dynamic> resposne = jsonDecode(response.body);
       List jsonResponse = resposne["Data"];
-      globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
+     // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
       globals.Slot_id = "";
       globals.SelectedlocationId = "";
 
       globals.SelectedlocationId = "";
       return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Booked Successfully! ${globals.Bill_No}'),
+        content: Text('Booked Successfully!'),
         backgroundColor: Color.fromARGB(255, 26, 177, 122),
         action: SnackBarAction(
           label: "View",
