@@ -82,9 +82,10 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
       if (response.statusCode == 200) {
         Map<String, dynamic> resposne = jsonDecode(response.body);
         List jsonResponse = resposne["Data"];
-       // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
+        // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
         globals.SelectedlocationId = "";
-        
+        globals.Slot_id = "";
+
         return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Booked Successfully!'),
           backgroundColor: Color.fromARGB(255, 26, 177, 122),
@@ -207,16 +208,17 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
           globals.PresCripTion_Image_Converter = base64Image;
           (globals.selectedLogin_Data["Data"].length > 1)
               ? _MultiUserListBookingsBottomPicker(context)
-              : (globals.Booking_Status_Flag == "0")
-                  ? Fluttertoast.showToast(
-                      msg: "Booking InProgress",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Color.fromARGB(230, 228, 55, 32),
-                      textColor: Colors.white,
-                      fontSize: 16.0)
-                  : SingleUserTestBookings();
+              // :
+              // (globals.Booking_Status_Flag == "0")
+              //     ? Fluttertoast.showToast(
+              //         msg: "Booking InProgress",
+              //         toastLength: Toast.LENGTH_SHORT,
+              //         gravity: ToastGravity.CENTER,
+              //         timeInSecForIosWeb: 1,
+              //         backgroundColor: Color.fromARGB(230, 228, 55, 32),
+              //         textColor: Colors.white,
+              //         fontSize: 16.0)
+              : SingleUserTestBookings();
         },
         child: const SizedBox(
             height: 40,
@@ -295,7 +297,6 @@ ListView MultiUserListBookings(var data, BuildContext contex) {
 
 Widget MultiUserBookings(data, BuildContext context, index) {
   DateTime selectedDate = DateTime.now();
- 
 
   MultiUserTestBooking() async {
     if (globals.SelectedlocationId == "" || globals.SelectedlocationId == "0") {
@@ -350,10 +351,10 @@ Widget MultiUserBookings(data, BuildContext context, index) {
     if (response.statusCode == 200) {
       Map<String, dynamic> resposne = jsonDecode(response.body);
       List jsonResponse = resposne["Data"];
-     // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
+      // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
       globals.Slot_id = "";
       globals.SelectedlocationId = "";
-      
+
       return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Booked Successfully!"),
         backgroundColor: Color.fromARGB(255, 26, 177, 122),
@@ -365,7 +366,7 @@ Widget MultiUserBookings(data, BuildContext context, index) {
                 MaterialPageRoute(builder: (context) => PatientHome()));
           },
         ),
-       // duration: const Duration(seconds: 5),
+        // duration: const Duration(seconds: 5),
         //width: 320.0, // Width of the SnackBar.
         padding: const EdgeInsets.symmetric(
           horizontal: 4.0, // Inner padding for SnackBar content.
