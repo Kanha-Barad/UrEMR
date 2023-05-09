@@ -92,7 +92,7 @@ class _AllBottOMNaviGAtionBarState extends State<AllBottOMNaviGAtionBar> {
                   // globals.umr_no = "";
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                      //await prefs.clear();
+                      await prefs.clear();
                   prefs.setString("Msg_id", "");
                   prefs.setString('Mobileno', "");
 
