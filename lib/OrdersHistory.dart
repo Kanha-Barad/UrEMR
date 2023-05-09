@@ -2,21 +2,11 @@ import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uremr/Widgets/BottomNavigation.dart';
 import './MyTrends.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'ClientCodeLogin.dart';
-import 'PatientHome.dart';
-import 'PatientLogin.dart';
-
 import 'Screens/Test_Cart_screen.dart';
-import 'UserProfile.dart';
 import 'globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-
-int? _selectedColorIndex;
 
 class OredersHistory extends StatefulWidget {
   const OredersHistory({Key? key}) : super(key: key);
@@ -26,8 +16,6 @@ class OredersHistory extends StatefulWidget {
 }
 
 class _OredersHistoryState extends State<OredersHistory> {
-  @override
-
   //  abc(index) {
   //   setState(() {
   //     _selectedColorIndex = index;
@@ -51,10 +39,8 @@ class _OredersHistoryState extends State<OredersHistory> {
   }
 
   Widget _buildPatientIconCard(data, index, context, FLAG) {
-    var selectedIndex;
     int _selectedIndex = int.parse(globals.flag_index);
 
-    bool _hasBeenPressed = true;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Padding(
@@ -234,7 +220,6 @@ class _OredersHistoryState extends State<OredersHistory> {
             future: _fetchManagerDetails(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                var data = snapshot.data;
                 if (snapshot.data!.isEmpty == true) {
                   //return NoContent();
                   return PatientIconListView(
@@ -352,7 +337,6 @@ class InProgressTab extends StatefulWidget {
 class _InProgressTabState extends State<InProgressTab> {
   @override
   Widget build(BuildContext context) {
-    int selectedIndex = 0;
     Future<List<Orderhistory>> _fetchManagerDetails() async {
       Map data = {
         "MobileNo": globals.mobNO,
@@ -409,8 +393,6 @@ class _InProgressTabState extends State<InProgressTab> {
                 strokeWidth: 4.0,
               ));
             }));
-
-    final title = 'Horizontal List';
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -491,8 +473,6 @@ class _CompletedTabState extends State<CompletedTab> {
               ));
             }));
 
-    final title = 'Horizontal List';
-
     return Scaffold(
       body: SingleChildScrollView(
           child: Column(children: [
@@ -569,7 +549,6 @@ class _CancelledTabState extends State<CancelledTab> {
               ));
             }));
 
-    final title = 'Horizontal List';
     return Scaffold(
       body: SingleChildScrollView(
           child: Column(children: [
@@ -1217,7 +1196,6 @@ class _PatientBottomPopupState extends State<PatientBottomPopup> {
 }
 
 Widget PatientDataListView(data) {
-  int i = 0;
   return ListView.builder(
       itemCount: data.length,
       itemBuilder: (context, index) {

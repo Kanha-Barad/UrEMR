@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:uremr/Widgets/BottomNavigation.dart';
-import 'package:url_launcher/url_launcher.dart';
 import './PatientHome.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
@@ -110,13 +109,6 @@ class _BookingINProgressNotification
                   color: Colors.white,
                   size: 20,
                 ))
-            // Text("Refresh",
-            //     style: TextStyle(color: Colors.white, fontSize: 14)),
-            // InkWell(
-            //     onTap: () {
-            //       setState(() {});
-            //     },
-            //     child: Icon(Icons.refresh_rounded,size: 20,))
           ],
         ),
       ),
@@ -197,9 +189,7 @@ ListView _ProgressNotiFicationListView(data, BuildContext contex) {
   );
 }
 
-//String Number = "08456849320";
 Widget _ProgressNotiFication(var data, BuildContext context) {
-  //bool _customTileExpanded = false;
   return GestureDetector(
       child: Column(
     children: [
