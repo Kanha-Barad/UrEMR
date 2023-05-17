@@ -154,22 +154,6 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
                 }
               },
               icon: Icon(Icons.camera)),
-          // IconButton(
-          //     onPressed: () async {
-          //       XFile? photo =
-          //           await _picker.pickImage(source: ImageSource.gallery);
-
-          //       if (photo == null) {
-          //       } else {
-          //         setState(() {
-          //           file = File(photo.path);
-          //           files.add(File(photo.path));
-          //           final bytes = File(photo.path).readAsBytesSync();
-          //           base64Image = base64Encode(bytes);
-          //         });
-          //       }
-          //     },
-          //     icon: Icon(Icons.image))
         ],
       ),
       body: ListView.builder(
@@ -198,13 +182,6 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
           }),
       floatingActionButton: InkWell(
         onTap: () {
-          // for (var element in files) {
-          //   //  Uint8List? bytes = element.path
-          //   final bytes = File(element!.path).readAsBytesSync();
-          //   base64Image = base64Encode(bytes);
-          // //  globals.TRFImgPath = base64Image + "," + globals.TRFImgPath;
-          // }
-          // Navigator.pop(context, true);
           globals.PresCripTion_Image_Converter = base64Image;
           (globals.selectedLogin_Data["Data"].length > 1)
               ? _MultiUserListBookingsBottomPicker(context)
@@ -332,7 +309,7 @@ Widget MultiUserBookings(data, BuildContext context, index) {
       "IP_SLOT": globals.Slot_id,
       "IP_DATE": "${selectedDate.toLocal()}".split(' ')[0],
       "connection": globals.Patient_App_Connection_String,
-      "IP_UPLOAD_IMG": globals.PresCripTion_Image_Converter,
+      "IP_UPLOAD_IMG": globals.PresCripTion_Image_Converter.toString(),
       "IP_PRESCRIPTION": "",
       "IP_REMARKS": "",
     };
@@ -343,9 +320,7 @@ Widget MultiUserBookings(data, BuildContext context, index) {
     var response = await http.post(jobsListAPIUrl,
         headers: {
           "Accept": "application/json",
-          //'X-Requested-With': 'XMLHttpRequest',
           "Content-Type": "application/x-www-form-urlencoded",
-          //"Content-Length",
         },
         body: data,
         encoding: Encoding.getByName("utf-8"));
