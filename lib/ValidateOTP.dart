@@ -76,7 +76,7 @@ class _ValidateOTPState extends State<ValidateOTP> {
       setState(() {
       //  prefs.setString('Status_FLag', globals.Booking_Status_Flag).toString();
         // prefs.setString('SeSSion_ID', globals.Session_ID).toString();
-        // prefs.setString('SELECTED_loginData', globals.selectedLogin_Data).toString();
+       // prefs.setString('SELECTED_loginData', globals.selectedLogin_Data).toString();
         // prefs.setString('UMr_No', globals.umr_no).toString();
         prefs.setString('email', globals.Session_ID).toString();
 
