@@ -786,44 +786,58 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
                                         });
                                   },
                                   child: Card(
+                                    color: Color.fromARGB(255, 246, 244, 244),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(6)),
                                     elevation: 5,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            GridViewList[index]["SLOT_TIME"],
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: GridViewList[index]
-                                                          ["SLOT_COUNT"] >
-                                                      5
-                                                  ? Colors.green
-                                                  : GridViewList[index][
-                                                                  "SLOT_COUNT"] <=
-                                                              5 &&
-                                                          GridViewList[index][
-                                                                  "SLOT_COUNT"] >
-                                                              0
-                                                      ? Colors.orange
-                                                      : GridViewList[index][
-                                                                  "SLOT_COUNT"] <=
-                                                              0
-                                                          ? Colors.grey
-                                                          : Colors.white,
-                                            ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          GridViewList[index]["SLOT_TIME"],
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: GridViewList[index]
+                                                        ["SLOT_COUNT"] >
+                                                    5
+                                                ? Colors.green
+                                                : GridViewList[index][
+                                                                "SLOT_COUNT"] <=
+                                                            5 &&
+                                                        GridViewList[index]
+                                                                ["SLOT_COUNT"] >
+                                                            0
+                                                    ? Colors.orange
+                                                    : GridViewList[index][
+                                                                "SLOT_COUNT"] <=
+                                                            0
+                                                        ? Colors.grey
+                                                        : Colors.white,
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                  ))
-                              : Text("");
+                                  ),
+                                )
+                              : Card(
+                                  color: Color.fromARGB(255, 203, 199, 199),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6)),
+                                  elevation: 5,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        GridViewList[index]["SLOT_TIME"],
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Color.fromARGB(255, 127, 122, 122)
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
                         })),
               ],
             ),
