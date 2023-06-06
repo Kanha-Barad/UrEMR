@@ -367,6 +367,68 @@ Widget MultiUserBookings(data, BuildContext context, index) {
     }
   }
 
+  UploadiMGTesting() async {
+    if (globals.SelectedlocationId == "" || globals.SelectedlocationId == "0") {
+      return Fluttertoast.showToast(
+          msg: "Select the Location",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Color.fromARGB(255, 220, 91, 26),
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+
+    Map data = {
+      "Uploadimgbase64": globals.PresCripTion_Image_Converter.toString(),
+    };
+
+    final jobsListAPIUrl =
+        //Uri.parse(globals.Global_Patient_Api_URL +
+        Uri.parse(
+            'https://asterlabs.asterdmhealthcare.com/Uploadimagepath/PatinetMobileApp/Uploadprescription');
+
+    var response = await http.post(jobsListAPIUrl,
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      List jsonResponse = resposne["Data"];
+      // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
+      globals.Slot_id = "";
+      globals.SelectedlocationId = "";
+
+      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Booked Successfully!"),
+        backgroundColor: Color.fromARGB(255, 26, 177, 122),
+        action: SnackBarAction(
+          label: "Go",
+          textColor: Colors.white,
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PatientHome()));
+          },
+        ),
+        // duration: const Duration(seconds: 5),
+        //width: 320.0, // Width of the SnackBar.
+        padding: const EdgeInsets.symmetric(
+          horizontal: 4.0, // Inner padding for SnackBar content.
+        ),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ));
+    } else {
+      throw Exception('Failed to load jobs from API');
+    }
+  }
+
   return InkWell(
     onTap: () {
       globals.umr_no = data["UMR_NO"].toString();
@@ -380,7 +442,9 @@ Widget MultiUserBookings(data, BuildContext context, index) {
       //       textColor: Colors.white,
       //       fontSize: 16.0);
       // } else {
-      MultiUserTestBooking();
+
+      //  MultiUserTestBooking();
+      UploadiMGTesting();
       // _onLoading();
       //  }
     },
