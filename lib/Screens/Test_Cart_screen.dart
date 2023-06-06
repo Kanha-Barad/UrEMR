@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ import 'package:http/http.dart' as http;
 
 var functionCalls = "";
 List data = [];
+var Device_token_ID = "";
 
 class CartScreen extends StatefulWidget {
   CartScreen() {}
@@ -45,6 +47,11 @@ class _CartScreenState extends State<CartScreen> {
   var _selectedItem;
   @override
   Widget build(BuildContext context) {
+    FirebaseMessaging.instance.getToken().then((value) {
+      Device_token_ID = value.toString();
+      print(value);
+    });
+
     late Map<String, dynamic> map;
     late Map<String, dynamic> params;
     functionCalls = "";
@@ -124,6 +131,49 @@ class _CartScreenState extends State<CartScreen> {
       getSWData();
     }
 
+    // Push_Notification_Message(BuildContext context, var bill_no) async {
+    //   var isLoading = true;
+
+    //   Map data = {
+    //     "BILL_NO": bill_no,
+    //     "Authorization": "",
+    //     "SenderId": "",
+    //     "Device_Id": "",
+    //     "body": "",
+    //     "Tittle": "",
+    //     "subtitle": "",
+    //     "Patient_Name": "",
+    //     "Mobile_no": "",
+    //     "connection": "",
+    //     "IOS_ANDROID": "A",
+    //     "STATUS_FLAG": "",
+    //     "APP_NAME": "UrEMR",
+    //     "firebaseurl": ""
+    //   };
+
+    //   print(data.toString());
+    //   final response = await http.post(
+    //       Uri.parse(globals.Global_Patient_Api_URL +
+    //           '/PatinetMobileApp/PatPushNotifications'),
+    //       headers: {
+    //         "Accept": "application/json",
+    //         "Content-Type": "application/x-www-form-urlencoded",
+    //       },
+    //       body: data,
+    //       encoding: Encoding.getByName("utf-8"));
+
+    //   setState(() {
+    //     isLoading = false;
+    //   });
+
+    //   if (response.statusCode == 200) {
+    //     Map<String, dynamic> resposne = jsonDecode(response.body);
+    //     if (jsonDecode(response.body)["message"] != "success") {
+    //       return false;
+    //     }
+    //   }
+    // }
+
     var cartController = Get.put(CartController());
     var orderController = Get.put(OrderController());
 
@@ -196,6 +246,7 @@ class _CartScreenState extends State<CartScreen> {
         "IP_UPLOAD_IMG": "",
         "IP_PRESCRIPTION": "",
         "IP_REMARKS": "",
+        "Mobile_Device_Id": Device_token_ID,
         //"Server_Flag":""
       };
 
@@ -213,10 +264,10 @@ class _CartScreenState extends State<CartScreen> {
       if (response.statusCode == 200) {
         Map<String, dynamic> resposne = jsonDecode(response.body);
         List jsonResponse = resposne["Data"];
-       // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
+        //  globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
         globals.SelectedlocationId = "";
         // globals.Preferedsrvs = jsonDecode(response.body);
-
+        //  Push_Notification_Message(context, globals.Bill_No);
         return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Booked Successfully!'),
           backgroundColor: Color.fromARGB(255, 26, 177, 122),
@@ -243,7 +294,6 @@ class _CartScreenState extends State<CartScreen> {
             borderRadius: BorderRadius.circular(10.0),
           ),
         ));
-        
       } else {
         throw Exception('Failed to load jobs from API');
       }
@@ -865,6 +915,7 @@ Widget userBookings(
       "IP_UPLOAD_IMG": "",
       "IP_PRESCRIPTION": "",
       "IP_REMARKS": "",
+      "Mobile_Device_Id": Device_token_ID,
     };
 
     final jobsListAPIUrl = Uri.parse(
@@ -881,7 +932,8 @@ Widget userBookings(
     if (response.statusCode == 200) {
       Map<String, dynamic> resposne = jsonDecode(response.body);
       List jsonResponse = resposne["Data"];
-     // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
+      // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
+      // Push_Notification_Message(context, globals.Bill_No);
       globals.Slot_id = "";
       globals.SelectedlocationId = "";
 

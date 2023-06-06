@@ -15,61 +15,23 @@ import '../PatientHome.dart';
 import '../Screens/Test_Cart_screen.dart';
 import '../UserProfile.dart';
 
-class ProductsGrid extends StatelessWidget {
+class ProductsGrid extends StatefulWidget {
   final bool showFavourites;
 
   ProductsGrid(
     this.showFavourites,
   );
 
+  @override
+  State<ProductsGrid> createState() => _ProductsGridState();
+}
+
+class _ProductsGridState extends State<ProductsGrid> {
   final controller = Get.put(ProductController());
+
   final cartController = Get.put(CartController());
 
   // ListView ItemsListView(data) {
-  //   if (data != null) {
-  //     return ListView.builder(itemBuilder: (context, index) {
-  //       return BuildItemsList(data[index]);
-  //     });
-  //   }
-  //   return ListView();
-  // }
-
-  // Widget BuildItemsList(dataRow) {
-  //   return Card(
-  //       child: Padding(
-  //           padding: EdgeInsets.all(5),
-  //           child: Column(children: [
-  //             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-  //               InkWell(
-  //                   borderRadius: BorderRadius.circular(15.0),
-  //                   child: CircleAvatar(
-  //                       backgroundColor: Colors.blue.withOpacity(0.1),
-  //                       radius: 15,
-  //                       child: Obx(() => !dataRow.isAdded.value == true
-  //                           ? Text('Add', style: TextStyle(color: Colors.blue))
-  //                           : Text('Remove',
-  //                               style: TextStyle(color: Colors.blue)))),
-  //                   onTap: () {
-  //                     controller.toggleAddRemove(dataRow.id);
-  //                     print(dataRow.id);
-  //                     print(dataRow.isAdded.value);
-  //                     if (dataRow.isAdded.value == false) {
-  //                       cartController.addItem(
-  //                           controller.items[dataRow.id].id,
-  //                           controller.items[dataRow.id].price,
-  //                           controller.items[dataRow.id].title,
-  //                           controller.items[dataRow.id].Service_Id,
-  //                           1
-  //                           // controller.items[dataRow.id].quantity
-  //                           );
-  //                     } else {
-  //                       cartController.removeitem(dataRow.id);
-  //                     }
-  //                   }),
-  //             ])
-  //           ])));
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -126,12 +88,7 @@ class ProductsGrid extends StatelessWidget {
                                                               180,
                                                           child: Icon(Icons
                                                               .filter_alt)),
-                                                      // child: Icon(
-                                                      //   Icons.alarm_sharp,
-                                                      //   size: 20,
-                                                      //   color: Color.fromARGB(
-                                                      //       255, 56, 108, 187),
-                                                      // ),
+                                                     
                                                     ),
                                                     SizedBox(
                                                       width: 250,

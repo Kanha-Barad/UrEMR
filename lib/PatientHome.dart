@@ -976,8 +976,7 @@ class _PatientHomeState extends State<PatientHome> {
                                     globals.selectDate = "";
                                     globals.SelectedlocationId = "";
                                     HomeVisitBook();
-                                    cartController.clear();
-                                    productcontroller.resetAll();
+                                  
                                     globals.GlobalDiscountCoupons = '';
                                   },
                                 ),

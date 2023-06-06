@@ -30,8 +30,8 @@ class ProductOverviewPage extends StatelessWidget {
     var _showOnlyFavourites = false;
     //  bookCart();
 
-    final controller = Get.put(ProductController());
-    final cartController = Get.put(CartController());
+    Get.put(ProductController());
+    Get.put(CartController());
 
     return Scaffold(
       appBar: AppBar(

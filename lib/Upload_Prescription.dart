@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,6 +11,7 @@ import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
 String base64Image = "";
+var Device_token_ID = "";
 
 class UpLoadPrescrIPtioN extends StatefulWidget {
   const UpLoadPrescrIPtioN({Key? key}) : super(key: key);
@@ -25,6 +27,10 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseMessaging.instance.getToken().then((value) {
+      Device_token_ID = value.toString();
+      print(value);
+    });
     DateTime selectedDate = DateTime.now();
 
     SingleUserTestBookings() async {
@@ -65,6 +71,8 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
         "IP_UPLOAD_IMG": globals.PresCripTion_Image_Converter,
         "IP_PRESCRIPTION": "",
         "IP_REMARKS": "",
+        "Mobile_Device_Id": Device_token_ID,
+
         //"Server_Flag":""
       };
 
@@ -312,6 +320,7 @@ Widget MultiUserBookings(data, BuildContext context, index) {
       "IP_UPLOAD_IMG": globals.PresCripTion_Image_Converter.toString(),
       "IP_PRESCRIPTION": "",
       "IP_REMARKS": "",
+      "Mobile_Device_Id": Device_token_ID,
     };
 
     final jobsListAPIUrl = Uri.parse(
