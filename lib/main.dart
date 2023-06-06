@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './PatientHome.dart';
@@ -5,6 +7,8 @@ import './ClientCodeLogin.dart';
 import 'globals.dart' as globals;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(PatientApp());
 }
 
@@ -38,6 +42,10 @@ class _PatientAppState extends State<PatientApp> {
   }
 
   Widget build(BuildContext context) {
+    // FirebaseMessaging.instance.getToken().then((value) {
+    // //  Device_token_ID = value.toString();
+    //   print(value);
+    // });
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

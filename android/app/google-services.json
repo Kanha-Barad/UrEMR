@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "519707400184",
+    "project_id": "uremr-eddc3",
+    "storage_bucket": "uremr-eddc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519707400184:android:23f6adacfa03db29b9280d",
+        "android_client_info": {
+          "package_name": "com.suvarnatechnosoft.uremr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519707400184-v6sfiqi5vhc5tvbb79tjl2e6hq14pr3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANPiU2WusnVIbZBSGOm-XBG1JexEki5ic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519707400184-v6sfiqi5vhc5tvbb79tjl2e6hq14pr3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

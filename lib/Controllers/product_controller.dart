@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:uremr/Widgets/cart_items.dart';
 import '../Models/product.dart';
 import '../globals.dart' as globals;
 import 'package:http/http.dart' as http;
@@ -11,7 +12,6 @@ var values = [];
 
 class ProductController extends GetxController {
   TextEditingController searchController = TextEditingController();
-
   var productList = <Product>[].obs;
   var productTempList = <Product>[];
   var totalAmount = RxDouble(0);
@@ -21,8 +21,11 @@ class ProductController extends GetxController {
 
   RxBool isFavourite = RxBool(false);
   setIsFavourite(bool value) => isFavourite.value = value;
+
   @override
   void onInit() {
+    //Get.delete<ProductController>();
+    //Get.put(ProductController());
     super.onInit();
 
     var values = [];
@@ -82,6 +85,12 @@ class ProductController extends GetxController {
     update();
   }
 
+  void clear() {
+    productcontroller.clear();
+    productList.clear();
+    productTempList.clear();
+  }
+
   void toggleFavouriteStatus(int id) {
     items[id].isFavourite.value = !items[id].isFavourite.value;
   }
@@ -89,38 +98,5 @@ class ProductController extends GetxController {
   void toggleAddRemove(int id) {
     items[id].isAdded.value = !items[id].isAdded.value;
     // items[id].isRemoved.value = !items[id].isRemoved.value;
-  }
-}
-
-bookCart() async {
-  Map data = {
-    "connection": globals.Patient_App_Connection_String
-    //  "employee_id": "",
-    // "mobile": globals.mobNO,
-    //  "session_id": globals.sesson_Id
-    //"Server_Flag":""
-  };
-
-  final jobsListAPIUrl = Uri.parse(
-      globals.Global_Patient_Api_URL + '/PatinetMobileApp/PreferedServices');
-
-  var response = await http.post(jobsListAPIUrl,
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: data,
-      encoding: Encoding.getByName("utf-8"));
-
-  if (response.statusCode == 200) {
-    Map<String, dynamic> resposne = jsonDecode(response.body);
-    List jsonResponse = resposne["Data"];
-    globals.Preferedsrvs = jsonDecode(response.body);
-
-    // return jsonResponse
-    //     .map((managers) => PreferredServices.fromJson(managers))
-    //     .toList();
-  } else {
-    throw Exception('Failed to load jobs from API');
   }
 }

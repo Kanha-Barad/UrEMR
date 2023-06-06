@@ -1,15 +1,24 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:uremr/Upload_Prescription.dart';
+import 'Models/product.dart';
 import 'PatientHome.dart';
 import 'Screens/Book_Test_screen.dart';
+import 'Widgets/cart_items.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'package:loading_indicator/loading_indicator.dart';
 
 var functionCalls = "";
 var GridViewList = [];
+
+List<Product> _items = [];
+var values = [];
+
+var productList = <Product>[].obs;
+var productTempList = <Product>[];
 
 DateTime now = DateTime.now();
 final formattedTimeForSlots = DateFormat("HH:mm").format(now);
@@ -300,14 +309,55 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
           'IND_BOOK_SLOTS': resposne['Data'][i]["IND_BOOK_SLOTS"],
         });
       }
-      setState(() {
-        //   // function_widet();
-      });
-      // setState() {
-      //   Book_Home_Visit();
-      // }
+      setState(() {});
 
       return jsonResponse.map((strans) => Data_Model.fromJson(strans)).toList();
+    } else {
+      throw Exception('Failed to load jobs from API');
+    }
+  }
+
+  SeleCTLocationWIseServices(var SelectedLOCID) async {
+    Map data = {
+      "IP_LOCATION_ID": SelectedLOCID,
+      "IP_SESSION_ID": "1",
+      "connection": globals.Patient_App_Connection_String
+      //"Server_Flag":""
+    };
+    print(data.toString());
+
+    final response = await http.post(
+        Uri.parse(globals.Global_Patient_Api_URL +
+            '/PatinetMobileApp/PreferedServices'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      List jsonResponse = resposne["Data"];
+      setState(() {
+        globals.Preferedsrvs = jsonDecode(response.body);
+      });
+
+      for (int i = 0; i <= globals.Preferedsrvs["Data"].length - 1; i++) {
+        _items.add(Product(
+            id: i + 1,
+            title: globals.Preferedsrvs["Data"][i]["SERVICE_NAME"].toString(),
+            //    description: "",
+            //  quantity: Product.quantity + 1,
+            price: globals.Preferedsrvs["Data"][i]["PRICE"],
+            Service_Id: globals.Preferedsrvs["Data"][i]["SERVICE_ID"],
+            Service_Type_Id: globals.Preferedsrvs["Data"][i]
+                ["SERVICE_TYPE_ID"]));
+      }
+      var productData = _items;
+      //Store data
+      productList.value = productData;
+      productTempList = productData;
     } else {
       throw Exception('Failed to load jobs from API');
     }
@@ -361,8 +411,6 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
           },
           body: params,
           encoding: Encoding.getByName("utf-8"));
-
-      print('im here');
       print(response.body);
       map = json.decode(response.body);
       print(response.body);
@@ -401,6 +449,7 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
                     GridViewList = [];
                     _onLoading();
                     Book_Home_Visit(this.selectedIndex);
+                    SeleCTLocationWIseServices(globals.SelectedlocationId);
                   });
                 },
                 items: data.map((ldata) {
@@ -831,9 +880,9 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
                                       Text(
                                         GridViewList[index]["SLOT_TIME"],
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Color.fromARGB(255, 127, 122, 122)
-                                        ),
+                                            fontWeight: FontWeight.bold,
+                                            color: Color.fromARGB(
+                                                255, 127, 122, 122)),
                                       ),
                                     ],
                                   ),
