@@ -753,7 +753,7 @@ Widget _OrderListDetails(var data, BuildContext context, flg) {
                                   Step(
                                       title: Column(
                                         children: [
-                                          Text('Pending'),
+                                          Text('In Progress'),
                                           // "data.billdate" != "null"
                                           //     ? Text("data.billdate")
                                           //     : Text(''),
@@ -934,7 +934,7 @@ Widget _OrderListDetails(var data, BuildContext context, flg) {
                                   Step(
                                       title: Column(
                                         children: [
-                                          Text('Pending'),
+                                          Text('In Progress'),
                                           // "data.billdate" != "null"
                                           //     ? Text("data.billdate")
                                           //     : Text(''),

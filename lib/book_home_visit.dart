@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:uremr/Controllers/product_controller.dart';
 import 'package:uremr/Upload_Prescription.dart';
 import 'Models/product.dart';
 import 'PatientHome.dart';
@@ -13,12 +14,6 @@ import 'package:loading_indicator/loading_indicator.dart';
 
 var functionCalls = "";
 var GridViewList = [];
-
-List<Product> _items = [];
-var values = [];
-
-var productList = <Product>[].obs;
-var productTempList = <Product>[];
 
 DateTime now = DateTime.now();
 final formattedTimeForSlots = DateFormat("HH:mm").format(now);
@@ -339,25 +334,16 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
     if (response.statusCode == 200) {
       Map<String, dynamic> resposne = jsonDecode(response.body);
       List jsonResponse = resposne["Data"];
-      setState(() {
-        globals.Preferedsrvs = jsonDecode(response.body);
-      });
 
-      for (int i = 0; i <= globals.Preferedsrvs["Data"].length - 1; i++) {
-        _items.add(Product(
-            id: i + 1,
-            title: globals.Preferedsrvs["Data"][i]["SERVICE_NAME"].toString(),
-            //    description: "",
-            //  quantity: Product.quantity + 1,
-            price: globals.Preferedsrvs["Data"][i]["PRICE"],
-            Service_Id: globals.Preferedsrvs["Data"][i]["SERVICE_ID"],
-            Service_Type_Id: globals.Preferedsrvs["Data"][i]
-                ["SERVICE_TYPE_ID"]));
-      }
-      var productData = _items;
-      //Store data
-      productList.value = productData;
-      productTempList = productData;
+      globals.Preferedsrvs = jsonDecode(response.body);
+      // List<String> newData = jsonResponse.map((e) => e.toString()).toList();
+
+      // globals.Preferedsrvs.clear();
+      // globals.Preferedsrvs.addAll(newData);
+
+      // var controller = Get.find<ProductController>();
+      // controller.productList.clear();
+      // controller.productList.addAll(globals.Preferedsrvs.length);
     } else {
       throw Exception('Failed to load jobs from API');
     }
@@ -739,6 +725,13 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
                                                                         builder:
                                                                             (context) =>
                                                                                 ProductOverviewPage()));
+
+                                                            // productcontroller.productTempList.refresh();
+                                                            //  productcontroller.addProduct().refresh();
+                                                            // setState(() {
+                                                            //   productcontroller
+                                                            //       .FetchSercvices();
+                                                            // });
                                                           },
                                                           child: Container(
                                                             width: 300,

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../Controllers/cart_controller.dart';
 import '../Controllers/product_controller.dart';
 
+import '../Models/product.dart';
 import 'Test_Search.dart';
 import 'package:http/http.dart' as http;
 import '../globals.dart' as globals;
@@ -14,26 +15,65 @@ import 'dart:math' as math;
 import '../PatientHome.dart';
 import '../Screens/Test_Cart_screen.dart';
 import '../UserProfile.dart';
+List<Product> _items = [];
+var values = [];
 
 class ProductsGrid extends StatefulWidget {
+  //Replacedata();
+ 
   final bool showFavourites;
 
   ProductsGrid(
     this.showFavourites,
+     
   );
-
+   
   @override
   State<ProductsGrid> createState() => _ProductsGridState();
 }
+//   Replacedata(){
+//   for (int i = 0; i <= globals.Preferedsrvs["Data"].length - 1; i++) {
+//         _items.add(Product(
+//             // setState((){});
+//             id: i + 1,
+//             title: globals.Preferedsrvs["Data"][i]["SERVICE_NAME"].toString(),
+//             //    description: "",
+//             //  quantity: Product.quantity + 1,
+//             price: globals.Preferedsrvs["Data"][i]["PRICE"],
+//             Service_Id: globals.Preferedsrvs["Data"][i]["SERVICE_ID"],
+//             Service_Type_Id: globals.Preferedsrvs["Data"][i]
+//                 ["SERVICE_TYPE_ID"]));
+//       }
+//       var productList = <Product>[].obs;
+//   var productTempList = <Product>[];
+//        var productData = _items;
+//     //Store data
+//     productList.value = productData;
+//    // productList.assignAll(globals.Preferedsrvs);
+//     productTempList = productData;
+// }
+
 
 class _ProductsGridState extends State<ProductsGrid> {
+   
+
   final controller = Get.put(ProductController());
 
   final cartController = Get.put(CartController());
-
+ 
   // ListView ItemsListView(data) {
   @override
   Widget build(BuildContext context) {
+  //   setState(() {
+  //      Replacedata();
+  //     final controller = Get.put(ProductController());
+
+  // final cartController = Get.put(CartController());
+  //   //TextEditingController.TextField='';
+  //  // controller.productList.clear();
+    
+  //   });
+   
     return Column(children: [
       TextFieldSearch(
         textEditingController: controller.searchController,
@@ -42,6 +82,7 @@ class _ProductsGridState extends State<ProductsGrid> {
         callBackPrefix: () {},
         callBackSearch: () {},
         callBackClear: () {},
+      
       ),
       Expanded(
           child: Obx(() => ListView(
@@ -812,6 +853,7 @@ void _showPickerDiagnProfilesHlthpackages(BuildContext context) {
   );
   print(res);
 }
+
 
  /*---------------------------------------Diagnostic and health package------------------------------------- */
 

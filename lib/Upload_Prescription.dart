@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uremr/OrdersHistory.dart';
 import 'package:uremr/PatientHome.dart';
 import 'package:uremr/Widgets/BottomNavigation.dart';
 import 'globals.dart' as globals;
@@ -68,44 +69,52 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
         "loc_id": globals.SelectedlocationId,
         "IP_SLOT": globals.Slot_id,
         "IP_DATE": "${selectedDate.toLocal()}".split(' ')[0],
-        "IP_UPLOAD_IMG": globals.PresCripTion_Image_Converter,
+        "IP_UPLOAD_IMG": globals.PresCripTion_Image_Converter.toString(),
+        //globals.PresCripTion_Image_Converter.toString(),
         "IP_PRESCRIPTION": "",
         "IP_REMARKS": "",
         "Mobile_Device_Id": Device_token_ID,
-
-        //"Server_Flag":""
       };
 
       final jobsListAPIUrl = Uri.parse(
           globals.Global_Patient_Api_URL + '/PatinetMobileApp/NewRegistration');
 
+      var bodys = json.encode(data);
+
       var response = await http.post(jobsListAPIUrl,
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: data,
-          encoding: Encoding.getByName("utf-8"));
+          headers: {"Content-Type": "application/json"}, body: bodys);
+      print("${response.statusCode}");
+      print("${response.body}");
+      // return response;
+      //var response = await http.post(jobsListAPIUrl,
+
+      // headers: {
+      //  "Accept": "application/json",
+      // "Content-Type": "application/json",
+      //},
+      //body: data
+      // encoding: Encoding.getByName("utf-8"));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> resposne = jsonDecode(response.body);
         List jsonResponse = resposne["Data"];
-        // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
-        globals.SelectedlocationId = "";
+        globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
         globals.Slot_id = "";
+        globals.SelectedlocationId = "";
 
         return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Booked Successfully!'),
+          content: Text("Booked Successfully!"),
           backgroundColor: Color.fromARGB(255, 26, 177, 122),
           action: SnackBarAction(
-            label: "View",
+            label: "Go",
             textColor: Colors.white,
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => PatientHome()));
+                  MaterialPageRoute(builder: (context) => OredersHistory()));
             },
           ),
-          // duration: const Duration(seconds: 15),
+          // duration: const Duration(seconds: 5),
+          //width: 320.0, // Width of the SnackBar.
           padding: const EdgeInsets.symmetric(
             horizontal: 4.0, // Inner padding for SnackBar content.
           ),
@@ -318,6 +327,7 @@ Widget MultiUserBookings(data, BuildContext context, index) {
       "IP_DATE": "${selectedDate.toLocal()}".split(' ')[0],
       "connection": globals.Patient_App_Connection_String,
       "IP_UPLOAD_IMG": globals.PresCripTion_Image_Converter.toString(),
+      //globals.PresCripTion_Image_Converter.toString(),
       "IP_PRESCRIPTION": "",
       "IP_REMARKS": "",
       "Mobile_Device_Id": Device_token_ID,
@@ -326,13 +336,21 @@ Widget MultiUserBookings(data, BuildContext context, index) {
     final jobsListAPIUrl = Uri.parse(
         globals.Global_Patient_Api_URL + '/PatinetMobileApp/NewRegistration');
 
+    var bodys = json.encode(data);
+
     var response = await http.post(jobsListAPIUrl,
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: data,
-        encoding: Encoding.getByName("utf-8"));
+        headers: {"Content-Type": "application/json"}, body: bodys);
+    print("${response.statusCode}");
+    print("${response.body}");
+    // return response;
+    //var response = await http.post(jobsListAPIUrl,
+
+    // headers: {
+    //  "Accept": "application/json",
+    // "Content-Type": "application/json",
+    //},
+    //body: data
+    // encoding: Encoding.getByName("utf-8"));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> resposne = jsonDecode(response.body);
@@ -349,7 +367,7 @@ Widget MultiUserBookings(data, BuildContext context, index) {
           textColor: Colors.white,
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PatientHome()));
+                MaterialPageRoute(builder: (context) => OredersHistory()));
           },
         ),
         // duration: const Duration(seconds: 5),
@@ -443,8 +461,8 @@ Widget MultiUserBookings(data, BuildContext context, index) {
       //       fontSize: 16.0);
       // } else {
 
-      //  MultiUserTestBooking();
-      UploadiMGTesting();
+      MultiUserTestBooking();
+      //UploadiMGTesting();
       // _onLoading();
       //  }
     },
