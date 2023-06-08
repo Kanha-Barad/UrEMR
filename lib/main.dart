@@ -8,7 +8,7 @@ import 'globals.dart' as globals;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
- await Firebase.initializeApp();
+  Firebase.initializeApp();
   runApp(PatientApp());
 }
 

@@ -12,6 +12,7 @@ var values = [];
 
 class ProductController extends GetxController {
   TextEditingController searchController = TextEditingController();
+
   var productList = <Product>[].obs;
   var productTempList = <Product>[];
   var totalAmount = RxDouble(0);
@@ -25,13 +26,17 @@ class ProductController extends GetxController {
   @override
   void onInit() {
     //Get.delete<ProductController>();
-    //Get.put(ProductController());
+    // Get.put(ProductController());
     super.onInit();
 
     var values = [];
+
+    // Call API here
+
     if (globals.Preferedsrvs != null) {
       for (int i = 0; i <= globals.Preferedsrvs["Data"].length - 1; i++) {
         _items.add(Product(
+            // setState((){});
             id: i + 1,
             title: globals.Preferedsrvs["Data"][i]["SERVICE_NAME"].toString(),
             //    description: "",
@@ -46,6 +51,7 @@ class ProductController extends GetxController {
     var productData = _items;
     //Store data
     productList.value = productData;
+   // productList.assignAll(globals.Preferedsrvs);
     productTempList = productData;
   }
 

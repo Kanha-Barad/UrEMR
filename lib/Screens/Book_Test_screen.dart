@@ -24,15 +24,21 @@ enum FilterOptions {
   ALL,
 }
 
-class ProductOverviewPage extends StatelessWidget {
+class ProductOverviewPage extends StatefulWidget {
+  @override
+  State<ProductOverviewPage> createState() => _ProductOverviewPageState();
+}
+
+class _ProductOverviewPageState extends State<ProductOverviewPage> {
   @override
   Widget build(BuildContext context) {
     var _showOnlyFavourites = false;
     //  bookCart();
 
-    Get.put(ProductController());
-    Get.put(CartController());
-
+    // Get.put(ProductController());
+    // Get.put(CartController());
+    // Get.appUpdate();
+    setState(() {});
     return Scaffold(
       appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.white),
@@ -57,6 +63,7 @@ class ProductOverviewPage extends StatelessWidget {
       endDrawer: AppDrawer(),
       body: (!_showOnlyFavourites)
           ? ProductsGrid(_showOnlyFavourites)
+          // ignore: dead_code
           : Text('Done'),
       bottomNavigationBar: AllBottOMNaviGAtionBar(),
     );

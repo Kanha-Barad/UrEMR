@@ -118,6 +118,7 @@ class _PatientLoginState extends State<PatientLogin> {
           context,
           MaterialPageRoute(
               builder: (context) => ValidateOTP(Login_flag.toString())));
+      MobileNocontroller.text = "";
       //  // } else {
       //     Fluttertoast.showToast(
       //         msg: "Please Register the Mobile Number",
