@@ -5,359 +5,291 @@ import 'package:get/get.dart';
 import '../Controllers/cart_controller.dart';
 import '../Controllers/product_controller.dart';
 
-import '../Models/product.dart';
 import 'Test_Search.dart';
 import 'package:http/http.dart' as http;
 import '../globals.dart' as globals;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math' as math;
 
-import '../PatientHome.dart';
 import '../Screens/Test_Cart_screen.dart';
-import '../UserProfile.dart';
-List<Product> _items = [];
-var values = [];
 
-class ProductsGrid extends StatefulWidget {
-  //Replacedata();
- 
-  final bool showFavourites;
+class ProductsGrid extends StatelessWidget {
+  final ProductController controller = Get.put(ProductController());
+  final CartController cartController = Get.put(CartController());
 
-  ProductsGrid(
-    this.showFavourites,
-     
-  );
-   
-  @override
-  State<ProductsGrid> createState() => _ProductsGridState();
-}
-//   Replacedata(){
-//   for (int i = 0; i <= globals.Preferedsrvs["Data"].length - 1; i++) {
-//         _items.add(Product(
-//             // setState((){});
-//             id: i + 1,
-//             title: globals.Preferedsrvs["Data"][i]["SERVICE_NAME"].toString(),
-//             //    description: "",
-//             //  quantity: Product.quantity + 1,
-//             price: globals.Preferedsrvs["Data"][i]["PRICE"],
-//             Service_Id: globals.Preferedsrvs["Data"][i]["SERVICE_ID"],
-//             Service_Type_Id: globals.Preferedsrvs["Data"][i]
-//                 ["SERVICE_TYPE_ID"]));
-//       }
-//       var productList = <Product>[].obs;
-//   var productTempList = <Product>[];
-//        var productData = _items;
-//     //Store data
-//     productList.value = productData;
-//    // productList.assignAll(globals.Preferedsrvs);
-//     productTempList = productData;
-// }
-
-
-class _ProductsGridState extends State<ProductsGrid> {
-   
-
-  final controller = Get.put(ProductController());
-
-  final cartController = Get.put(CartController());
- 
-  // ListView ItemsListView(data) {
   @override
   Widget build(BuildContext context) {
-  //   setState(() {
-  //      Replacedata();
-  //     final controller = Get.put(ProductController());
-
-  // final cartController = Get.put(CartController());
-  //   //TextEditingController.TextField='';
-  //  // controller.productList.clear();
-    
-  //   });
-   
-    return Column(children: [
-      TextFieldSearch(
-        textEditingController: controller.searchController,
-        isPrefixIconVisible: true,
-        onChanged: controller.productNameSearch,
-        callBackPrefix: () {},
-        callBackSearch: () {},
-        callBackClear: () {},
-      
-      ),
-      Expanded(
-          child: Obx(() => ListView(
-                shrinkWrap: true,
-                children: [
-                  ...controller.productList
-                      .map((e) => Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(10, 1.0, 10, 1.0),
-                            child: InkWell(
-                              onTap: () {
-                                globals.PackageTestInformation = e;
-                                (e.Service_Type_Id == 2)
-                                    ? _showPickerBookTest(context)
-                                    : (e.Service_Type_Id == 7)
-                                        ? _showPickerDiagnProfilesHlthpackages(
-                                            context)
-                                        : null;
-                              },
-                              child: Card(
-                                  color: Color.fromARGB(209, 251, 253, 255),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8)),
-                                  elevation: 2.5,
-                                  child: Padding(
-                                      padding: EdgeInsets.all(5),
-                                      child: Column(children: [
-                                        Row(children: [
-                                          //  CircleAvatar(radius: 25),
-                                          SizedBox(width: 7),
-                                          Expanded(
-                                              child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                Row(
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                          .fromLTRB(0, 0, 4, 0),
-                                                      child: Transform.rotate(
-                                                          angle: -180 *
-                                                              math.pi /
-                                                              180,
-                                                          child: Icon(Icons
-                                                              .filter_alt)),
-                                                     
-                                                    ),
-                                                    SizedBox(
-                                                      width: 250,
-                                                      child: Text(e.title,
-                                                          style: TextStyle(
-                                                              fontSize: 15,
-                                                              color: Colors
-                                                                  .black)),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 8),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          25, 0.0, 0.0, 0.0),
-                                                  child: Row(
+    return Builder(builder: (context) {
+      return Column(
+        children: [
+          TextFieldSearch(
+            textEditingController: controller.searchController,
+            isPrefixIconVisible: true,
+            onChanged: controller.productNameSearch,
+            callBackPrefix: () {},
+            callBackSearch: () {},
+            callBackClear: () {},
+          ),
+          Expanded(
+            child: Obx(() => ListView(
+                  shrinkWrap: true,
+                  children: [
+                    ...controller.productList
+                        .map((e) => Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(10, 1.0, 10, 1.0),
+                              child: InkWell(
+                                onTap: () {
+                                  globals.PackageTestInformation = e;
+                                  (e.Service_Type_Id == 2)
+                                      ? _showPickerBookTest(context)
+                                      : (e.Service_Type_Id == 7)
+                                          ? _showPickerDiagnProfilesHlthpackages(
+                                              context)
+                                          : null;
+                                },
+                                child: Card(
+                                    color: Color.fromARGB(209, 251, 253, 255),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8)),
+                                    elevation: 2.5,
+                                    child: Padding(
+                                        padding: EdgeInsets.all(5),
+                                        child: Column(children: [
+                                          Row(children: [
+                                            //  CircleAvatar(radius: 25),
+                                            SizedBox(width: 7),
+                                            Expanded(
+                                                child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
-                                                      Text(
-                                                          'Rs.' +
-                                                              "\u{20B9} " +
-                                                              "${e.price}",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Colors
-                                                                  .deepOrange)),
-                                                      Spacer(),
-                                                      InkWell(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      15.0),
-                                                          child: Obx(() => !controller
-                                                                      .items[
-                                                                          e.id -
-                                                                              1]
-                                                                      .isAdded
-                                                                      .value ==
-                                                                  true
-                                                              ? SizedBox(
-                                                                  height: 33,
-                                                                  width: 69,
-                                                                  child: Card(
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            26,
-                                                                            177,
-                                                                            122),
-                                                                    elevation:
-                                                                        1,
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(4)),
-                                                                    child:
-                                                                        Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              6.0),
-                                                                      child:
-                                                                          Center(
-                                                                        child: Text(
-                                                                            'Add',
-                                                                            style: TextStyle(
-                                                                                color: Colors.white,
-                                                                                fontSize: 15,
-                                                                                fontWeight: FontWeight.w500)),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              : SizedBox(
-                                                                  height: 33,
-                                                                  width: 70,
-                                                                  child: Card(
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            247,
-                                                                            216,
-                                                                            109,
-                                                                            102),
-                                                                    elevation:
-                                                                        1,
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(4)),
-                                                                    child:
-                                                                        Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              4.0),
-                                                                      child: Text(
-                                                                          'Remove',
-                                                                          style: TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontSize: 15,
-                                                                              fontWeight: FontWeight.w500)),
-                                                                    ),
-                                                                  ),
-                                                                )),
-                                                          onTap: () {
-                                                            controller
-                                                                .toggleAddRemove(
-                                                                    e.id - 1);
-                                                            print(e.id);
-                                                            print(controller
-                                                                .items[e.id - 1]
-                                                                .isAdded
-                                                                .value);
-                                                            if (controller
-                                                                    .items[
-                                                                        e.id -
-                                                                            1]
-                                                                    .isAdded
-                                                                    .value ==
-                                                                true) {
-                                                              cartController.addItem(
-                                                                  controller
-                                                                      .items[
-                                                                          e.id -
-                                                                              1]
-                                                                      .id,
-                                                                  controller
-                                                                      .items[
-                                                                          e.id -
-                                                                              1]
-                                                                      .price,
-                                                                  controller
-                                                                      .items[
-                                                                          e.id -
-                                                                              1]
-                                                                      .title,
-                                                                  controller
-                                                                      .items[
-                                                                          e.id -
-                                                                              1]
-                                                                      .Service_Id,
-                                                                  1);
-                                                            } else {
-                                                              cartController.removeitem(
-                                                                  controller
-                                                                      .items[
-                                                                          e.id -
-                                                                              1]
-                                                                      .Service_Id,
-                                                                  controller
-                                                                      .items[
-                                                                          e.id -
-                                                                              1]
-                                                                      .price,
-                                                                  controller
-                                                                      .items[
-                                                                          e.id -
-                                                                              1]
-                                                                      .title,
-                                                                  controller
-                                                                      .items[
-                                                                          e.id -
-                                                                              1]
-                                                                      .id,
-                                                                  1);
-                                                            }
-                                                          }),
+                                                  Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                0, 0, 4, 0),
+                                                        child: Transform.rotate(
+                                                            angle: -180 *
+                                                                math.pi /
+                                                                180,
+                                                            child: Icon(Icons
+                                                                .filter_alt)),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 250,
+                                                        child: Text(e.title,
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors
+                                                                    .black)),
+                                                      ),
                                                     ],
                                                   ),
-                                                ),
-                                              ])),
-                                        ]),
-                                      ]))),
-                            ),
-                          ))
-                      .toList()
-                ],
-              ))),
-      InkWell(
+                                                  SizedBox(height: 8),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .fromLTRB(
+                                                        25, 0.0, 0.0, 0.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                            'Rs.' +
+                                                            "\u{20B9} " +
+                                                                "${e.price}",
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Colors
+                                                                    .deepOrange)),
+                                                        Spacer(),
+
+            InkWell(
+          borderRadius: BorderRadius.circular(15.0),
           onTap: () {
-            cartController.itemCount != 0
-                ? Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CartScreen()))
-                : null;
+       final filteredProductIndex = controller.productList.indexOf(e);
+
+    if (filteredProductIndex >= 0) {
+      final product = controller.productList[filteredProductIndex];
+      controller.toggleAddRemove(filteredProductIndex);
+
+  print(e.id);
+  print(product.isAdded.value);
+  if (product.isAdded.value) {
+    cartController.addItem(
+      controller.productList[filteredProductIndex].id,
+      controller.productList[filteredProductIndex].price,
+      controller.productList[filteredProductIndex].title,
+      controller.productList[filteredProductIndex].Service_Id,
+      1,
+    );
+  } else {
+    cartController.removeitem(
+      controller.productList[filteredProductIndex].Service_Id,
+      controller.productList[filteredProductIndex].price,
+      controller.productList[filteredProductIndex].title,
+      controller.productList[filteredProductIndex].id,
+      1,
+    );
+  }
+}
           },
-          child: GetBuilder<CartController>(
-              init: CartController(),
-              builder: (cont) => SizedBox(
-                    height: 50,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0.0, 8, 0.0),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)),
-                        color: Color.fromARGB(255, 27, 165, 114),
-                        // margin: EdgeInsets.all(15),
+          child: Center(
+    child: Obx(() {
+      final filteredProductIndex = controller.productList.indexOf(e);
+      final isAdded = filteredProductIndex >= 0 && controller.addedProductIds.contains(controller.productList[filteredProductIndex].id);
+
+     return SizedBox(
+        height: 36,
+        width: 69,
+        child: Card(
+          color: isAdded ? Color.fromARGB(247, 216, 109, 102) : Color.fromARGB(255, 26, 177, 122),
+          elevation: 1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Center(
+            child: Text(
+              isAdded ? 'Remove' : 'Add',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+      );
+    }),
+  ),
+    )
+//      InkWell(
+//   borderRadius: BorderRadius.circular(15.0),
+//   onTap: () {
+//     final filteredProductIndex = controller.productList.indexOf(e);
+
+//     if (filteredProductIndex >= 0) {
+//       final product = controller.productList[filteredProductIndex];
+
+//       if (!product.isAdded.value) {
+//         cartController.addItem(
+//           product.id,
+//           product.price,
+//           product.title,
+//           product.Service_Id,
+//           1,
+//         );
+//       } else {
+//         cartController.removeitem(
+//           product.Service_Id,
+//           product.price,
+//           product.title,
+//           product.id,
+//           1,
+//         );
+//       }
+//     }
+//   },
+//   child: Center(
+//     child: Obx(() {
+//       final filteredProductIndex = controller.productList.indexOf(e);
+//       final isAdded = filteredProductIndex >= 0 && controller.addedProductIds.contains(controller.productList[filteredProductIndex].id);
+
+//       return SizedBox(
+//         height: 36,
+//         width: 69,
+//         child: Card(
+//           color: isAdded ? Color.fromARGB(247, 216, 109, 102) : Color.fromARGB(255, 26, 177, 122),
+//           elevation: 1,
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(4),
+//           ),
+//           child: Center(
+//             child: Text(
+//               isAdded ? 'Remove' : 'Add',
+//               style: TextStyle(
+//                 color: Colors.white,
+//                 fontSize: 15,
+//                 fontWeight: FontWeight.w500,
+//               ),
+//             ),
+//           ),
+//         ),
+//       );
+//     }),
+//   ),
+// ),
+
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ])),
+                                          ]),
+                                        ]))),
+                              ),
+                            ))
+                        .toList()
+                  ],
+                )),
+          ),
+          InkWell(
+              onTap: () {
+                cartController.itemCount != 0
+                    ? Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CartScreen()))
+                    : null;
+              },
+              child: GetBuilder<CartController>(
+                  init: CartController(),
+                  builder: (cont) => SizedBox(
+                        height: 50,
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Total Items :  ${cartController.itemCount}",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400),
-                              ),
+                          padding: const EdgeInsets.fromLTRB(8, 0.0, 8, 0.0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            color: Color.fromARGB(255, 27, 165, 114),
+                            // margin: EdgeInsets.all(15),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Total Items :  ${cartController.itemCount}",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400),
+                                  ),
 
-                              Text(
-                                '\u{20B9} ' +
-                                    ' ${cartController.totalAmount.toStringAsFixed(2)}',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              //  backgroundColor: Theme.of(context).primaryColor,
+                                  Text(
+                                    '\u{20B9} ' +
+                                        ' ${cartController.totalAmount.toStringAsFixed(2)}',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  //  backgroundColor: Theme.of(context).primaryColor,
 
-                              Text(
-                                'View Cart',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500),
+                                  Text(
+                                    'View Cart',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ))),
-    ]);
+                      ))),
+        ],
+      );
+    });
   }
 }
 
@@ -379,8 +311,8 @@ class _BookedStatsState extends State<BookedStats> {
         "Gender_Id": "1",
         "connection": globals.Patient_App_Connection_String
       };
-      final jobsListAPIUrl =
-          Uri.parse(globals.Global_Patient_Api_URL + '/PatinetMobileApp/Servicewiseparameters');
+      final jobsListAPIUrl = Uri.parse(globals.Global_Patient_Api_URL +
+          '/PatinetMobileApp/Servicewiseparameters');
       var response = await http.post(jobsListAPIUrl,
           headers: {
             "Accept": "application/json",
@@ -675,8 +607,8 @@ class _DiagnProfilesHlthpackagesState extends State<DiagnProfilesHlthpackages> {
         "connection": globals.Patient_App_Connection_String
         //"Server_Flag":""
       };
-      final jobsListAPIUrl =
-          Uri.parse(globals.Global_Patient_Api_URL + '/PatinetMobileApp/ServiceIncludes');
+      final jobsListAPIUrl = Uri.parse(
+          globals.Global_Patient_Api_URL + '/PatinetMobileApp/ServiceIncludes');
       var response = await http.post(jobsListAPIUrl,
           headers: {
             "Accept": "application/json",
@@ -854,6 +786,26 @@ void _showPickerDiagnProfilesHlthpackages(BuildContext context) {
   print(res);
 }
 
+/*---------------------------------------Diagnostic and health package------------------------------------- */
 
- /*---------------------------------------Diagnostic and health package------------------------------------- */
 
+// ProductController().isLoading.value
+              // ?
+              // Center(
+              //     child: SpinKitChasingDots(
+              //         color: Colors.deepPurple[600], size: 40),
+              //   )
+              // final ProductController controller = Get.find<ProductController>();
+
+              //  SizedBox(
+              //           height: 100,
+              //           width: 100,
+              //           child: Center(
+              //             child: LoadingIndicator(
+              //               indicatorType: Indicator.ballClipRotateMultiple,
+              //               colors: Colors.primaries,
+              //               strokeWidth: 4.0,
+              //             ),
+              //           ),
+              //         )
+              //       :

@@ -1,7 +1,7 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 class Product {
-  final int id;
+   int id;
   final String title;
   //  final int quantity;
   final double price;

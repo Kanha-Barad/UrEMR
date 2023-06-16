@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uremr/OrdersHistory.dart';
 import 'package:uremr/PatientHome.dart';
 import 'package:uremr/Widgets/BottomNavigation.dart';
+import 'package:uremr/thankYou_screen.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
@@ -33,6 +34,46 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
       print(value);
     });
     DateTime selectedDate = DateTime.now();
+
+    Push_Notification(BuildContext context) async {
+      var isLoading = true;
+
+      Map data = {
+        "BILL_NO": globals.Bill_No,
+        "Authorization": "",
+        "SenderId": "",
+        "Device_Id": "",
+        "body": "",
+        "Tittle": "",
+        "subtitle": "",
+        "Patient_Name": "",
+        "Mobile_no": "",
+        "IOS_ANDROID": "A",
+        "STATUS_FLAG": "B",
+        "APP_NAME": "UrEMR",
+        "firebaseurl": "",
+        "connection": globals.Patient_App_Connection_String
+      };
+
+      print(data.toString());
+      final response = await http.post(
+          Uri.parse(globals.Global_Patient_Api_URL +
+              '/PatinetMobileApp/PatPushNotifications'),
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: data,
+          encoding: Encoding.getByName("utf-8"));
+
+      setState(() {
+        isLoading = false;
+      });
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> resposne = jsonDecode(response.body);
+      }
+    }
 
     SingleUserTestBookings() async {
       if (globals.SelectedlocationId == "" ||
@@ -100,29 +141,37 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
         List jsonResponse = resposne["Data"];
         globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
         globals.Slot_id = "";
-        globals.SelectedlocationId = "";
+        var bill_NUmber = resposne["Data"][0]["BILL_NO"].toString();
 
-        return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Booked Successfully!"),
-          backgroundColor: Color.fromARGB(255, 26, 177, 122),
-          action: SnackBarAction(
-            label: "Go",
-            textColor: Colors.white,
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => OredersHistory()));
-            },
-          ),
-          // duration: const Duration(seconds: 5),
-          //width: 320.0, // Width of the SnackBar.
-          padding: const EdgeInsets.symmetric(
-            horizontal: 4.0, // Inner padding for SnackBar content.
-          ),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ));
+        globals.SelectedlocationId = "";
+        Push_Notification(context);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: ((context) =>
+                    ThankYouScreenOFUploadPrescripTIOn(bill_NUmber))));
+
+        // return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //   content: Text("Booked Successfully!"),
+        //   backgroundColor: Color.fromARGB(255, 26, 177, 122),
+        //   action: SnackBarAction(
+        //     label: "Go",
+        //     textColor: Colors.white,
+        //     onPressed: () {
+        //       Navigator.push(context,
+        //           MaterialPageRoute(builder: (context) => OredersHistory()));
+        //     },
+        //   ),
+        //   // duration: const Duration(seconds: 5),
+        //   //width: 320.0, // Width of the SnackBar.
+        //   padding: const EdgeInsets.symmetric(
+        //     horizontal: 4.0, // Inner padding for SnackBar content.
+        //   ),
+        //   behavior: SnackBarBehavior.floating,
+        //   shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.circular(10.0),
+        //   ),
+        // ));
       } else {
         throw Exception('Failed to load jobs from API');
       }
@@ -199,20 +248,26 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
           }),
       floatingActionButton: InkWell(
         onTap: () {
+          bool isButtonDisabled = false;
+
+          void SingleUserPaymentsBooking() {
+            if (!isButtonDisabled) {
+              isButtonDisabled = true; // Disable the button
+
+              // Call your API here to book the test
+              SingleUserTestBookings();
+              // Example delay to simulate API call
+              Future.delayed(Duration(seconds: 2), () {
+                // Enable the button again after the delay
+                isButtonDisabled = false;
+              });
+            }
+          }
+
           globals.PresCripTion_Image_Converter = base64Image;
           (globals.selectedLogin_Data["Data"].length > 1)
               ? _MultiUserListBookingsBottomPicker(context)
-              // :
-              // (globals.Booking_Status_Flag == "0")
-              //     ? Fluttertoast.showToast(
-              //         msg: "Booking InProgress",
-              //         toastLength: Toast.LENGTH_SHORT,
-              //         gravity: ToastGravity.CENTER,
-              //         timeInSecForIosWeb: 1,
-              //         backgroundColor: Color.fromARGB(230, 228, 55, 32),
-              //         textColor: Colors.white,
-              //         fontSize: 16.0)
-              : SingleUserTestBookings();
+              : SingleUserPaymentsBooking();
         },
         child: const SizedBox(
             height: 40,
@@ -291,6 +346,40 @@ ListView MultiUserListBookings(var data, BuildContext contex) {
 
 Widget MultiUserBookings(data, BuildContext context, index) {
   DateTime selectedDate = DateTime.now();
+  Push_NotificationMulti_User(BuildContext context) async {
+    var isLoading = true;
+
+    Map data = {
+      "BILL_NO": globals.Bill_No,
+      "Authorization": "",
+      "SenderId": "",
+      "Device_Id": "",
+      "body": "",
+      "Tittle": "",
+      "subtitle": "",
+      "Patient_Name": "",
+      "Mobile_no": "",
+      "IOS_ANDROID": "A",
+      "STATUS_FLAG": "B",
+      "APP_NAME": "UrEMR",
+      "firebaseurl": "",
+      "connection": globals.Patient_App_Connection_String
+    };
+
+    print(data.toString());
+    final response = await http.post(
+        Uri.parse(globals.Global_Patient_Api_URL +
+            '/PatinetMobileApp/PatPushNotifications'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+    }
+  }
 
   MultiUserTestBooking() async {
     if (globals.SelectedlocationId == "" || globals.SelectedlocationId == "0") {
@@ -358,113 +447,39 @@ Widget MultiUserBookings(data, BuildContext context, index) {
       // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
       globals.Slot_id = "";
       globals.SelectedlocationId = "";
-
-      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Booked Successfully!"),
-        backgroundColor: Color.fromARGB(255, 26, 177, 122),
-        action: SnackBarAction(
-          label: "Go",
-          textColor: Colors.white,
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => OredersHistory()));
-          },
-        ),
-        // duration: const Duration(seconds: 5),
-        //width: 320.0, // Width of the SnackBar.
-        padding: const EdgeInsets.symmetric(
-          horizontal: 4.0, // Inner padding for SnackBar content.
-        ),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ));
+      var bill_NUmber = resposne["Data"][0]["BILL_NO"].toString();
+      Push_NotificationMulti_User(context);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: ((context) =>
+                  ThankYouScreenOFUploadPrescripTIOn(bill_NUmber))));
     } else {
       throw Exception('Failed to load jobs from API');
     }
   }
 
-  UploadiMGTesting() async {
-    if (globals.SelectedlocationId == "" || globals.SelectedlocationId == "0") {
-      return Fluttertoast.showToast(
-          msg: "Select the Location",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Color.fromARGB(255, 220, 91, 26),
-          textColor: Colors.white,
-          fontSize: 16.0);
-    }
+  bool isButtonDisabled = false;
 
-    Map data = {
-      "Uploadimgbase64": globals.PresCripTion_Image_Converter.toString(),
-    };
+  void MultiUserPaymentsBooking() {
+    if (!isButtonDisabled) {
+      isButtonDisabled = true; // Disable the button
 
-    final jobsListAPIUrl =
-        //Uri.parse(globals.Global_Patient_Api_URL +
-        Uri.parse(
-            'https://asterlabs.asterdmhealthcare.com/Uploadimagepath/PatinetMobileApp/Uploadprescription');
-
-    var response = await http.post(jobsListAPIUrl,
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: data,
-        encoding: Encoding.getByName("utf-8"));
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> resposne = jsonDecode(response.body);
-      List jsonResponse = resposne["Data"];
-      // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
-      globals.Slot_id = "";
-      globals.SelectedlocationId = "";
-
-      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Booked Successfully!"),
-        backgroundColor: Color.fromARGB(255, 26, 177, 122),
-        action: SnackBarAction(
-          label: "Go",
-          textColor: Colors.white,
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PatientHome()));
-          },
-        ),
-        // duration: const Duration(seconds: 5),
-        //width: 320.0, // Width of the SnackBar.
-        padding: const EdgeInsets.symmetric(
-          horizontal: 4.0, // Inner padding for SnackBar content.
-        ),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ));
-    } else {
-      throw Exception('Failed to load jobs from API');
+      // Call your API here to book the test
+      MultiUserTestBooking();
+      // Example delay to simulate API call
+      Future.delayed(Duration(seconds: 2), () {
+        // Enable the button again after the delay
+        isButtonDisabled = false;
+      });
     }
   }
 
   return InkWell(
     onTap: () {
       globals.umr_no = data["UMR_NO"].toString();
-      // if (globals.Booking_Status_Flag == "0") {
-      //   Fluttertoast.showToast(
-      //       msg: "Booking InProgress",
-      //       toastLength: Toast.LENGTH_SHORT,
-      //       gravity: ToastGravity.CENTER,
-      //       timeInSecForIosWeb: 1,
-      //       backgroundColor: Color.fromARGB(230, 228, 55, 32),
-      //       textColor: Colors.white,
-      //       fontSize: 16.0);
-      // } else {
 
-      MultiUserTestBooking();
-      //UploadiMGTesting();
-      // _onLoading();
-      //  }
+      MultiUserPaymentsBooking();
     },
     child: Column(
       children: [

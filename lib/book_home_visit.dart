@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:uremr/Controllers/product_controller.dart';
 import 'package:uremr/Upload_Prescription.dart';
+import 'package:uremr/Widgets/BottomNavigation.dart';
 import 'Models/product.dart';
 import 'PatientHome.dart';
 import 'Screens/Book_Test_screen.dart';
@@ -435,7 +436,9 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
                     GridViewList = [];
                     _onLoading();
                     Book_Home_Visit(this.selectedIndex);
+                    globals.Is_search = "";
                     SeleCTLocationWIseServices(globals.SelectedlocationId);
+                    // Get.put(ProductController().onitemTapped());
                   });
                 },
                 items: data.map((ldata) {
@@ -514,7 +517,7 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
                       ],
                     )),
                 Container(
-                    height: MediaQuery.of(context).size.height * 0.64,
+                    height: MediaQuery.of(context).size.height * 0.56,
                     child: GridView.builder(
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -725,13 +728,6 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
                                                                         builder:
                                                                             (context) =>
                                                                                 ProductOverviewPage()));
-
-                                                            // productcontroller.productTempList.refresh();
-                                                            //  productcontroller.addProduct().refresh();
-                                                            // setState(() {
-                                                            //   productcontroller
-                                                            //       .FetchSercvices();
-                                                            // });
                                                           },
                                                           child: Container(
                                                             width: 300,
@@ -897,92 +893,94 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
         return false;
       },
       child: Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: Color(0xff123456),
-            leading: Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    GridViewList = [];
-                    globals.SelectedlocationId = "";
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PatientHome()));
-                  },
-                );
-              },
-            ),
-            title: Row(
-              children: [
-                Text(
-                  "Book A Home Visit",
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Color(0xff123456),
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
                 ),
-                Spacer(),
-                selecteFromdt == ""
-                    ? Text("${selectedDate.toLocal()}".split(' ')[0],
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white))
-                    : Text(
-                        selecteFromdt,
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                // IconButton(
-                //     onPressed: () {
-                //       // _selectDate(context);
-                //     },
-                //     icon: Icon(Icons.calendar_month_outlined),
-                //     color: Colors.white),
-              ],
-            ),
+                onPressed: () {
+                  GridViewList = [];
+                  globals.SelectedlocationId = "";
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PatientHome()));
+                },
+              );
+            },
           ),
-          body: Container(
-            color: Colors.blue[50],
-            child: Column(
-              children: [
-                SizedBox(height: 48, child: DateSelection()),
-                Padding(
+          title: Row(
+            children: [
+              Text(
+                "Book A Home Visit",
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
+              Spacer(),
+              selecteFromdt == ""
+                  ? Text("${selectedDate.toLocal()}".split(' ')[0],
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white))
+                  : Text(
+                      selecteFromdt,
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+              // IconButton(
+              //     onPressed: () {
+              //       // _selectDate(context);
+              //     },
+              //     icon: Icon(Icons.calendar_month_outlined),
+              //     color: Colors.white),
+            ],
+          ),
+        ),
+        body: Container(
+          color: Colors.blue[50],
+          child: Column(
+            children: [
+              SizedBox(height: 48, child: DateSelection()),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: locationDropdwon,
+              ),
+              // verticalList3,
+              Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: locationDropdwon,
-                ),
-                // verticalList3,
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: globals.SelectedlocationId == null ||
-                            globals.SelectedlocationId == "" ||
-                            GridViewList.length == 0
-                        ? Container(
-                            child: Padding(
-                            padding: const EdgeInsets.only(top: 200.0),
-                            child: globals.SelectedlocationId == ""
-                                ? Text(
-                                    "",
-                                    style: TextStyle(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red),
-                                  )
-                                : Text(
-                                    "Slots Not Available",
-                                    style: TextStyle(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red),
-                                  ),
-                          ))
-                        : Container(child: function_widet())),
-              ],
-            ),
-          )),
+                  child: globals.SelectedlocationId == null ||
+                          globals.SelectedlocationId == "" ||
+                          GridViewList.length == 0
+                      ? Container(
+                          child: Padding(
+                          padding: const EdgeInsets.only(top: 200.0),
+                          child: globals.SelectedlocationId == ""
+                              ? Text(
+                                  "",
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red),
+                                )
+                              : Text(
+                                  "Slots Not Available",
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red),
+                                ),
+                        ))
+                      : Container(child: function_widet())),
+            ],
+          ),
+        ),
+        bottomNavigationBar: AllBottOMNaviGAtionBar(),
+      ),
     );
   }
 }

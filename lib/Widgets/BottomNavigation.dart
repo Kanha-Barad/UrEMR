@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uremr/Controllers/product_controller.dart';
+import 'package:uremr/Coupons.dart';
 
 import '../ClientCodeLogin.dart';
 import '../PatientHome.dart';
@@ -108,7 +110,8 @@ class _AllBottOMNaviGAtionBarState extends State<AllBottOMNaviGAtionBar> {
                     // (prefs.setString('SeSSion_ID', ''));
                     // (prefs.setString('SELECTED_loginData', ''));
                     // (prefs.setString('UMr_No', ''));
-
+cartController.items.clear();
+//ProductController.clear();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
