@@ -1,21 +1,18 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:uremr/Widgets/cart_items.dart';
+import 'package:uremr/Coupons.dart';
 import '../Models/product.dart';
 import '../globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
-List<Product> _items = [];
-var values = [];
-
 class ProductController extends GetxController {
   TextEditingController searchController = TextEditingController();
 
-  var productList = <Product>[].obs;
-  var productTempList = <Product>[];
+  RxList<Product> productList = <Product>[].obs;
+  RxList<Product> productTempList = <Product>[].obs;
   var totalAmount = RxDouble(0);
+  Set<int> addedProductIds = <int>{}.obs;
 
   RxBool isAdded = RxBool(false);
   setIsAdded(bool value) => isAdded.value = value;
@@ -25,84 +22,217 @@ class ProductController extends GetxController {
 
   @override
   void onInit() {
-    //Get.delete<ProductController>();
-    // Get.put(ProductController());
     super.onInit();
+    // Call API here and populate the productList
+    fetchProducts(globals.Preferedsrvs);
+  }
 
-    var values = [];
+  // @override
+  // void onClose() {
+  //   super.onClose();
+  //   searchController.clear();
+  //   productList.clear();
+  //   productTempList.clear();
+  // }
 
-    // Call API here
+  List<Product> newProductList = [];
 
-    if (globals.Preferedsrvs != null) {
-      for (int i = 0; i <= globals.Preferedsrvs["Data"].length - 1; i++) {
-        _items.add(Product(
-            // setState((){});
-            id: i + 1,
-            title: globals.Preferedsrvs["Data"][i]["SERVICE_NAME"].toString(),
-            //    description: "",
-            //  quantity: Product.quantity + 1,
-            price: globals.Preferedsrvs["Data"][i]["PRICE"],
-            Service_Id: globals.Preferedsrvs["Data"][i]["SERVICE_ID"],
-            Service_Type_Id: globals.Preferedsrvs["Data"][i]
-                ["SERVICE_TYPE_ID"]));
+  fetchProducts(Map<String, dynamic> responseBody) async {
+    //   if (globals.Is_search == "") {
+    productList.clear();
+    productTempList.clear();
+    Map data = {
+      "IP_LOCATION_ID": globals.SelectedlocationId,
+      "IP_SESSION_ID": "1",
+      "connection": globals.Patient_App_Connection_String
+    };
+    print(data.toString());
+
+    final response = await http.post(
+      Uri.parse(globals.Global_Patient_Api_URL +
+          '/PatinetMobileApp/PreferedServices'),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: data,
+      encoding: Encoding.getByName("utf-8"),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> responseJson = jsonDecode(response.body);
+
+      if (responseJson.containsKey("Data")) {
+        List<dynamic> responseData = responseJson["Data"];
+        List<Product> tempList = [];
+
+        for (int i = 0; i < responseData.length; i++) {
+          tempList.add(
+            Product(
+              id: i + 1,
+              title: responseData[i]["SERVICE_NAME"].toString(),
+              price: responseData[i]["PRICE"],
+              Service_Id: responseData[i]["SERVICE_ID"],
+              Service_Type_Id: responseData[i]["SERVICE_TYPE_ID"],
+            ),
+          );
+        }
+
+        productList.value = tempList;
+        productTempList.value = tempList;
+        newProductList =
+            tempList; // Assign the fetched products to newProductList
+
+        update();
+      } else {
+        throw Exception('No data found in API response');
       }
+    } else {
+      throw Exception('Failed to load products from API');
     }
-
-    var productData = _items;
-    //Store data
-    productList.value = productData;
-   // productList.assignAll(globals.Preferedsrvs);
-    productTempList = productData;
+    // }
   }
 
   productNameSearch(String name) {
+    //  globals.Is_search = "Y";
+
     if (name.isEmpty) {
-      productList.value = productTempList;
-      //update();
+      // If the search query is empty, reset the productList to the original list
+      productList.value = newProductList;
     } else {
-      productList.value = productTempList
+      // Filter the newProductList based on the search query
+      List<Product> filteredList = newProductList
           .where((element) =>
               element.title.toLowerCase().contains(name.toLowerCase()))
           .toList();
+      productList.value = filteredList;
+      // productList.addAll(newProductList);
     }
-  }
 
-  List<Product> get items {
-    return [..._items];
-  }
-
-  void resetAll() {
-    for (int i = 0; i < items.length; i++) {
-      items[i + 1].isAdded.value = false;
-    }
-  }
-
-  List<Product> get favouriteItems {
-    return _items
-        .where((productItem) => productItem.isFavourite.value)
-        .toList();
-  }
-
-  Product findProductById(int id) {
-    return _items.firstWhere((element) => element.id == id);
-  }
-
-  void addProduct() {
     update();
   }
 
+  void resetAll() {
+    for (int i = 0; i < productList.length; i++) {
+      productList[i].isAdded.value = false;
+    }
+  }
+
+  Product findProductById(int id) {
+    return productList.firstWhere((element) => element.id == id);
+  }
+
   void clear() {
-    productcontroller.clear();
+    searchController.clear();
     productList.clear();
     productTempList.clear();
   }
 
-  void toggleFavouriteStatus(int id) {
-    items[id].isFavourite.value = !items[id].isFavourite.value;
+  void toggleAddRemove(int index) {
+    final product = productList[index];
+    final productId = product.id;
+
+    if (addedProductIds.contains(productId)) {
+      addedProductIds.remove(productId);
+    } else {
+      addedProductIds.add(productId);
+    }
+
+    // Update the isAdded value of the product
+    product.isAdded.value = addedProductIds.contains(productId);
+
+    update();
   }
 
-  void toggleAddRemove(int id) {
-    items[id].isAdded.value = !items[id].isAdded.value;
-    // items[id].isRemoved.value = !items[id].isRemoved.value;
-  }
+  // void toggleAddRemove(int id) {
+  //   // globals.Is_search = "Y";
+  //   productList[id].isAdded.value = !productList[id].isAdded.value;
+  //   //productList[id].isAdded.toggle();
+  //   update();
+  //   // items[id].isRemoved.value = !items[id].isRemoved.value;
+  // }
 }
+
+// void toggleFavouriteStatus(int id) {
+//     productList[id].isFavourite.value = !productList[id].isFavourite.value;
+//   }
+  // List<Product> get items {
+  //   return [...productList];
+  // }
+
+// void addProduct() {
+  //   //update();
+  // }
+
+   // List<Product> get favouriteItems {
+  //   return _items
+  //       .where((productItem) => productItem.isFavourite.value)
+  //       .toList();
+  // }
+
+
+// fetchProducts1(data) {
+//     for (int i = 0; i < data.length; i++) {
+//       newProductList.add(Product(
+//         id: i + 1,
+//         title: data[i]["SERVICE_NAME"].toString(),
+//         price: data[i]["PRICE"],
+//         Service_Id: data[i]["SERVICE_ID"],
+//         Service_Type_Id: data[i]["SERVICE_TYPE_ID"],
+//       ));
+//     }
+
+//     productList.value = newProductList;
+//     productTempList = newProductList.obs;
+//     update();
+//   }
+
+
+
+//  refreshProducts() async {
+//     Map data = {
+//       "IP_LOCATION_ID": globals.SelectedlocationId,
+//       "IP_SESSION_ID": "1",
+//       "connection": globals.Patient_App_Connection_String
+//     };
+//     print(data.toString());
+//     final response = await http.post(
+//       Uri.parse(globals.Global_Patient_Api_URL +
+//           '/PatinetMobileApp/PreferedServices'),
+//       headers: {
+//         "Accept": "application/json",
+//         "Content-Type": "application/x-www-form-urlencoded"
+//       },
+//       body: data,
+//       encoding: Encoding.getByName("utf-8"),
+//     );
+
+//     if (response.statusCode == 200) {
+//       Map<String, dynamic> responseJson = jsonDecode(response.body);
+
+//       if (responseJson.containsKey("Data")) {
+//         List<dynamic> data = responseJson["Data"];
+//         newProductList.clear(); // Clear the list before adding new items
+
+//         for (int i = 0; i < data.length; i++) {
+//           newProductList.add(
+//             Product(
+//               id: i + 1,
+//               title: data[i]["SERVICE_NAME"].toString(),
+//               price: data[i]["PRICE"],
+//               Service_Id: data[i]["SERVICE_ID"],
+//               Service_Type_Id: data[i]["SERVICE_TYPE_ID"],
+//             ),
+//           );
+//         }
+
+//         productList.value = newProductList;
+//         productTempList = productList;
+//         update();
+//       } else {
+//         throw Exception('No data found in API response');
+//       }
+//     } else {
+//       throw Exception('Failed to refresh products from API');
+//     }
+//   }

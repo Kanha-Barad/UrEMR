@@ -227,18 +227,10 @@ class _PatientHomeState extends State<PatientHome> {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              Spacer(),
-
-              // SizedBox(
-              //     height: 35,
-              //     width: 60,
-              //     child:
-              //         Image(image: AssetImage("assets/images/Suvlogo.jpeg"))),
             ],
           ),
           centerTitle: true,
           actions: <Widget>[
-            // Using Stack to show Notification Badge
             new Stack(
               children: <Widget>[
                 new IconButton(
@@ -277,6 +269,27 @@ class _PatientHomeState extends State<PatientHome> {
                         ),
                       )
                     : new Container()
+                //        Padding(
+                // padding: const EdgeInsets.only(top: 14, right: 20),
+                // child: new Stack(
+                //   children: <Widget>[
+                //     Badge(
+                //         position: BadgePosition.topEnd(),
+                //         showBadge: NotificationCount == 0 ? false : true,
+                //         badgeContent: Text(
+                //           NotificationCount.toString(),
+                //           style: (TextStyle(color: Colors.white, fontSize: 10)),
+                //         ),
+                //         child: InkWell(
+                //           onTap: () {
+                //             InProgressNotofication();
+                //           },
+                //           child: Icon(
+                //             Icons.notifications,
+                //             color: Colors.white,
+                //             size: 20,
+                //           ),
+                //         ))
               ],
             ),
           ],
@@ -976,7 +989,7 @@ class _PatientHomeState extends State<PatientHome> {
                                     globals.selectDate = "";
                                     globals.SelectedlocationId = "";
                                     HomeVisitBook();
-                                  
+
                                     globals.GlobalDiscountCoupons = '';
                                   },
                                 ),

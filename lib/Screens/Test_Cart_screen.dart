@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import '../Controllers/cart_controller.dart';
 import '../Controllers/order_controller.dart';
 import '../Coupons.dart';
@@ -131,49 +132,6 @@ class _CartScreenState extends State<CartScreen> {
       getSWData();
     }
 
-    // Push_Notification_Message(BuildContext context, var bill_no) async {
-    //   var isLoading = true;
-
-    //   Map data = {
-    //     "BILL_NO": bill_no,
-    //     "Authorization": "",
-    //     "SenderId": "",
-    //     "Device_Id": "",
-    //     "body": "",
-    //     "Tittle": "",
-    //     "subtitle": "",
-    //     "Patient_Name": "",
-    //     "Mobile_no": "",
-    //     "connection": "",
-    //     "IOS_ANDROID": "A",
-    //     "STATUS_FLAG": "",
-    //     "APP_NAME": "UrEMR",
-    //     "firebaseurl": ""
-    //   };
-
-    //   print(data.toString());
-    //   final response = await http.post(
-    //       Uri.parse(globals.Global_Patient_Api_URL +
-    //           '/PatinetMobileApp/PatPushNotifications'),
-    //       headers: {
-    //         "Accept": "application/json",
-    //         "Content-Type": "application/x-www-form-urlencoded",
-    //       },
-    //       body: data,
-    //       encoding: Encoding.getByName("utf-8"));
-
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-
-    //   if (response.statusCode == 200) {
-    //     Map<String, dynamic> resposne = jsonDecode(response.body);
-    //     if (jsonDecode(response.body)["message"] != "success") {
-    //       return false;
-    //     }
-    //   }
-    // }
-
     var cartController = Get.put(CartController());
     var orderController = Get.put(OrderController());
 
@@ -266,9 +224,10 @@ class _CartScreenState extends State<CartScreen> {
         List jsonResponse = resposne["Data"];
         //  globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
         globals.SelectedlocationId = "";
+
         // globals.Preferedsrvs = jsonDecode(response.body);
         //  Push_Notification_Message(context, globals.Bill_No);
-        return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Booked Successfully!'),
           backgroundColor: Color.fromARGB(255, 26, 177, 122),
           action: SnackBarAction(
@@ -278,7 +237,7 @@ class _CartScreenState extends State<CartScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => BookingINProgressNotification()));
+                      builder: (context) => PatientHome()));
               cartController.clear();
               productcontroller.resetAll();
               globals.GlobalDiscountCoupons = "";
@@ -294,6 +253,8 @@ class _CartScreenState extends State<CartScreen> {
             borderRadius: BorderRadius.circular(10.0),
           ),
         ));
+        cartController.clear();
+        productcontroller.resetAll();
       } else {
         throw Exception('Failed to load jobs from API');
       }
@@ -640,6 +601,31 @@ class _CartScreenState extends State<CartScreen> {
                                                             onPressed: () {
                                                               //  OrderPayments();
                                                               //    _buildUserBookingPopup(context);
+                                                              bool
+                                                                  isButtonDisabled =
+                                                                  false;
+
+                                                              void
+                                                                  SingleUserPaymentsBooking() {
+                                                                if (!isButtonDisabled) {
+                                                                  isButtonDisabled =
+                                                                      true; // Disable the button
+
+                                                                  // Call your API here to book the test
+                                                                  SingleUserOrderPayments();
+                                                                  // Example delay to simulate API call
+                                                                  Future.delayed(
+                                                                      Duration(
+                                                                          seconds:
+                                                                              2),
+                                                                      () {
+                                                                    // Enable the button again after the delay
+                                                                    isButtonDisabled =
+                                                                        false;
+                                                                  });
+                                                                }
+                                                              }
+
                                                               (globals.selectedLogin_Data["Data"].length >
                                                                       1)
                                                                   ? _UserListBookingsBottomPicker(
@@ -664,7 +650,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                               .white,
                                                                           fontSize:
                                                                               16.0)
-                                                                      : SingleUserOrderPayments();
+                                                                      : SingleUserPaymentsBooking();
                                                               // cartController.clear();
                                                               // productcontroller.resetAll();
                                                               // Navigator.pop(context, true);
@@ -742,6 +728,22 @@ class _CartScreenState extends State<CartScreen> {
                             onPressed: () {
                               //  OrderPayments();
                               //    _buildUserBookingPopup(context);
+                              bool isButtonDisabled = false;
+
+                              void SingleUserPaymentsBooking() {
+                                if (!isButtonDisabled) {
+                                  isButtonDisabled = true; // Disable the button
+
+                                  // Call your API here to book the test
+                                  SingleUserOrderPayments();
+                                  // Example delay to simulate API call
+                                  Future.delayed(Duration(seconds: 2), () {
+                                    // Enable the button again after the delay
+                                    isButtonDisabled = false;
+                                  });
+                                }
+                              }
+
                               (globals.selectedLogin_Data["Data"].length > 1)
                                   ? _UserListBookingsBottomPicker(context)
                                   : (globals.Booking_Status_Flag == "0")
@@ -754,7 +756,7 @@ class _CartScreenState extends State<CartScreen> {
                                               Color.fromARGB(230, 228, 55, 32),
                                           textColor: Colors.white,
                                           fontSize: 16.0)
-                                      : SingleUserOrderPayments();
+                                      : SingleUserPaymentsBooking();
                               // cartController.clear();
                               // productcontroller.resetAll();
                               // Navigator.pop(context, true);
@@ -850,6 +852,8 @@ Widget userBookings(
   context,
 ) {
   MultiUserOrderPayments() async {
+    bool _isLoading = false;
+
     DateTime selectedDate = DateTime.now();
     if (globals.SelectedlocationId == "" || globals.SelectedlocationId == "0") {
       return Fluttertoast.showToast(
@@ -937,8 +941,8 @@ Widget userBookings(
       globals.Slot_id = "";
       globals.SelectedlocationId = "";
 
-      globals.SelectedlocationId = "";
-      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      // globals.SelectedlocationId = "";
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Booked Successfully!'),
         backgroundColor: Color.fromARGB(255, 26, 177, 122),
         action: SnackBarAction(
@@ -948,7 +952,7 @@ Widget userBookings(
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => BookingINProgressNotification()));
+                    builder: (context) => PatientHome()));
             cartController.clear();
             productcontroller.resetAll();
             globals.GlobalDiscountCoupons = "";
@@ -964,27 +968,58 @@ Widget userBookings(
           borderRadius: BorderRadius.circular(10.0),
         ),
       ));
+      cartController.clear();
+      productcontroller.resetAll();
     } else {
       throw Exception('Failed to load jobs from API');
+
+      // return SizedBox(
+      //   height: 100,
+      //   width: 100,
+      //   child: Center(
+      //     child: LoadingIndicator(
+      //       indicatorType: Indicator.ballClipRotateMultiple,
+      //       colors: Colors.primaries,
+      //       strokeWidth: 4.0,
+      //       //   pathBackgroundColor:ColorSwatch(Action[])
+      //     ),
+      //   ),
+      // );
+    }
+  }
+
+  bool isButtonDisabled = false;
+
+  void MultiUserOrderPaymentsBooking() {
+    if (!isButtonDisabled) {
+      isButtonDisabled = true; // Disable the button
+
+      // Call your API here to book the test
+      MultiUserOrderPayments();
+      // Example delay to simulate API call
+      Future.delayed(Duration(seconds: 2), () {
+        // Enable the button again after the delay
+        isButtonDisabled = false;
+      });
     }
   }
 
   return InkWell(
     onTap: () {
+      bool _isLoading = false;
       globals.umr_no = data["UMR_NO"].toString();
-      if (globals.Booking_Status_Flag == "0") {
-        Fluttertoast.showToast(
-            msg: "Booking InProgress",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Color.fromARGB(230, 228, 55, 32),
-            textColor: Colors.white,
-            fontSize: 16.0);
-      } else {
-        MultiUserOrderPayments();
-        // _onLoading();
-      }
+      (globals.Booking_Status_Flag == "0")
+          ? Fluttertoast.showToast(
+              msg: "Booking InProgress",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Color.fromARGB(230, 228, 55, 32),
+              textColor: Colors.white,
+              fontSize: 16.0)
+          : MultiUserOrderPaymentsBooking();
+
+      //MultiUserOrderPayments();
     },
     child: Column(
       children: [

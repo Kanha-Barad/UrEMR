@@ -231,6 +231,26 @@ class _PatientRegisterState extends State<PatientRegister> {
                         borderRadius: BorderRadius.circular(20)),
                     child: TextButton(
                         onPressed: () {
+                          bool isButtonDisabled = false;
+
+                          void PatientREGIstraTIoN() {
+                            if (!isButtonDisabled) {
+                              setState(() {
+                                isButtonDisabled = true; // Disable the button
+                              });
+
+                              // Call your API here to book the test
+                              RegisterPatient();
+                              // Example delay to simulate API call
+                              Future.delayed(Duration(seconds: 2), () {
+                                // Enable the button again after the delay
+                                setState(() {
+                                  isButtonDisabled = false;
+                                });
+                              });
+                            }
+                          }
+
                           if (NameController.text == null ||
                               NameController.text == "") {
                             Fluttertoast.showToast(
@@ -298,7 +318,7 @@ class _PatientRegisterState extends State<PatientRegister> {
                                 textColor: Colors.white,
                                 fontSize: 16.0);
                           } else {
-                            return RegisterPatient();
+                            return PatientREGIstraTIoN();
                           }
                         },
                         child: Text('Register',

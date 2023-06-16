@@ -73,6 +73,7 @@ class _BookingINProgressNotification
             }));
 
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         iconTheme: IconThemeData(
@@ -113,8 +114,9 @@ class _BookingINProgressNotification
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(child: ListProgressNotification),
-      ),
+          child: Column(children: [
+        ListProgressNotification,
+      ])),
       bottomNavigationBar: AllBottOMNaviGAtionBar(),
     );
   }
@@ -191,646 +193,183 @@ ListView _ProgressNotiFicationListView(data, BuildContext contex) {
 
 Widget _ProgressNotiFication(var data, BuildContext context) {
   return GestureDetector(
-      child: Column(
-    children: [
-      Padding(
-          padding: const EdgeInsets.fromLTRB(8, 16, 8, 0.0),
-          child: Card(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: ((context) => SERvicEDEtailS(
+                    data.Reject_DT,
+                    data.Assigned_DT,
+                    data.Accepted_DT,
+                    data.Started_DT,
+                    data.Reached_DT,
+                    data.Completed_DT,
+                    data.Employee,
+                    data.Employee_Mob_No))));
+      },
+      child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 6, 8, 1),
+          child: ListTile(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: Colors.grey)),
-            elevation: 4.0,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 12, 10, 8),
-              child: Column(
+              //<-- SEE HERE
+              side: BorderSide(
+                  width: 1, color: Color.fromARGB(255, 149, 147, 147)),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            leading: CircleAvatar(
+                backgroundColor: Color.fromARGB(255, 24, 36, 113),
+                child: Icon(Icons.difference_outlined)),
+            title: Padding(
+              padding: const EdgeInsets.only(top:8.0),
+              child: Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 6.0),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 2, right: 8),
-                          child: Icon(Icons.person,
-                              color: Color.fromARGB(255, 153, 182, 209)),
-                        ),
-                        Text(data.display_name.toString(),
-                            style: TextStyle(
-                                color: Color(0xff123456),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13.0)),
-                        Spacer(),
-                        Text('\u{20B9} ' + data.net_amt.toString(),
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 218, 75, 65),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13.0)),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 35, top: 6, bottom: 4),
-                    child: Row(
-                      children: [
-                        Text(
-                            data.bill_no.toString() +
-                                '  |  ' +
-                                data.bill_dt.toString(),
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 90, 133, 173),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 10.0)),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        if (data.Status == "Assigned")
-                          Card(
-                              color: Color.fromARGB(255, 221, 180, 65),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                  child: Center(
-                                    child: Text("Assigned",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 11.0)),
-                                  )))
-                        else if (data.Status == "Accepted")
-                          Card(
-                              color: Color.fromARGB(255, 25, 160, 66),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                  child: Center(
-                                    child: Text("Accepted",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 11.0)),
-                                  )))
-                        else if (data.Status == "Started")
-                          Card(
-                              color: Color.fromARGB(255, 174, 178, 178),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                  child: Center(
-                                    child: Text("Started",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 11.0)),
-                                  )))
-                        else if (data.Status == "Reached")
-                          Card(
-                              color: Color.fromARGB(255, 191, 76, 176),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                  child: Center(
-                                    child: Text("Reached",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 11.0)),
-                                  )))
-                        else if (data.Status == "Completed")
-                          Card(
-                              color: Color.fromARGB(255, 108, 86, 214),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                  child: Center(
-                                    child: Text("Completed",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 11.0)),
-                                  )))
-                        else if (data.Status == "Rejected")
-                          Card(
-                              color: Color.fromARGB(255, 235, 30, 26),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                  child: Center(
-                                    child: Text("Rejected",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 11.0)),
-                                  )))
-                        else
-                          Card(
-                              color: Color.fromARGB(255, 233, 117, 28),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                  child: Center(
-                                    child: Text("Pending",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 11.0)),
-                                  ))),
-                      ],
-                    ),
-                  ),
+                  Text(data.display_name.toString(),
+                      style: TextStyle(
+                          color: Color(0xff123456),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14.0)),
+                  Spacer(),
+                  Text('\u{20B9} ' + data.net_amt.toString(),
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 218, 75, 65),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13.0)),
                 ],
               ),
             ),
-          )),
-      data.Reject_DT == null || data.Reject_DT == "null"
-          ? Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0.0),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(color: Colors.grey)),
-                elevation: 4.0,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 12, 10, 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Column(
+                children: [
+                  Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-                        child: Container(
-                          height: 38,
-                          width: MediaQuery.of(context).size.width,
-                          // color: Color.fromARGB(255, 16, 59, 135),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 176, 185, 193),
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(12.0),
-                              bottomRight: Radius.circular(12.0),
-                              bottomLeft: Radius.circular(12.0),
-                              topLeft: Radius.circular(12.0),
-                            ),
-                          ),
-                          child: Center(
-                              child: Text(
-                            "Booking Status",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600),
-                          )),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          data.Assigned_DT != null && data.Assigned_DT != "null"
-                              ? Icon(
-                                  Icons.check_circle,
-                                  color: Colors.green,
-                                  size: 20,
-                                )
-                              : Container(
-                                  height: 20,
-                                  child: CircleAvatar(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 33, 94, 150),
-                                      radius: 9.0,
-                                      child: ClipRRect(
-                                        child: Text(
-                                          "1",
-                                          style: TextStyle(
-                                              fontSize: 11,
-                                              color: Colors.white),
-                                        ),
-                                      ))),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              " Assigned :",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black),
-                            ),
-                          ),
-                          data.Assigned_DT != null && data.Assigned_DT != "null"
-                              ? Padding(
-                                  padding: const EdgeInsets.only(left: 18.0),
-                                  child: Text(data.Assigned_DT,
+                      Text(data.bill_no.toString(),
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 90, 133, 173),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10.0)),
+                      Spacer(),
+                      if (data.Status == "Assigned")
+                        Card(
+                            color: Color.fromARGB(255, 221, 180, 65),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                child: Center(
+                                  child: Text("Assigned",
                                       style: TextStyle(
-                                          fontSize: 13,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.w600,
-                                          color: Color.fromARGB(
-                                              255, 128, 125, 125))),
-                                )
-                              : Text("")
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 2.0),
-                        child: SizedBox(
-                          height: 30,
-                          child: VerticalDivider(
-                            color: Colors.black,
-                            thickness: 1,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          data.Accepted_DT != null && data.Accepted_DT != "null"
-                              ? Icon(
-                                  Icons.check_circle,
-                                  color: Colors.green,
-                                  size: 20,
-                                )
-                              : Container(
-                                  height: 20,
-                                  child: CircleAvatar(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 33, 94, 150),
-                                      radius: 9.0,
-                                      child: ClipRRect(
-                                        child: Text(
-                                          "2",
-                                          style: TextStyle(
-                                              fontSize: 11,
-                                              color: Colors.white),
-                                        ),
-                                      ))),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(" Accepted :",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black)),
-                          ),
-                          data.Accepted_DT != null && data.Accepted_DT != "null"
-                              ? Padding(
-                                  padding: const EdgeInsets.only(left: 16.0),
-                                  child: Text(data.Accepted_DT,
+                                          fontSize: 11.0)),
+                                )))
+                      else if (data.Status == "Accepted")
+                        Card(
+                            color: Color.fromARGB(255, 25, 160, 66),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                child: Center(
+                                  child: Text("Accepted",
                                       style: TextStyle(
-                                          fontSize: 13,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.w600,
-                                          color: Color.fromARGB(
-                                              255, 128, 125, 125))),
-                                )
-                              : Text("")
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 2.0),
-                        child: SizedBox(
-                          height: 30,
-                          child: VerticalDivider(
-                            color: Colors.black,
-                            thickness: 1,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          data.Started_DT != null && data.Started_DT != "null"
-                              ? Icon(
-                                  Icons.check_circle,
-                                  color: Colors.green,
-                                  size: 20,
-                                )
-                              : Container(
-                                  height: 20,
-                                  child: CircleAvatar(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 33, 94, 150),
-                                      radius: 9.0,
-                                      child: ClipRRect(
-                                        child: Text(
-                                          "3",
-                                          style: TextStyle(
-                                              fontSize: 11,
-                                              color: Colors.white),
-                                        ),
-                                      ))),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(" Started :",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black)),
-                          ),
-                          data.Started_DT != null && data.Started_DT != "null"
-                              ? Padding(
-                                  padding: const EdgeInsets.only(left: 30.0),
-                                  child: Text(data.Started_DT,
+                                          fontSize: 11.0)),
+                                )))
+                      else if (data.Status == "Started")
+                        Card(
+                            color: Color.fromARGB(255, 174, 178, 178),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                child: Center(
+                                  child: Text("Started",
                                       style: TextStyle(
-                                          fontSize: 13,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.w600,
-                                          color: Color.fromARGB(
-                                              255, 128, 125, 125))),
-                                )
-                              : Text("")
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 2.0),
-                        child: SizedBox(
-                          height: 30,
-                          child: VerticalDivider(
-                            color: Colors.black,
-                            thickness: 1,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          data.Reached_DT != null && data.Reached_DT != "null"
-                              ? Icon(
-                                  Icons.check_circle,
-                                  color: Colors.green,
-                                  size: 20,
-                                )
-                              : Container(
-                                  height: 20,
-                                  child: CircleAvatar(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 33, 94, 150),
-                                      radius: 9.0,
-                                      child: ClipRRect(
-                                        child: Text(
-                                          "4",
-                                          style: TextStyle(
-                                              fontSize: 11,
-                                              color: Colors.white),
-                                        ),
-                                      ))),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(" Reached :",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black)),
-                          ),
-                          data.Reached_DT != null && data.Reached_DT != "null"
-                              ? Padding(
-                                  padding: const EdgeInsets.only(left: 22.0),
-                                  child: Text(data.Reached_DT,
+                                          fontSize: 11.0)),
+                                )))
+                      else if (data.Status == "Reached")
+                        Card(
+                            color: Color.fromARGB(255, 191, 76, 176),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                child: Center(
+                                  child: Text("Reached",
                                       style: TextStyle(
-                                          fontSize: 13,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.w600,
-                                          color: Color.fromARGB(
-                                              255, 128, 125, 125))),
-                                )
-                              : Text("")
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 2.0),
-                        child: SizedBox(
-                          height: 30,
-                          child: VerticalDivider(
-                            color: Colors.black,
-                            thickness: 1,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          data.Completed_DT != null &&
-                                  data.Completed_DT != "null"
-                              ? Icon(
-                                  Icons.check_circle,
-                                  color: Colors.green,
-                                  size: 20,
-                                )
-                              : Container(
-                                  height: 20,
-                                  child: CircleAvatar(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 33, 94, 150),
-                                      radius: 9.0,
-                                      child: ClipRRect(
-                                        child: Text(
-                                          "5",
-                                          style: TextStyle(
-                                              fontSize: 11,
-                                              color: Colors.white),
-                                        ),
-                                      ))),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(" Completed :",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black)),
-                          ),
-                          data.Completed_DT != null &&
-                                  data.Completed_DT != "null"
-                              ? Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(data.Completed_DT,
+                                          fontSize: 11.0)),
+                                )))
+                      else if (data.Status == "Completed")
+                        Card(
+                            color: Color.fromARGB(255, 108, 86, 214),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                child: Center(
+                                  child: Text("Completed",
                                       style: TextStyle(
-                                          fontSize: 13,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.w600,
-                                          color: Color.fromARGB(
-                                              255, 128, 125, 125))),
-                                )
-                              : Text("")
-                        ],
-                      ),
+                                          fontSize: 11.0)),
+                                )))
+                      else if (data.Status == "Rejected")
+                        Card(
+                            color: Color.fromARGB(255, 235, 30, 26),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                child: Center(
+                                  child: Text("Rejected",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 11.0)),
+                                )))
+                      else
+                        Card(
+                            color: Color.fromARGB(255, 233, 117, 28),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                child: Center(
+                                  child: Text("Pending",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 11.0)),
+                                ))),
                     ],
                   ),
-                ),
+                  Row(
+                    children: [
+                      Text(data.bill_dt.toString(),
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 90, 133, 173),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10.0)),
+                    ],
+                  )
+                ],
               ),
-            )
-          : Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0.0),
-              child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      side: BorderSide(color: Colors.grey)),
-                  elevation: 4.0,
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 12, 10, 10),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-                              child: Container(
-                                height: 38,
-                                width: MediaQuery.of(context).size.width,
-                                // color: Color.fromARGB(255, 16, 59, 135),
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 176, 185, 193),
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(12.0),
-                                    bottomRight: Radius.circular(12.0),
-                                    bottomLeft: Radius.circular(12.0),
-                                    topLeft: Radius.circular(12.0),
-                                  ),
-                                ),
-                                child: Center(
-                                    child: Text(
-                                  "Booking Status",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                )),
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                data.Reject_DT != null &&
-                                        data.Reject_DT != "null"
-                                    ? Icon(
-                                        Icons.check_circle,
-                                        color: Colors.green,
-                                        size: 20,
-                                      )
-                                    : Container(
-                                        height: 20,
-                                        child: CircleAvatar(
-                                            backgroundColor: Color.fromARGB(
-                                                255, 33, 94, 150),
-                                            radius: 9.0,
-                                            child: ClipRRect(
-                                              child: Text(
-                                                "6",
-                                                style: TextStyle(
-                                                    fontSize: 11,
-                                                    color: Colors.white),
-                                              ),
-                                            ))),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(" Rejected :",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black)),
-                                ),
-                                data.Reject_DT != null &&
-                                        data.Reject_DT != "null"
-                                    ? Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 18.0),
-                                        child: Text(data.Reject_DT,
-                                            style: TextStyle(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color.fromARGB(
-                                                    255, 128, 125, 125))),
-                                      )
-                                    : Text("")
-                              ],
-                            ),
-                          ])))),
-      data.Assigned_DT != null && data.Assigned_DT != "null" ||
-              data.Completed_DT != "null" && data.Completed_DT != null
-          ? Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0.0),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(color: Colors.grey)),
-                elevation: 4.0,
-                child: Column(
-                  children: [
-                    Container(
-                      height: 36,
-                      // color: Color.fromARGB(255, 16, 59, 135),
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 176, 185, 193),
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(12.0),
-                          topLeft: Radius.circular(12.0),
-                        ),
-                      ),
-                      child: Center(
-                          child: Text(
-                        "Phlebotomist",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600),
-                      )),
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 8, 10, 6),
-                          child: Icon(Icons.person,
-                              color: Color.fromARGB(255, 153, 182, 209)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(data.Employee.toString(),
-                              style: TextStyle(
-                                  color: Color(0xff123456),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13.0)),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 12.0, bottom: 6),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 12, 10, 8),
-                            child: Text(
-                              "Make a Phone Call",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 15, 103, 170),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          InkWell(
-                            child: Icon(
-                              Icons.call,
-                              size: 18,
-                              color: Colors.green,
-                            ),
-                            onTap: () {
-                              String Number = data.Employee_Mob_No.toString();
-                              _callNumber(Number);
-                              // UrlLauncher.launch('tel:+ $Number');
-                              //launchDialer(Number);
-                              // callNumber();
-                              // _launchPhoneURL("8456849320");
-                            },
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ))
-          : Text("")
-    ],
-  ));
+            ),
+            trailing: Icon(Icons.arrow_circle_right),
+          )));
 }
 
 _callNumber(String phoneNumber) async {
@@ -838,489 +377,553 @@ _callNumber(String phoneNumber) async {
   await FlutterPhoneDirectCaller.callNumber(number);
 }
 
-// Card(
-//     child: Padding(
-//   padding: const EdgeInsets.all(10.0),
-//   child: Row(
-//     children: [
-//       Icon(
-//         Icons.person_add_outlined,
-//         color: Colors.purple,
-//         size: 40,
-//       ),
-//       SizedBox(
-//         width: 10,
-//       ),
-//       Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Container(
-//               width: 250,
-//               child: Text(
-//                 'You have got 500 loyalty point against order 100233112 order number.',
-//                 style: TextStyle(
-//                     fontSize: 12, color: Colors.black),
-//               )),
-//           SizedBox(
-//             height: 5,
-//           ),
-//           Text(
-//             'Insure now.',
-//             style: TextStyle(fontSize: 11, color: Colors.grey),
-//           )
-//         ],
-//       ),
-//       SizedBox(
-//         width: 5,
-//       ),
-//       Icon(
-//         Icons.more_vert_rounded,
-//         color: Colors.grey,
-//         size: 25,
-//       ),
-//     ],
-//   ),
-// )),
+String Reject_DaTe = "";
+String Assigned_DaTe = "";
+String Accepted_DaTe = "";
+String Started_DaTe = "";
+String Reached_DaTe = "";
+String Completed_DaTe = "";
+String Employee_PhleBO = "";
+String Employee_MobILe_No = "";
 
-// ExpansionTile(
-//                 backgroundColor: Colors.white,
-//                 title: SizedBox(
-//                     child: Column(
-//                   children: [
-//                     Padding(
-//                       padding: const EdgeInsets.only(top: 6.0),
-//                       child: Row(
-//                         children: [
-//                           Padding(
-//                             padding: const EdgeInsets.only(left: 2, right: 8),
-//                             child: Icon(Icons.person,
-//                                 color: Color.fromARGB(255, 153, 182, 209)),
-//                           ),
-//                           Text(data.display_name.toString(),
-//                               style: TextStyle(
-//                                   color: Color(0xff123456),
-//                                   fontWeight: FontWeight.bold,
-//                                   fontSize: 13.0)),
-//                           Spacer(),
-//                           Text('\u{20B9} ' + data.net_amt.toString(),
-//                               style: TextStyle(
-//                                   color: Color.fromARGB(255, 218, 75, 65),
-//                                   fontWeight: FontWeight.bold,
-//                                   fontSize: 13.0)),
-//                         ],
-//                       ),
-//                     ),
-//                     Padding(
-//                       padding:
-//                           const EdgeInsets.only(left: 35, top: 6, bottom: 4),
-//                       child: Row(
-//                         children: [
-//                           Text(
-//                               data.bill_no.toString() +
-//                                   '  |  ' +
-//                                   data.bill_dt.toString(),
-//                               style: TextStyle(
-//                                   color: Color.fromARGB(255, 90, 133, 173),
-//                                   fontWeight: FontWeight.bold,
-//                                   fontSize: 10.0)),
-//                         ],
-//                       ),
-//                     ),
-//                     Padding(
-//                       padding: const EdgeInsets.only(bottom: 8.0),
-//                       child: Row(
-//                         mainAxisAlignment: MainAxisAlignment.end,
-//                         children: [
-//                           if (data.Status == "Assigned")
-//                             Card(
-//                                 color: Color.fromARGB(255, 221, 180, 65),
-//                                 shape: RoundedRectangleBorder(
-//                                     borderRadius: BorderRadius.circular(8)),
-//                                 child: Padding(
-//                                     padding:
-//                                         const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-//                                     child: Center(
-//                                       child: Text("Assigned",
-//                                           style: TextStyle(
-//                                               color: Colors.white,
-//                                               fontWeight: FontWeight.w600,
-//                                               fontSize: 11.0)),
-//                                     )))
-//                           else if (data.Status == "Accepted")
-//                             Card(
-//                                 color: Color.fromARGB(255, 25, 160, 66),
-//                                 shape: RoundedRectangleBorder(
-//                                     borderRadius: BorderRadius.circular(8)),
-//                                 child: Padding(
-//                                     padding:
-//                                         const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-//                                     child: Center(
-//                                       child: Text("Accepted",
-//                                           style: TextStyle(
-//                                               color: Colors.white,
-//                                               fontWeight: FontWeight.w600,
-//                                               fontSize: 11.0)),
-//                                     )))
-//                           else if (data.Status == "Started")
-//                             Card(
-//                                 color: Color.fromARGB(255, 174, 178, 178),
-//                                 shape: RoundedRectangleBorder(
-//                                     borderRadius: BorderRadius.circular(8)),
-//                                 child: Padding(
-//                                     padding:
-//                                         const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-//                                     child: Center(
-//                                       child: Text("Started",
-//                                           style: TextStyle(
-//                                               color: Colors.white,
-//                                               fontWeight: FontWeight.w600,
-//                                               fontSize: 11.0)),
-//                                     )))
-//                           else if (data.Status == "Reached")
-//                             Card(
-//                                 color: Color.fromARGB(255, 191, 76, 176),
-//                                 shape: RoundedRectangleBorder(
-//                                     borderRadius: BorderRadius.circular(8)),
-//                                 child: Padding(
-//                                     padding:
-//                                         const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-//                                     child: Center(
-//                                       child: Text("Reached",
-//                                           style: TextStyle(
-//                                               color: Colors.white,
-//                                               fontWeight: FontWeight.w600,
-//                                               fontSize: 11.0)),
-//                                     )))
-//                           else if (data.Status == "Completed")
-//                             Card(
-//                                 color: Color.fromARGB(255, 108, 86, 214),
-//                                 shape: RoundedRectangleBorder(
-//                                     borderRadius: BorderRadius.circular(8)),
-//                                 child: Padding(
-//                                     padding:
-//                                         const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-//                                     child: Center(
-//                                       child: Text("Completed",
-//                                           style: TextStyle(
-//                                               color: Colors.white,
-//                                               fontWeight: FontWeight.w600,
-//                                               fontSize: 11.0)),
-//                                     )))
-//                           else if (data.Status == "Rejected")
-//                             Card(
-//                                 color: Color.fromARGB(255, 235, 30, 26),
-//                                 shape: RoundedRectangleBorder(
-//                                     borderRadius: BorderRadius.circular(8)),
-//                                 child: Padding(
-//                                     padding:
-//                                         const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-//                                     child: Center(
-//                                       child: Text("Rejected",
-//                                           style: TextStyle(
-//                                               color: Colors.white,
-//                                               fontWeight: FontWeight.w600,
-//                                               fontSize: 11.0)),
-//                                     )))
-//                           else
-//                             Card(
-//                                 color: Color.fromARGB(255, 233, 117, 28),
-//                                 shape: RoundedRectangleBorder(
-//                                     borderRadius: BorderRadius.circular(8)),
-//                                 child: Padding(
-//                                     padding:
-//                                         const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-//                                     child: Center(
-//                                       child: Text("Pending",
-//                                           style: TextStyle(
-//                                               color: Colors.white,
-//                                               fontWeight: FontWeight.w600,
-//                                               fontSize: 11.0)),
-//                                     ))),
-//                         ],
-//                       ),
-//                     ),
-//                   ],
-//                 )),
-//                 children: [
-//                   SingleChildScrollView(
-//                     scrollDirection: Axis.vertical,
-//                     child: Padding(
-//                       padding: const EdgeInsets.fromLTRB(10, 12, 10, 10),
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Row(
-//                             children: [
-//                               data.Assigned_DT != null &&
-//                                       data.Assigned_DT != "null"
-//                                   ? Icon(
-//                                       Icons.check_circle,
-//                                       color: Colors.green,
-//                                       size: 20,
-//                                     )
-//                                   : Container(
-//                                       height: 20,
-//                                       child: CircleAvatar(
-//                                           backgroundColor:
-//                                               Color.fromARGB(255, 33, 94, 150),
-//                                           radius: 9.0,
-//                                           child: ClipRRect(
-//                                             child: Text(
-//                                               "1",
-//                                               style: TextStyle(
-//                                                   fontSize: 11,
-//                                                   color: Colors.white),
-//                                             ),
-//                                           ))),
-//                               Padding(
-//                                 padding: const EdgeInsets.only(left: 8.0),
-//                                 child: Text(" Assigned :"),
-//                               ),
-//                               data.Assigned_DT != null &&
-//                                       data.Assigned_DT != "null"
-//                                   ? Padding(
-//                                       padding:
-//                                           const EdgeInsets.only(left: 18.0),
-//                                       child: Text(data.Assigned_DT),
-//                                     )
-//                                   : Text("")
-//                             ],
-//                           ),
-//                           Padding(
-//                             padding: const EdgeInsets.only(left: 2.0),
-//                             child: SizedBox(
-//                               height: 30,
-//                               child: VerticalDivider(
-//                                 color: Colors.black,
-//                                 thickness: 1,
-//                               ),
-//                             ),
-//                           ),
-//                           Row(
-//                             children: [
-//                               data.Accepted_DT != null &&
-//                                       data.Accepted_DT != "null"
-//                                   ? Icon(
-//                                       Icons.check_circle,
-//                                       color: Colors.green,
-//                                       size: 20,
-//                                     )
-//                                   : Container(
-//                                       height: 20,
-//                                       child: CircleAvatar(
-//                                           backgroundColor:
-//                                               Color.fromARGB(255, 33, 94, 150),
-//                                           radius: 9.0,
-//                                           child: ClipRRect(
-//                                             child: Text(
-//                                               "2",
-//                                               style: TextStyle(
-//                                                   fontSize: 11,
-//                                                   color: Colors.white),
-//                                             ),
-//                                           ))),
-//                               Padding(
-//                                 padding: const EdgeInsets.only(left: 8.0),
-//                                 child: Text(" Accepted :"),
-//                               ),
-//                               data.Accepted_DT != null &&
-//                                       data.Accepted_DT != "null"
-//                                   ? Padding(
-//                                       padding:
-//                                           const EdgeInsets.only(left: 18.0),
-//                                       child: Text(data.Accepted_DT),
-//                                     )
-//                                   : Text("")
-//                             ],
-//                           ),
-//                           Padding(
-//                             padding: const EdgeInsets.only(left: 2.0),
-//                             child: SizedBox(
-//                               height: 30,
-//                               child: VerticalDivider(
-//                                 color: Colors.black,
-//                                 thickness: 1,
-//                               ),
-//                             ),
-//                           ),
-//                           Row(
-//                             children: [
-//                               data.Started_DT != null &&
-//                                       data.Started_DT != "null"
-//                                   ? Icon(
-//                                       Icons.check_circle,
-//                                       color: Colors.green,
-//                                       size: 20,
-//                                     )
-//                                   : Container(
-//                                       height: 20,
-//                                       child: CircleAvatar(
-//                                           backgroundColor:
-//                                               Color.fromARGB(255, 33, 94, 150),
-//                                           radius: 9.0,
-//                                           child: ClipRRect(
-//                                             child: Text(
-//                                               "3",
-//                                               style: TextStyle(
-//                                                   fontSize: 11,
-//                                                   color: Colors.white),
-//                                             ),
-//                                           ))),
-//                               Padding(
-//                                 padding: const EdgeInsets.only(left: 8.0),
-//                                 child: Text(" Started :"),
-//                               ),
-//                               data.Started_DT != null &&
-//                                       data.Started_DT != "null"
-//                                   ? Padding(
-//                                       padding:
-//                                           const EdgeInsets.only(left: 18.0),
-//                                       child: Text(data.Started_DT),
-//                                     )
-//                                   : Text("")
-//                             ],
-//                           ),
-//                           Padding(
-//                             padding: const EdgeInsets.only(left: 2.0),
-//                             child: SizedBox(
-//                               height: 30,
-//                               child: VerticalDivider(
-//                                 color: Colors.black,
-//                                 thickness: 1,
-//                               ),
-//                             ),
-//                           ),
-//                           Row(
-//                             children: [
-//                               data.Reached_DT != null &&
-//                                       data.Reached_DT != "null"
-//                                   ? Icon(
-//                                       Icons.check_circle,
-//                                       color: Colors.green,
-//                                       size: 20,
-//                                     )
-//                                   : Container(
-//                                       height: 20,
-//                                       child: CircleAvatar(
-//                                           backgroundColor:
-//                                               Color.fromARGB(255, 33, 94, 150),
-//                                           radius: 9.0,
-//                                           child: ClipRRect(
-//                                             child: Text(
-//                                               "4",
-//                                               style: TextStyle(
-//                                                   fontSize: 11,
-//                                                   color: Colors.white),
-//                                             ),
-//                                           ))),
-//                               Padding(
-//                                 padding: const EdgeInsets.only(left: 8.0),
-//                                 child: Text(" Reached :"),
-//                               ),
-//                               data.Reached_DT != null &&
-//                                       data.Reached_DT != "null"
-//                                   ? Padding(
-//                                       padding:
-//                                           const EdgeInsets.only(left: 18.0),
-//                                       child: Text(data.Reached_DT),
-//                                     )
-//                                   : Text("")
-//                             ],
-//                           ),
-//                           Padding(
-//                             padding: const EdgeInsets.only(left: 2.0),
-//                             child: SizedBox(
-//                               height: 30,
-//                               child: VerticalDivider(
-//                                 color: Colors.black,
-//                                 thickness: 1,
-//                               ),
-//                             ),
-//                           ),
-//                           Row(
-//                             children: [
-//                               data.Completed_DT != null &&
-//                                       data.Completed_DT != "null"
-//                                   ? Icon(
-//                                       Icons.check_circle,
-//                                       color: Colors.green,
-//                                       size: 20,
-//                                     )
-//                                   : Container(
-//                                       height: 20,
-//                                       child: CircleAvatar(
-//                                           backgroundColor:
-//                                               Color.fromARGB(255, 33, 94, 150),
-//                                           radius: 9.0,
-//                                           child: ClipRRect(
-//                                             child: Text(
-//                                               "5",
-//                                               style: TextStyle(
-//                                                   fontSize: 11,
-//                                                   color: Colors.white),
-//                                             ),
-//                                           ))),
-//                               Padding(
-//                                 padding: const EdgeInsets.only(left: 8.0),
-//                                 child: Text(" Completed :"),
-//                               ),
-//                               data.Completed_DT != null &&
-//                                       data.Completed_DT != "null"
-//                                   ? Padding(
-//                                       padding:
-//                                           const EdgeInsets.only(left: 18.0),
-//                                       child: Text(data.Completed_DT),
-//                                     )
-//                                   : Text("")
-//                             ],
-//                           ),
-//                           Padding(
-//                             padding: const EdgeInsets.only(left: 2.0),
-//                             child: SizedBox(
-//                               height: 30,
-//                               child: VerticalDivider(
-//                                 color: Colors.black,
-//                                 thickness: 1,
-//                               ),
-//                             ),
-//                           ),
-//                           Row(
-//                             children: [
-//                               data.Reject_DT != null && data.Reject_DT != "null"
-//                                   ? Icon(
-//                                       Icons.check_circle,
-//                                       color: Colors.green,
-//                                       size: 20,
-//                                     )
-//                                   : Container(
-//                                       height: 20,
-//                                       child: CircleAvatar(
-//                                           backgroundColor:
-//                                               Color.fromARGB(255, 33, 94, 150),
-//                                           radius: 9.0,
-//                                           child: ClipRRect(
-//                                             child: Text(
-//                                               "6",
-//                                               style: TextStyle(
-//                                                   fontSize: 11,
-//                                                   color: Colors.white),
-//                                             ),
-//                                           ))),
-//                               Padding(
-//                                 padding: const EdgeInsets.only(left: 8.0),
-//                                 child: Text(" Rejected :"),
-//                               ),
-//                               data.Reject_DT != null && data.Reject_DT != "null"
-//                                   ? Padding(
-//                                       padding:
-//                                           const EdgeInsets.only(left: 18.0),
-//                                       child: Text(data.Reject_DT),
-//                                     )
-//                                   : Text("")
-//                             ],
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   )
-//                 ]),
+class SERvicEDEtailS extends StatefulWidget {
+  SERvicEDEtailS(RJCT_DT, ASIGN_DT, ACCPT_DT, STRT_DT, RCHD_DT, CMPL_DT,
+      EMPL_PHLBO, EMP_MO_NO) {
+    Reject_DaTe = "";
+    Assigned_DaTe = "";
+    Accepted_DaTe = "";
+    Started_DaTe = "";
+    Reached_DaTe = "";
+    Completed_DaTe = "";
+    Employee_PhleBO = "";
+    Employee_MobILe_No = "";
+    Reject_DaTe = RJCT_DT;
+    Assigned_DaTe = ASIGN_DT;
+    Accepted_DaTe = ACCPT_DT;
+    Started_DaTe = STRT_DT;
+    Reached_DaTe = RCHD_DT;
+    Completed_DaTe = CMPL_DT;
+    Employee_PhleBO = EMPL_PHLBO;
+    Employee_MobILe_No = EMP_MO_NO;
+  }
+
+  @override
+  State<SERvicEDEtailS> createState() => _SERvicEDEtailSState();
+}
+
+class _SERvicEDEtailSState extends State<SERvicEDEtailS> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBody: true,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        iconTheme: IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        backgroundColor: Color(0xff123456),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              // tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
+        ),
+        title: Row(
+          children: [
+            Text(
+              'Booking Details',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+            Spacer(),
+            TextButton.icon(
+                onPressed: () {
+                  setState(() {});
+                },
+                label: Text("Refresh",
+                    style: TextStyle(color: Colors.white, fontSize: 14)),
+                icon: Icon(
+                  Icons.refresh_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ))
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+          child: Column(children: [
+        Reject_DaTe == null || Reject_DaTe == "null"
+            ? Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0.0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: BorderSide(color: Colors.grey)),
+                  elevation: 4.0,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 12, 10, 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                          child: Container(
+                            height: 38,
+                            width: MediaQuery.of(context).size.width,
+                            // color: Color.fromARGB(255, 16, 59, 135),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 176, 185, 193),
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(12.0),
+                                bottomRight: Radius.circular(12.0),
+                                bottomLeft: Radius.circular(12.0),
+                                topLeft: Radius.circular(12.0),
+                              ),
+                            ),
+                            child: Center(
+                                child: Text(
+                              "Booking Status",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
+                            )),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Assigned_DaTe != null && Assigned_DaTe != "null"
+                                ? Icon(
+                                    Icons.check_circle,
+                                    color: Colors.green,
+                                    size: 20,
+                                  )
+                                : Container(
+                                    height: 20,
+                                    child: CircleAvatar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 33, 94, 150),
+                                        radius: 9.0,
+                                        child: ClipRRect(
+                                          child: Text(
+                                            "1",
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.white),
+                                          ),
+                                        ))),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                " Assigned :",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black),
+                              ),
+                            ),
+                            Assigned_DaTe != null && Assigned_DaTe != "null"
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 18.0),
+                                    child: Text(Assigned_DaTe,
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color.fromARGB(
+                                                255, 128, 125, 125))),
+                                  )
+                                : Text("")
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 2.0),
+                          child: SizedBox(
+                            height: 30,
+                            child: VerticalDivider(
+                              color: Colors.black,
+                              thickness: 1,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Accepted_DaTe != null && Accepted_DaTe != "null"
+                                ? Icon(
+                                    Icons.check_circle,
+                                    color: Colors.green,
+                                    size: 20,
+                                  )
+                                : Container(
+                                    height: 20,
+                                    child: CircleAvatar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 33, 94, 150),
+                                        radius: 9.0,
+                                        child: ClipRRect(
+                                          child: Text(
+                                            "2",
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.white),
+                                          ),
+                                        ))),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(" Accepted :",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black)),
+                            ),
+                            Accepted_DaTe != null && Accepted_DaTe != "null"
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 16.0),
+                                    child: Text(Accepted_DaTe,
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color.fromARGB(
+                                                255, 128, 125, 125))),
+                                  )
+                                : Text("")
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 2.0),
+                          child: SizedBox(
+                            height: 30,
+                            child: VerticalDivider(
+                              color: Colors.black,
+                              thickness: 1,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Started_DaTe != null && Started_DaTe != "null"
+                                ? Icon(
+                                    Icons.check_circle,
+                                    color: Colors.green,
+                                    size: 20,
+                                  )
+                                : Container(
+                                    height: 20,
+                                    child: CircleAvatar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 33, 94, 150),
+                                        radius: 9.0,
+                                        child: ClipRRect(
+                                          child: Text(
+                                            "3",
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.white),
+                                          ),
+                                        ))),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(" Started :",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black)),
+                            ),
+                            Started_DaTe != null && Started_DaTe != "null"
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 30.0),
+                                    child: Text(Started_DaTe,
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color.fromARGB(
+                                                255, 128, 125, 125))),
+                                  )
+                                : Text("")
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 2.0),
+                          child: SizedBox(
+                            height: 30,
+                            child: VerticalDivider(
+                              color: Colors.black,
+                              thickness: 1,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Reached_DaTe != null && Reached_DaTe != "null"
+                                ? Icon(
+                                    Icons.check_circle,
+                                    color: Colors.green,
+                                    size: 20,
+                                  )
+                                : Container(
+                                    height: 20,
+                                    child: CircleAvatar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 33, 94, 150),
+                                        radius: 9.0,
+                                        child: ClipRRect(
+                                          child: Text(
+                                            "4",
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.white),
+                                          ),
+                                        ))),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(" Reached :",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black)),
+                            ),
+                            Reached_DaTe != null && Reached_DaTe != "null"
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 22.0),
+                                    child: Text(Reached_DaTe,
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color.fromARGB(
+                                                255, 128, 125, 125))),
+                                  )
+                                : Text("")
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 2.0),
+                          child: SizedBox(
+                            height: 30,
+                            child: VerticalDivider(
+                              color: Colors.black,
+                              thickness: 1,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Completed_DaTe != null && Completed_DaTe != "null"
+                                ? Icon(
+                                    Icons.check_circle,
+                                    color: Colors.green,
+                                    size: 20,
+                                  )
+                                : Container(
+                                    height: 20,
+                                    child: CircleAvatar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 33, 94, 150),
+                                        radius: 9.0,
+                                        child: ClipRRect(
+                                          child: Text(
+                                            "5",
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                color: Colors.white),
+                                          ),
+                                        ))),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(" Completed :",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black)),
+                            ),
+                            Completed_DaTe != null && Completed_DaTe != "null"
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text(Completed_DaTe,
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color.fromARGB(
+                                                255, 128, 125, 125))),
+                                  )
+                                : Text("")
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0.0),
+                child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(color: Colors.grey)),
+                    elevation: 4.0,
+                    child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 12, 10, 10),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                                child: Container(
+                                  height: 38,
+                                  width: MediaQuery.of(context).size.width,
+                                  // color: Color.fromARGB(255, 16, 59, 135),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 176, 185, 193),
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(12.0),
+                                      bottomRight: Radius.circular(12.0),
+                                      bottomLeft: Radius.circular(12.0),
+                                      topLeft: Radius.circular(12.0),
+                                    ),
+                                  ),
+                                  child: Center(
+                                      child: Text(
+                                    "Booking Status",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600),
+                                  )),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Reject_DaTe != null && Reject_DaTe != "null"
+                                      ? Icon(
+                                          Icons.check_circle,
+                                          color: Colors.green,
+                                          size: 20,
+                                        )
+                                      : Container(
+                                          height: 20,
+                                          child: CircleAvatar(
+                                              backgroundColor: Color.fromARGB(
+                                                  255, 33, 94, 150),
+                                              radius: 9.0,
+                                              child: ClipRRect(
+                                                child: Text(
+                                                  "6",
+                                                  style: TextStyle(
+                                                      fontSize: 11,
+                                                      color: Colors.white),
+                                                ),
+                                              ))),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text(" Rejected :",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black)),
+                                  ),
+                                  Reject_DaTe != null && Reject_DaTe != "null"
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 18.0),
+                                          child: Text(Reject_DaTe,
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Color.fromARGB(
+                                                      255, 128, 125, 125))),
+                                        )
+                                      : Text("")
+                                ],
+                              ),
+                            ])))),
+        Assigned_DaTe != null && Assigned_DaTe != "null" ||
+                Completed_DaTe != "null" && Completed_DaTe != null
+            ? Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0.0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: BorderSide(color: Colors.grey)),
+                  elevation: 4.0,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 36,
+                        // color: Color.fromARGB(255, 16, 59, 135),
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 176, 185, 193),
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(12.0),
+                            topLeft: Radius.circular(12.0),
+                          ),
+                        ),
+                        child: Center(
+                            child: Text(
+                          "Phlebotomist",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        )),
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 8, 10, 6),
+                            child: Icon(Icons.person,
+                                color: Color.fromARGB(255, 153, 182, 209)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(Employee_PhleBO.toString(),
+                                style: TextStyle(
+                                    color: Color(0xff123456),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13.0)),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 12.0, bottom: 6),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 12, 10, 8),
+                              child: Text(
+                                "Make a Phone Call",
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 15, 103, 170),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            InkWell(
+                              child: Icon(
+                                Icons.call,
+                                size: 18,
+                                color: Colors.green,
+                              ),
+                              onTap: () {
+                                String Number = Employee_MobILe_No.toString();
+                                _callNumber(Number);
+                                // UrlLauncher.launch('tel:+ $Number');
+                                //launchDialer(Number);
+                                // callNumber();
+                                // _launchPhoneURL("8456849320");
+                              },
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ))
+            : Text("")
+      ])),
+      bottomNavigationBar: AllBottOMNaviGAtionBar(),
+    );
+  }
+}

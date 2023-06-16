@@ -32,7 +32,12 @@ class ProductOverviewPage extends StatefulWidget {
 class _ProductOverviewPageState extends State<ProductOverviewPage> {
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ProductController());
+
+// Call fetchProducts to refresh the data
+    controller.fetchProducts(globals.Preferedsrvs);
     var _showOnlyFavourites = false;
+
     //  bookCart();
 
     // Get.put(ProductController());
@@ -46,6 +51,7 @@ class _ProductOverviewPageState extends State<ProductOverviewPage> {
           title: Text('Book A Test', style: TextStyle(color: Colors.white)),
           leading: IconButton(
               onPressed: () {
+                //   Get.find<ProductController>().onClose();
                 Navigator.of(context).pop();
               },
               icon: Icon(
@@ -62,7 +68,7 @@ class _ProductOverviewPageState extends State<ProductOverviewPage> {
           ),
       endDrawer: AppDrawer(),
       body: (!_showOnlyFavourites)
-          ? ProductsGrid(_showOnlyFavourites)
+          ? ProductsGrid()
           // ignore: dead_code
           : Text('Done'),
       bottomNavigationBar: AllBottOMNaviGAtionBar(),

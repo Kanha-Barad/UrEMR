@@ -38,7 +38,7 @@ class CartItem extends StatelessWidget {
         direction: DismissDirection.endToStart,
         onDismissed: (direction) {
           cartController.removeitem(productId, price, title, Service_Id, 1);
-          productcontroller.items[Service_Id - 1].isAdded.value = false;
+          productcontroller.productList[Service_Id - 1].isAdded.value = false;
           globals.Discount_Amount_Coupon = 0;
           globals.Net_Amount_Coupon = 0;
           globals.Coupon_Policy_Id = 'null';

@@ -55,7 +55,7 @@ String All_Client_Logo = "";
 String Patient_report_URL = "";
 String Patient_OTP_URL = "";
 var Client_App_Code = null;
-
+var Is_search="";
 String selectDate = "";
 String SlotsBooked = "";
 String Location_BookedTest = "";

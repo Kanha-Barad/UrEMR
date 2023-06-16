@@ -1146,46 +1146,46 @@ class _PatientBottomPopupState extends State<PatientBottomPopup> {
                         color: Colors.white)),
               ),
               Spacer(),
-              (repeat_Flag == 'A')
-                  ? SizedBox(
-                      height: 33,
-                      width: 69,
-                      child: InkWell(
-                          child: Card(
-                            color: Color.fromARGB(255, 26, 177, 122),
-                            elevation: 2.0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Center(
-                                  child: Text("Repeat",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500))),
-                            ),
-                          ),
-                          onTap: () {
-                            print(globals.PatientRepeatOrder["Data"]);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CartScreen()));
-                          }),
-                    )
-                  : Text(
-                      // globals.PatientDetails.age.split(',')[0].toString() +
-                      //     '/' +
-                      globals.SelectedPatientDetails.gender.toString(),
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
+              // (repeat_Flag == 'A')
+              //     ? SizedBox(
+              //         height: 33,
+              //         width: 69,
+              //         child: InkWell(
+              //             child: Card(
+              //               color: Color.fromARGB(255, 26, 177, 122),
+              //               elevation: 2.0,
+              //               shape: RoundedRectangleBorder(
+              //                   borderRadius: BorderRadius.circular(4)),
+              //               child: Padding(
+              //                 padding: const EdgeInsets.all(5.0),
+              //                 child: Center(
+              //                     child: Text("Repeat",
+              //                         style: TextStyle(
+              //                             color: Colors.white,
+              //                             fontSize: 15,
+              //                             fontWeight: FontWeight.w500))),
+              //               ),
+              //             ),
+              //             onTap: () {
+              //               print(globals.PatientRepeatOrder["Data"]);
+              //               Navigator.push(
+              //                   context,
+              //                   MaterialPageRoute(
+              //                       builder: (context) => CartScreen()));
+              //             }),
+              //       )
+              //     : Text(
+              //         // globals.PatientDetails.age.split(',')[0].toString() +
+              //         //     '/' +
+              //         globals.SelectedPatientDetails.gender.toString(),
+              //         style: TextStyle(
+              //             fontSize: 15,
+              //             fontWeight: FontWeight.bold,
+              //             color: Colors.white),
+              //       ),
             ],
           ),
-          backgroundColor: Color.fromARGB(255, 26, 41, 107),
+          backgroundColor: Color(0xff123456),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -1209,53 +1209,59 @@ Widget _PatientDataCard(data, BuildContext context, index) {
         //   globals.PatientDetails = data;
         // globals.PatientRepeatOrder = data;
       },
-      child: Card(
-        elevation: 4.0,
-        color: MaterialStateColor.resolveWith(
-            (states) => Color.fromARGB(255, 248, 248, 248)),
-        child: Column(children: [
-          Row(
-            children: [
-              SizedBox(
-                width: 10,
-              ),
-              SizedBox(
-                width: 150,
-                child: Text(data.srvname,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    )),
-              ),
-              Spacer(),
-              Text(
-                data.srvstats1,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 6),
+        child: Card(
+          elevation: 4.0,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: BorderSide(color: Colors.grey, width: 0.6)),
+          color: MaterialStateColor.resolveWith(
+              (states) => Color.fromARGB(255, 248, 248, 248)),
+          child: Column(children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: 10,
                 ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              (data.srvstats1 == "Completed" || data.srvstats1 == "Dispatch")
-                  ? IconButton(
-                      onPressed: () {
-                        (globals.SelectedPatientDetails.outstanding_due ==
-                                '0.0')
-                            ? _launchURL(data.reportCd.toString())
-                            : AlertError();
-                      },
-                      icon: Icon(
-                        Icons.picture_as_pdf,
-                        color: Colors.red,
-                      ))
-                  : IconButton(onPressed: () {}, icon: Icon(null))
-            ],
-          ),
-        ]),
+                SizedBox(
+                  width: 150,
+                  child: Text(data.srvname,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      )),
+                ),
+                Spacer(),
+                Text(
+                  data.srvstats1,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                (data.srvstats1 == "Completed" || data.srvstats1 == "Dispatch")
+                    ? IconButton(
+                        onPressed: () {
+                          (globals.SelectedPatientDetails.outstanding_due ==
+                                  '0.0')
+                              ? _launchURL(data.reportCd.toString())
+                              : AlertError();
+                        },
+                        icon: Icon(
+                          Icons.picture_as_pdf,
+                          color: Colors.red,
+                        ))
+                    : IconButton(onPressed: () {}, icon: Icon(null))
+              ],
+            ),
+          ]),
+        ),
       ));
 }
 
