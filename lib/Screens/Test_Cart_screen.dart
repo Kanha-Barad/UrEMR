@@ -46,8 +46,9 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     FirebaseMessaging.instance.getToken().then((value) {
-      Device_token_ID = value.toString();
-      print(value);
+      String Device_token_ID = value!;
+      print(Device_token_ID);
+      // Update or store the token as needed
     });
 
     late Map<String, dynamic> map;
