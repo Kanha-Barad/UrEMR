@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import '../Controllers/cart_controller.dart';
 import '../Controllers/order_controller.dart';
 import '../Coupons.dart';
-import '../Notification.dart';
-import '../OrdersHistory.dart';
 import '../PatientHome.dart';
 import 'package:badges/badges.dart' as badges;
 import '../Widgets/cart_items.dart';
@@ -234,10 +231,8 @@ class _CartScreenState extends State<CartScreen> {
             label: "View",
             textColor: Colors.white,
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => PatientHome()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => PatientHome()));
               cartController.clear();
               productcontroller.resetAll();
               globals.GlobalDiscountCoupons = "";
@@ -417,14 +412,17 @@ class _CartScreenState extends State<CartScreen> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Container(
+                                    SizedBox(
                                         width: 150,
                                         child: Text("Location:",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold))),
-                                    Text(globals.Location_BookedTest,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      width: 150,
+                                      child: Text(globals.Location_BookedTest,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -949,10 +947,8 @@ Widget userBookings(
           label: "View",
           textColor: Colors.white,
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => PatientHome()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PatientHome()));
             cartController.clear();
             productcontroller.resetAll();
             globals.GlobalDiscountCoupons = "";
