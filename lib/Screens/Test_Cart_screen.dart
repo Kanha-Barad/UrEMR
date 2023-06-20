@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Controllers/cart_controller.dart';
 import '../Controllers/order_controller.dart';
 import '../Coupons.dart';
@@ -597,7 +598,8 @@ class _CartScreenState extends State<CartScreen> {
                                                                       .circular(
                                                                           10)),
                                                           child: TextButton(
-                                                            onPressed: () {
+                                                            onPressed:
+                                                                () async {
                                                               //  OrderPayments();
                                                               //    _buildUserBookingPopup(context);
                                                               bool
@@ -623,6 +625,24 @@ class _CartScreenState extends State<CartScreen> {
                                                                         false;
                                                                   });
                                                                 }
+                                                              }
+
+                                                              SharedPreferences
+                                                                  prefs =
+                                                                  await SharedPreferences
+                                                                      .getInstance();
+
+                                                              String?
+                                                                  encodedJson =
+                                                                  prefs.getString(
+                                                                      'data1');
+                                                              // List<dynamic> decodedJson = json.decode(encodedJson!);
+                                                              if (globals
+                                                                      .selectedLogin_Data ==
+                                                                  null) {
+                                                                globals.selectedLogin_Data =
+                                                                    json.decode(
+                                                                        encodedJson!);
                                                               }
 
                                                               (globals.selectedLogin_Data["Data"].length >
@@ -724,7 +744,7 @@ class _CartScreenState extends State<CartScreen> {
                         color: Color(0xff123456),
                         width: 350,
                         child: TextButton(
-                            onPressed: () {
+                            onPressed: () async {
                               //  OrderPayments();
                               //    _buildUserBookingPopup(context);
                               bool isButtonDisabled = false;
@@ -741,6 +761,16 @@ class _CartScreenState extends State<CartScreen> {
                                     isButtonDisabled = false;
                                   });
                                 }
+                              }
+
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+
+                              String? encodedJson = prefs.getString('data1');
+                              // List<dynamic> decodedJson = json.decode(encodedJson!);
+                              if (globals.selectedLogin_Data == null) {
+                                globals.selectedLogin_Data =
+                                    json.decode(encodedJson!);
                               }
 
                               (globals.selectedLogin_Data["Data"].length > 1)
@@ -807,6 +837,7 @@ class UserlistBottomPopup extends StatefulWidget {
 class _UserlistBottomPopupState extends State<UserlistBottomPopup> {
   @override
   Widget build(BuildContext context) {
+    
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -814,8 +845,17 @@ class _UserlistBottomPopupState extends State<UserlistBottomPopup> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.pop(context);
+                 SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+
+                              String? encodedJson = prefs.getString('data1');
+                              // List<dynamic> decodedJson = json.decode(encodedJson!);
+                              if (globals.selectedLogin_Data == null) {
+                                globals.selectedLogin_Data =
+                                    json.decode(encodedJson!);
+                              }
               },
               icon: Icon(
                 Icons.arrow_back_rounded,

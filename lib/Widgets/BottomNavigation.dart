@@ -108,15 +108,18 @@ class _AllBottOMNaviGAtionBarState extends State<AllBottOMNaviGAtionBar> {
                     (prefs.setString('ConnectionString', ''));
                     // (prefs.setString('Status_FLag', ''));
                     // (prefs.setString('SeSSion_ID', ''));
-                    // (prefs.setString('SELECTED_loginData', ''));
                     // (prefs.setString('UMr_No', ''));
-cartController.items.clear();
+                    cartController.items.clear();
 //ProductController.clear();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => AccessClientCodeLogin()),
+                      MaterialPageRoute(builder: (context) => PatientLogin("")),
                     );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => AccessClientCodeLogin()),
+                    // );
                   },
                   child: Column(children: [
                     Icon(
