@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -140,25 +141,26 @@ class ProgressNotification {
   final Employee;
   final Employee_Mob_No;
   final Reject_Reason;
-  ProgressNotification({
-    required this.display_name,
-    required this.bill_no,
-    required this.bill_id,
-    required this.bill_dt,
-    required this.gender,
-    required this.net_amt,
-    required this.outstanding_due,
-    required this.Assigned_DT,
-    required this.Accepted_DT,
-    required this.Started_DT,
-    required this.Reached_DT,
-    required this.Reject_DT,
-    required this.Completed_DT,
-    required this.Status,
-    required this.Employee,
-    required this.Employee_Mob_No,
-    required this.Reject_Reason,
-  });
+  final Uploaded_Prescription;
+  ProgressNotification(
+      {required this.display_name,
+      required this.bill_no,
+      required this.bill_id,
+      required this.bill_dt,
+      required this.gender,
+      required this.net_amt,
+      required this.outstanding_due,
+      required this.Assigned_DT,
+      required this.Accepted_DT,
+      required this.Started_DT,
+      required this.Reached_DT,
+      required this.Reject_DT,
+      required this.Completed_DT,
+      required this.Status,
+      required this.Employee,
+      required this.Employee_Mob_No,
+      required this.Reject_Reason,
+      required this.Uploaded_Prescription});
   factory ProgressNotification.fromJson(Map<String, dynamic> json) {
     return ProgressNotification(
       display_name: json['DISPLAY_NAME'].toString(),
@@ -178,6 +180,7 @@ class ProgressNotification {
       Employee: json['EMPLOYEE'].toString(),
       Employee_Mob_No: json['EMP_MOBILE'].toString(),
       Reject_Reason: json['REJECT_REASON'].toString(),
+      Uploaded_Prescription: json['UPLOAD_PRESCRIPTION'].toString(),
     );
   }
 }
@@ -192,6 +195,45 @@ ListView _ProgressNotiFicationListView(data, BuildContext contex) {
 }
 
 Widget _ProgressNotiFication(var data, BuildContext context) {
+  void ShowUploadPrescripTIon(BuildContext context, String PrescripTIONImage) {
+    // Decode the Base64 string
+    //Uint8List bytes = base64.decode(PrescripTIONImage);
+    Uint8List DecodedPresCRIPtion = base64Decode(PrescripTIONImage);
+
+    // Convert the decoded bytes to a string
+    // String DecodedPresCRIPtion = utf8.decode(bytes);
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        //context: _scaffoldKey.currentContext,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              contentPadding: EdgeInsets.only(left: 25, right: 25),
+              title: Card(
+                  color: Color(0xff123456),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: BorderSide(color: Colors.grey)),
+                  elevation: 4.0,
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 12, 0, 6),
+                      child: Center(
+                        child: Text("Prescription ",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600)),
+                      ))),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
+              content: SizedBox(
+                height: 240,
+                width: 200,
+                child: Image.memory(DecodedPresCRIPtion),
+              ));
+        });
+  }
+
   return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -220,7 +262,7 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
                 backgroundColor: Color.fromARGB(255, 24, 36, 113),
                 child: Icon(Icons.difference_outlined)),
             title: Padding(
-              padding: const EdgeInsets.only(top:8.0),
+              padding: const EdgeInsets.only(top: 8.0),
               child: Row(
                 children: [
                   Text(data.display_name.toString(),
@@ -228,6 +270,22 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
                           color: Color(0xff123456),
                           fontWeight: FontWeight.bold,
                           fontSize: 14.0)),
+                  data.Uploaded_Prescription != "null" &&
+                          data.Uploaded_Prescription != null
+                      ? Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: InkWell(
+                              onTap: () {
+                                ShowUploadPrescripTIon(
+                                    context, data.Uploaded_Prescription);
+                              },
+                              child: Icon(
+                                Icons.image,
+                                size: 18,
+                                color: Colors.blueGrey,
+                              )),
+                        )
+                      : Text(""),
                   Spacer(),
                   Text('\u{20B9} ' + data.net_amt.toString(),
                       style: TextStyle(

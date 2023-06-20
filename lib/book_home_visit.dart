@@ -517,7 +517,7 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
                       ],
                     )),
                 Container(
-                    height: MediaQuery.of(context).size.height * 0.56,
+                    height: MediaQuery.of(context).size.height * 0.55,
                     child: GridView.builder(
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(

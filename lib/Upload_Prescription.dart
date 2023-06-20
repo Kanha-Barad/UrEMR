@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uremr/OrdersHistory.dart';
 import 'package:uremr/PatientHome.dart';
 import 'package:uremr/Widgets/BottomNavigation.dart';
@@ -204,9 +205,9 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
               onPressed: () async {
                 XFile? photo = await _picker.pickImage(
                     source: ImageSource.camera,
-                    maxHeight: 480,
-                    maxWidth: 640,
-                    imageQuality: 100,
+                    maxHeight: 1920,
+                    maxWidth: 1080,
+                    // imageQuality: 100,
                     preferredCameraDevice: CameraDevice.rear);
 
                 if (photo == null) {
@@ -247,7 +248,7 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
                   );
           }),
       floatingActionButton: InkWell(
-        onTap: () {
+        onTap: () async {
           bool isButtonDisabled = false;
 
           void SingleUserPaymentsBooking() {
@@ -264,10 +265,19 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
             }
           }
 
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+
+          String? encodedJson = prefs.getString('data1');
+          // List<dynamic> decodedJson = json.decode(encodedJson!);
+          if (globals.selectedLogin_Data == null) {
+            globals.selectedLogin_Data = json.decode(encodedJson!);
+          }
           globals.PresCripTion_Image_Converter = base64Image;
-          (globals.selectedLogin_Data["Data"].length > 1)
-              ? _MultiUserListBookingsBottomPicker(context)
-              : SingleUserPaymentsBooking();
+          files.length == 0
+              ? UploadError()
+              : (globals.selectedLogin_Data["Data"].length > 1)
+                  ? _MultiUserListBookingsBottomPicker(context)
+                  : SingleUserPaymentsBooking();
         },
         child: const SizedBox(
             height: 40,
@@ -530,4 +540,15 @@ Widget MultiUserBookings(data, BuildContext context, index) {
       ],
     ),
   );
+}
+
+UploadError() {
+  return Fluttertoast.showToast(
+      msg: "Please Upload Prescription",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Color.fromARGB(230, 228, 55, 32),
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
