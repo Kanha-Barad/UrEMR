@@ -3,11 +3,14 @@ import 'package:uremr/PatientHome.dart';
 import 'package:uremr/Widgets/BottomNavigation.dart';
 
 String Bill_NUMber = "";
+String BIlling_DATe = "";
 
 class ThankYouScreenOFUploadPrescripTIOn extends StatefulWidget {
-  ThankYouScreenOFUploadPrescripTIOn(billno) {
+  ThankYouScreenOFUploadPrescripTIOn(billno, Billdate) {
     Bill_NUMber = "";
     Bill_NUMber = billno;
+    BIlling_DATe = "";
+    BIlling_DATe = Billdate;
   }
 
   @override
@@ -77,10 +80,10 @@ class _ThankYouScreenOFUploadPrescripTIOnState
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 12, 10, 4),
             child: Row(
-              children: const [
-                Text('Enquiry Date'),
+              children: [
+                Text('Appointment Date'),
                 Spacer(),
-                Text('18 Jan 2023')
+                Text(BIlling_DATe)
               ],
             ),
           ),
@@ -89,24 +92,24 @@ class _ThankYouScreenOFUploadPrescripTIOnState
             indent: 10,
             endIndent: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 10, 10, 4),
-            child: Row(
-              children: const [
-                Text('Enquiry Address'),
-                Spacer(),
-                SizedBox(
-                    width: 140,
-                    child:
-                        Text('17, Vadsarvala Nivas Mulund West, Mumbai 400054'))
-              ],
-            ),
-          ),
-          const Divider(
-            thickness: 1.8,
-            indent: 10,
-            endIndent: 10,
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(12, 10, 10, 4),
+          //   child: Row(
+          //     children: const [
+          //       Text('Enquiry Address'),
+          //       Spacer(),
+          //       SizedBox(
+          //           width: 140,
+          //           child:
+          //               Text('17, Vadsarvala Nivas Mulund West, Mumbai 400054'))
+          //     ],
+          //   ),
+          // ),
+          // const Divider(
+          //   thickness: 1.8,
+          //   indent: 10,
+          //   endIndent: 10,
+          // ),
         ],
       )),
       bottomNavigationBar: AllBottOMNaviGAtionBar(),

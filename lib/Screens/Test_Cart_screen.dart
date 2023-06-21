@@ -47,7 +47,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     FirebaseMessaging.instance.getToken().then((value) {
-      String Device_token_ID = value!;
+      Device_token_ID = value!;
       print(Device_token_ID);
       // Update or store the token as needed
     });
@@ -177,6 +177,16 @@ class _CartScreenState extends State<CartScreen> {
       }
       if (globals.Coupon_Policy_Id == "" || globals.Coupon_Policy_Id == null) {
         globals.Coupon_Policy_Id = "0";
+      }
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      if (globals.Session_ID == null || globals.Session_ID == "") {
+        globals.Session_ID = prefs.getString('SeSSion_ID')!;
+      }
+
+      if (globals.umr_no == null || globals.umr_no == "") {
+        globals.umr_no = prefs.getString('singleUMr_No')!;
       }
       Map data = {
         "PATIENT_ID": "1",
@@ -837,7 +847,6 @@ class UserlistBottomPopup extends StatefulWidget {
 class _UserlistBottomPopupState extends State<UserlistBottomPopup> {
   @override
   Widget build(BuildContext context) {
-    
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -847,15 +856,13 @@ class _UserlistBottomPopupState extends State<UserlistBottomPopup> {
           leading: IconButton(
               onPressed: () async {
                 Navigator.pop(context);
-                 SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
+                SharedPreferences prefs = await SharedPreferences.getInstance();
 
-                              String? encodedJson = prefs.getString('data1');
-                              // List<dynamic> decodedJson = json.decode(encodedJson!);
-                              if (globals.selectedLogin_Data == null) {
-                                globals.selectedLogin_Data =
-                                    json.decode(encodedJson!);
-                              }
+                String? encodedJson = prefs.getString('data1');
+                // List<dynamic> decodedJson = json.decode(encodedJson!);
+                if (globals.selectedLogin_Data == null) {
+                  globals.selectedLogin_Data = json.decode(encodedJson!);
+                }
               },
               icon: Icon(
                 Icons.arrow_back_rounded,
@@ -932,7 +939,11 @@ Widget userBookings(
     if (globals.Coupon_Policy_Id == "" || globals.Coupon_Policy_Id == null) {
       globals.Coupon_Policy_Id = "0";
     }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    if (globals.Session_ID == null || globals.Session_ID == "") {
+      globals.Session_ID = prefs.getString('SeSSion_ID')!;
+    }
     Map data = {
       "PATIENT_ID": "1",
       "UMR_NO": globals.umr_no,

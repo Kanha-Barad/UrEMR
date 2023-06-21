@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uremr/Widgets/BottomNavigation.dart';
-import 'package:uremr/Widgets/cart_items.dart';
-import 'package:uremr/book_home_visit.dart';
 import '../ClientCodeLogin.dart';
 import '../Controllers/cart_controller.dart';
 import '../Controllers/product_controller.dart';
@@ -54,11 +52,7 @@ class _ProductOverviewPageState extends State<ProductOverviewPage> {
           leading: IconButton(
               onPressed: () {
                 //   Get.find<ProductController>().onClose();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => Book_Home_Visit(0))));
-               // cartController.items.clear();
+                Navigator.of(context).pop();
               },
               icon: Icon(
                 Icons.arrow_back,
