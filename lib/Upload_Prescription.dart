@@ -31,50 +31,10 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
   @override
   Widget build(BuildContext context) {
     FirebaseMessaging.instance.getToken().then((value) {
-      Device_token_ID = value.toString();
+      Device_token_ID = value!;
       print(value);
     });
     DateTime selectedDate = DateTime.now();
-
-    Push_Notification(BuildContext context) async {
-      var isLoading = true;
-
-      Map data = {
-        "BILL_NO": globals.Bill_No,
-        "Authorization": "",
-        "SenderId": "",
-        "Device_Id": "",
-        "body": "",
-        "Tittle": "",
-        "subtitle": "",
-        "Patient_Name": "",
-        "Mobile_no": "",
-        "IOS_ANDROID": "A",
-        "STATUS_FLAG": "B",
-        "APP_NAME": "UrEMR",
-        "firebaseurl": "",
-        "connection": globals.Patient_App_Connection_String
-      };
-
-      print(data.toString());
-      final response = await http.post(
-          Uri.parse(globals.Global_Patient_Api_URL +
-              '/PatinetMobileApp/PatPushNotifications'),
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: data,
-          encoding: Encoding.getByName("utf-8"));
-
-      setState(() {
-        isLoading = false;
-      });
-
-      if (response.statusCode == 200) {
-        Map<String, dynamic> resposne = jsonDecode(response.body);
-      }
-    }
 
     SingleUserTestBookings() async {
       if (globals.SelectedlocationId == "" ||
@@ -88,7 +48,14 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
             textColor: Colors.white,
             fontSize: 16.0);
       }
+      SharedPreferences prefs = await SharedPreferences.getInstance();
 
+      if (globals.Session_ID == null || globals.Session_ID == "") {
+        globals.Session_ID = prefs.getString('SeSSion_ID')!;
+      }
+      if (globals.umr_no == null || globals.umr_no == "") {
+        globals.umr_no = prefs.getString('singleUMr_No')!;
+      }
       Map data = {
         "PATIENT_ID": "1",
         "UMR_NO": globals.umr_no,
@@ -127,15 +94,6 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
           headers: {"Content-Type": "application/json"}, body: bodys);
       print("${response.statusCode}");
       print("${response.body}");
-      // return response;
-      //var response = await http.post(jobsListAPIUrl,
-
-      // headers: {
-      //  "Accept": "application/json",
-      // "Content-Type": "application/json",
-      //},
-      //body: data
-      // encoding: Encoding.getByName("utf-8"));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> resposne = jsonDecode(response.body);
@@ -143,36 +101,15 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
         globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
         globals.Slot_id = "";
         var bill_NUmber = resposne["Data"][0]["BILL_NO"].toString();
+        var Bill_Date = resposne["Data"][0]["CREATE_DT"].toString();
 
         globals.SelectedlocationId = "";
-        Push_Notification(context);
+        //  Push_Notification(context);
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: ((context) =>
-                    ThankYouScreenOFUploadPrescripTIOn(bill_NUmber))));
-
-        // return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        //   content: Text("Booked Successfully!"),
-        //   backgroundColor: Color.fromARGB(255, 26, 177, 122),
-        //   action: SnackBarAction(
-        //     label: "Go",
-        //     textColor: Colors.white,
-        //     onPressed: () {
-        //       Navigator.push(context,
-        //           MaterialPageRoute(builder: (context) => OredersHistory()));
-        //     },
-        //   ),
-        //   // duration: const Duration(seconds: 5),
-        //   //width: 320.0, // Width of the SnackBar.
-        //   padding: const EdgeInsets.symmetric(
-        //     horizontal: 4.0, // Inner padding for SnackBar content.
-        //   ),
-        //   behavior: SnackBarBehavior.floating,
-        //   shape: RoundedRectangleBorder(
-        //     borderRadius: BorderRadius.circular(10.0),
-        //   ),
-        // ));
+                builder: ((context) => ThankYouScreenOFUploadPrescripTIOn(
+                    bill_NUmber, Bill_Date))));
       } else {
         throw Exception('Failed to load jobs from API');
       }
@@ -356,40 +293,6 @@ ListView MultiUserListBookings(var data, BuildContext contex) {
 
 Widget MultiUserBookings(data, BuildContext context, index) {
   DateTime selectedDate = DateTime.now();
-  Push_NotificationMulti_User(BuildContext context) async {
-    var isLoading = true;
-
-    Map data = {
-      "BILL_NO": globals.Bill_No,
-      "Authorization": "",
-      "SenderId": "",
-      "Device_Id": "",
-      "body": "",
-      "Tittle": "",
-      "subtitle": "",
-      "Patient_Name": "",
-      "Mobile_no": "",
-      "IOS_ANDROID": "A",
-      "STATUS_FLAG": "B",
-      "APP_NAME": "UrEMR",
-      "firebaseurl": "",
-      "connection": globals.Patient_App_Connection_String
-    };
-
-    print(data.toString());
-    final response = await http.post(
-        Uri.parse(globals.Global_Patient_Api_URL +
-            '/PatinetMobileApp/PatPushNotifications'),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: data,
-        encoding: Encoding.getByName("utf-8"));
-    if (response.statusCode == 200) {
-      Map<String, dynamic> resposne = jsonDecode(response.body);
-    }
-  }
 
   MultiUserTestBooking() async {
     if (globals.SelectedlocationId == "" || globals.SelectedlocationId == "0") {
@@ -402,7 +305,11 @@ Widget MultiUserBookings(data, BuildContext context, index) {
           textColor: Colors.white,
           fontSize: 16.0);
     }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    if (globals.Session_ID == null || globals.Session_ID == "") {
+      globals.Session_ID = prefs.getString('SeSSion_ID')!;
+    }
     Map data = {
       "PATIENT_ID": "1",
       "UMR_NO": globals.umr_no,
@@ -458,12 +365,12 @@ Widget MultiUserBookings(data, BuildContext context, index) {
       globals.Slot_id = "";
       globals.SelectedlocationId = "";
       var bill_NUmber = resposne["Data"][0]["BILL_NO"].toString();
-      Push_NotificationMulti_User(context);
+      var Bill_Date = resposne["Data"][0]["CREATE_DT"].toString();
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: ((context) =>
-                  ThankYouScreenOFUploadPrescripTIOn(bill_NUmber))));
+                  ThankYouScreenOFUploadPrescripTIOn(bill_NUmber, Bill_Date))));
     } else {
       throw Exception('Failed to load jobs from API');
     }
@@ -552,3 +459,44 @@ UploadError() {
       textColor: Colors.white,
       fontSize: 16.0);
 }
+
+
+// Push_Notification(BuildContext context) async {
+//       var isLoading = true;
+
+//       Map data = {
+//         "BILL_NO": globals.Bill_No,
+//         "Authorization": "",
+//         "SenderId": "",
+//         "Device_Id": "",
+//         "body": "",
+//         "Tittle": "",
+//         "subtitle": "",
+//         "Patient_Name": "",
+//         "Mobile_no": "",
+//         "IOS_ANDROID": "A",
+//         "STATUS_FLAG": "B",
+//         "APP_NAME": "UrEMR",
+//         "firebaseurl": "",
+//         "connection": globals.Patient_App_Connection_String
+//       };
+
+//       print(data.toString());
+//       final response = await http.post(
+//           Uri.parse(globals.Global_Patient_Api_URL +
+//               '/PatinetMobileApp/PatPushNotifications'),
+//           headers: {
+//             "Accept": "application/json",
+//             "Content-Type": "application/x-www-form-urlencoded",
+//           },
+//           body: data,
+//           encoding: Encoding.getByName("utf-8"));
+
+//       setState(() {
+//         isLoading = false;
+//       });
+
+//       if (response.statusCode == 200) {
+//         Map<String, dynamic> resposne = jsonDecode(response.body);
+//       }
+//     }

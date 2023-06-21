@@ -111,9 +111,9 @@ class _PatientHomeState extends State<PatientHome> {
 
     globals.logindata1 = (prefs.getString('email') ?? '');
     globals.mobNO = (prefs.getString('Mobileno') ?? '');
-    if (prefs.getString('data2') != null && prefs.getString('data2') != "") {
+    if (prefs.getString('data1') != null && prefs.getString('data1') != "") {
       Map<String, dynamic> resposne =
-          (jsonDecode(prefs.getString('data2') ?? ''));
+          (jsonDecode(prefs.getString('data1') ?? ''));
       globals.selectedLogin_Data = resposne;
     }
     if (globals.mobNO != "" && globals.mobNO != null) {
@@ -133,9 +133,9 @@ class _PatientHomeState extends State<PatientHome> {
 
     globals.logindata1 = (prefs.getString('email') ?? '');
     globals.mobNO = (prefs.getString('Mobileno') ?? '');
-    if (prefs.getString('data2') != null && prefs.getString('data2') != "") {
+    if (prefs.getString('data1') != null && prefs.getString('data1') != "") {
       Map<String, dynamic> resposne =
-          (jsonDecode(prefs.getString('data2') ?? ''));
+          (jsonDecode(prefs.getString('data1') ?? ''));
       globals.selectedLogin_Data = resposne;
     }
     if (globals.mobNO != "" && globals.mobNO != null) {
