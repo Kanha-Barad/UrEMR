@@ -18,6 +18,7 @@ var GridViewList = [];
 
 DateTime now = DateTime.now();
 final formattedTimeForSlots = DateFormat("HH:mm").format(now);
+final FormattedDateForSlots = DateFormat("yyyy-MM-dd").format(now);
 //DateTime ParsedTime = DateFormat.Hm().parse(formattedTimeForSlots);
 
 class Book_Home_Visit extends StatefulWidget {
@@ -29,8 +30,7 @@ class Book_Home_Visit extends StatefulWidget {
 }
 
 class _Book_Home_VisitState extends State<Book_Home_Visit> {
-  @override
-  late int selectedIndex;
+  int selectedIndex;
   var selecteFromdt = '';
   var selecteTodt = '';
   String empID = "0";
@@ -299,6 +299,7 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
       for (int i = 0; i <= resposne['Data'].length - 1; i++) {
         GridViewList.add({
           'SLOT_TIME': resposne['Data'][i]["SLOT_TIME"],
+          'SLOT_DATE': resposne['Data'][i]["SLOT_DATE"],
           'SLOT_COUNT': resposne['Data'][i]["SLOT_COUNT"],
           'SLOT_ID': resposne['Data'][i]["SLOT_ID"],
           'LOC_NAME': resposne['Data'][i]["LOC_NAME"],
@@ -527,10 +528,376 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
                                 mainAxisSpacing: 20),
                         itemCount: GridViewList.length,
                         itemBuilder: (BuildContext ctx, index) {
-                          return GridViewList[index]["SLOT_TIME"]
-                                      .compareTo(formattedTimeForSlots) >
-                                  0
-                              ? InkWell(
+                          return FormattedDateForSlots ==
+                                  GridViewList[index]["SLOT_DATE"].split('T')[0]
+                              ? GridViewList[index]["SLOT_TIME"]
+                                          .compareTo(formattedTimeForSlots) >
+                                      0
+                                  ? InkWell(
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            barrierDismissible: true,
+                                            //context: _scaffoldKey.currentContext,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                contentPadding: EdgeInsets.only(
+                                                    left: 25, right: 25),
+                                                title: Card(
+                                                    color: Color(0xff123456),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                            side: BorderSide(
+                                                                color: Colors
+                                                                    .grey)),
+                                                    elevation: 4.0,
+                                                    child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                0, 12, 0, 12),
+                                                        child: Center(
+                                                          child: Text(
+                                                              "Bookings ",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600)),
+                                                        ))),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20.0))),
+                                                content: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 10),
+                                                  child: SizedBox(
+                                                    height: 100,
+                                                    width: 200,
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: <Widget>[
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              globals.Location_BookedTest =
+                                                                  GridViewList[
+                                                                              index]
+                                                                          [
+                                                                          "LOC_NAME"]
+                                                                      .toString();
+                                                              globals.SlotsBooked =
+                                                                  GridViewList[
+                                                                              index]
+                                                                          [
+                                                                          "SLOT_TIME"]
+                                                                      .toString();
+                                                              globals.Slot_id =
+                                                                  GridViewList[
+                                                                              index]
+                                                                          [
+                                                                          "SLOT_ID"]
+                                                                      .toString();
+
+                                                              GridViewList[index]
+                                                                          [
+                                                                          "SLOT_COUNT"] <=
+                                                                      0
+                                                                  ? print(
+                                                                      "Slots finished")
+                                                                  : Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              UpLoadPrescrIPtioN()));
+                                                            },
+                                                            child: Container(
+                                                              width: 300,
+                                                              height: 30,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                border: Border.all(
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            95,
+                                                                            218,
+                                                                            212,
+                                                                            212)),
+                                                                gradient:
+                                                                    LinearGradient(
+                                                                  colors: [
+                                                                    Color.fromARGB(
+                                                                        255,
+                                                                        234,
+                                                                        229,
+                                                                        229),
+                                                                    Color.fromARGB(
+                                                                        255,
+                                                                        234,
+                                                                        229,
+                                                                        229),
+                                                                    // Color.fromARGB(255, 26, 69, 112),
+                                                                    // Color.fromARGB(255, 37, 98, 158),
+                                                                  ],
+                                                                  begin: Alignment
+                                                                      .topLeft,
+                                                                  end: Alignment
+                                                                      .bottomRight,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                    color: Colors
+                                                                        .black12,
+                                                                    offset:
+                                                                        Offset(
+                                                                            5,
+                                                                            5),
+                                                                    blurRadius:
+                                                                        10,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10,
+                                                                        right:
+                                                                            10),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Center(
+                                                                      child:
+                                                                          Text(
+                                                                        'Upload Prescription',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.black,
+                                                                          fontSize:
+                                                                              14,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Spacer(),
+                                                                    Icon(
+                                                                        Icons
+                                                                            .arrow_circle_right_outlined,
+                                                                        color: Color(
+                                                                            0xff123456))
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 12.0),
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                globals
+                                                                    .Location_BookedTest = GridViewList[
+                                                                            index]
+                                                                        [
+                                                                        "LOC_NAME"]
+                                                                    .toString();
+                                                                globals
+                                                                    .SlotsBooked = GridViewList[
+                                                                            index]
+                                                                        [
+                                                                        "SLOT_TIME"]
+                                                                    .toString();
+                                                                globals
+                                                                    .Slot_id = GridViewList[
+                                                                            index]
+                                                                        [
+                                                                        "SLOT_ID"]
+                                                                    .toString();
+
+                                                                GridViewList[index]
+                                                                            [
+                                                                            "SLOT_COUNT"] <=
+                                                                        0
+                                                                    ? print(
+                                                                        "Slots finished")
+                                                                    : Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                ProductOverviewPage()));
+                                                              },
+                                                              child: Container(
+                                                                width: 300,
+                                                                height: 30,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  border: Border.all(
+                                                                      color: Color.fromARGB(
+                                                                          95,
+                                                                          218,
+                                                                          212,
+                                                                          212)),
+                                                                  gradient:
+                                                                      LinearGradient(
+                                                                    colors: [
+                                                                      Color.fromARGB(
+                                                                          255,
+                                                                          234,
+                                                                          229,
+                                                                          229),
+                                                                      Color.fromARGB(
+                                                                          255,
+                                                                          234,
+                                                                          229,
+                                                                          229),
+                                                                      // Color.fromARGB(255, 26, 69, 112),
+                                                                      // Color.fromARGB(255, 37, 98, 158),
+                                                                    ],
+                                                                    begin: Alignment
+                                                                        .topLeft,
+                                                                    end: Alignment
+                                                                        .bottomRight,
+                                                                  ),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: Colors
+                                                                          .black12,
+                                                                      offset:
+                                                                          Offset(
+                                                                              5,
+                                                                              5),
+                                                                      blurRadius:
+                                                                          10,
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left: 10,
+                                                                      right:
+                                                                          10),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Center(
+                                                                        child:
+                                                                            Text(
+                                                                          'TestWise Bookings',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontSize:
+                                                                                14,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      Spacer(),
+                                                                      Icon(
+                                                                          Icons
+                                                                              .arrow_circle_right_outlined,
+                                                                          color:
+                                                                              Color(0xff123456))
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            });
+                                      },
+                                      child: Card(
+                                        color:
+                                            Color.fromARGB(255, 246, 244, 244),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(6)),
+                                        elevation: 5,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              GridViewList[index]["SLOT_TIME"],
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: GridViewList[index]
+                                                            ["SLOT_COUNT"] >
+                                                        5
+                                                    ? Colors.green
+                                                    : GridViewList[index][
+                                                                    "SLOT_COUNT"] <=
+                                                                5 &&
+                                                            GridViewList[index][
+                                                                    "SLOT_COUNT"] >
+                                                                0
+                                                        ? Colors.orange
+                                                        : GridViewList[index][
+                                                                    "SLOT_COUNT"] <=
+                                                                0
+                                                            ? Colors.grey
+                                                            : Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : Card(
+                                      color: Color.fromARGB(255, 203, 199, 199),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(6)),
+                                      elevation: 5,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            GridViewList[index]["SLOT_TIME"],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Color.fromARGB(
+                                                    255, 127, 122, 122)),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                              : InkWell(
                                   onTap: () {
                                     showDialog(
                                         context: context,
@@ -856,24 +1223,6 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
                                         ),
                                       ],
                                     ),
-                                  ),
-                                )
-                              : Card(
-                                  color: Color.fromARGB(255, 203, 199, 199),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6)),
-                                  elevation: 5,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        GridViewList[index]["SLOT_TIME"],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                255, 127, 122, 122)),
-                                      ),
-                                    ],
                                   ),
                                 );
                         })),

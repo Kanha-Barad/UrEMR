@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -27,6 +28,7 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
   final ImagePicker _picker = ImagePicker();
   File? file;
   List<File?> files = [];
+  // late Uint8List BYTes;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,33 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
       print(value);
     });
     DateTime selectedDate = DateTime.now();
+    SavingBase64ImageSingleUser(BilLNuMbEr, billDATE) async {
+      Map data = {
+        "Bill_no": BilLNuMbEr,
+        "connection": globals.Patient_App_Connection_String,
+        "Base64string": globals.PresCripTion_Image_Converter,
+      };
+      final jobsListAPIUrl = Uri.parse(globals.Global_Patient_Api_URL +
+          '/PatinetMobileApp/UpdateBytesimage');
+
+      var bodys = json.encode(data);
+
+      var response = await http.post(jobsListAPIUrl,
+          headers: {"Content-Type": "application/json"}, body: bodys);
+      print("${response.statusCode}");
+      print("${response.body}");
+      if (response.statusCode == 200) {
+        Map<String, dynamic> resposne = jsonDecode(response.body);
+        List jsonResponse = resposne["Data"];
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: ((context) =>
+                    ThankYouScreenOFUploadPrescripTIOn(BilLNuMbEr, billDATE))));
+      } else {
+        throw Exception('Failed to load jobs from API');
+      }
+    }
 
     SingleUserTestBookings() async {
       if (globals.SelectedlocationId == "" ||
@@ -99,17 +128,12 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
         Map<String, dynamic> resposne = jsonDecode(response.body);
         List jsonResponse = resposne["Data"];
         globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
-        globals.Slot_id = "";
         var bill_NUmber = resposne["Data"][0]["BILL_NO"].toString();
         var Bill_Date = resposne["Data"][0]["CREATE_DT"].toString();
 
-        globals.SelectedlocationId = "";
         //  Push_Notification(context);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: ((context) => ThankYouScreenOFUploadPrescripTIOn(
-                    bill_NUmber, Bill_Date))));
+        SavingBase64ImageSingleUser(bill_NUmber, Bill_Date);
+        globals.SelectedlocationId = "";
       } else {
         throw Exception('Failed to load jobs from API');
       }
@@ -152,12 +176,13 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
                   setState(() {
                     file = File(photo.path);
                     files.add(File(photo.path));
-                    final bytes = File(photo.path).readAsBytesSync();
-                    base64Image = base64Encode(bytes);
+                    final BYTes = File(photo.path).readAsBytesSync();
+                    base64Image = base64Encode(BYTes);
+                    //  BYTes= base64.decode(base64Image);
                   });
                 }
               },
-              icon: Icon(Icons.camera)),
+              icon: Icon(Icons.camera_alt_outlined)),
         ],
       ),
       body: ListView.builder(
@@ -293,6 +318,33 @@ ListView MultiUserListBookings(var data, BuildContext contex) {
 
 Widget MultiUserBookings(data, BuildContext context, index) {
   DateTime selectedDate = DateTime.now();
+  SavingBase64ImageMultiUser(BilLNuMbEr, billDATE) async {
+    Map data = {
+      "Bill_no": BilLNuMbEr,
+      "connection": globals.Patient_App_Connection_String,
+      "Base64string": globals.PresCripTion_Image_Converter,
+    };
+    final jobsListAPIUrl = Uri.parse(
+        globals.Global_Patient_Api_URL + '/PatinetMobileApp/UpdateBytesimage');
+
+    var bodys = json.encode(data);
+
+    var response = await http.post(jobsListAPIUrl,
+        headers: {"Content-Type": "application/json"}, body: bodys);
+    print("${response.statusCode}");
+    print("${response.body}");
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      List jsonResponse = resposne["Data"];
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: ((context) =>
+                  ThankYouScreenOFUploadPrescripTIOn(BilLNuMbEr, billDATE))));
+    } else {
+      throw Exception('Failed to load jobs from API');
+    }
+  }
 
   MultiUserTestBooking() async {
     if (globals.SelectedlocationId == "" || globals.SelectedlocationId == "0") {
@@ -362,15 +414,12 @@ Widget MultiUserBookings(data, BuildContext context, index) {
       Map<String, dynamic> resposne = jsonDecode(response.body);
       List jsonResponse = resposne["Data"];
       // globals.Bill_No = resposne["Data"][0]["BILL_NO"].toString();
-      globals.Slot_id = "";
-      globals.SelectedlocationId = "";
+
       var bill_NUmber = resposne["Data"][0]["BILL_NO"].toString();
       var Bill_Date = resposne["Data"][0]["CREATE_DT"].toString();
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: ((context) =>
-                  ThankYouScreenOFUploadPrescripTIOn(bill_NUmber, Bill_Date))));
+      SavingBase64ImageMultiUser(bill_NUmber, Bill_Date);
+      globals.Slot_id = "";
+      globals.SelectedlocationId = "";
     } else {
       throw Exception('Failed to load jobs from API');
     }

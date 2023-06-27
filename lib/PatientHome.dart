@@ -334,7 +334,8 @@ class _PatientHomeState extends State<PatientHome> {
                   onTap: () async {
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
-                    if (prefs.getString('Mobileno') == "") {
+                    if (prefs.getString('Mobileno') == "" ||
+                        prefs.getString('Mobileno') == null) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -350,11 +351,23 @@ class _PatientHomeState extends State<PatientHome> {
                   leading: const Icon(Icons.person),
                   title: const Text("Profile")),
               ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => OredersHistory()),
-                    );
+                  onTap: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    if (prefs.getString('Mobileno') == "" ||
+                        prefs.getString('Mobileno') == null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PatientLogin("")),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OredersHistory()),
+                      );
+                    }
                   },
                   leading: const Icon(Icons.shopping_cart),
                   title: const Text("Order History")),
@@ -478,15 +491,16 @@ class _PatientHomeState extends State<PatientHome> {
               ),
               Container(
                 color: Color.fromARGB(179, 168, 185, 202),
-                height: 60,
-                width: MediaQuery.of(context).size.width * 1,
+                // height: 60,
+                // width: MediaQuery.of(context).size.width * 1,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.38,
-                      height: 55,
+                      // height: 55,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                        padding: const EdgeInsets.fromLTRB(10, 8, 0, 8),
                         child: TextButton(
                           onPressed: () {
                             _SaveOrderHIStroy();
@@ -511,22 +525,23 @@ class _PatientHomeState extends State<PatientHome> {
                               image: NetworkImage(globals.All_Client_Logo))),
                     ),
                     // Padding(
-                    //   padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
+                    //   padding: EdgeInsets.fromLTRB(0, 3, 0, 3),
                     //   child: Container(
                     //     height: 43.0,
-                    //     width: 80.0,
+                    //     width: 50.0,
                     //     decoration: const BoxDecoration(
                     //         shape: BoxShape.rectangle,
                     //         image: DecorationImage(
-                    //             image: AssetImage("assets/images/jariwala.jpg"),
-                    //             fit: BoxFit.fitHeight)),
+                    //             image:
+                    //                 AssetImage("assets/images/asterlabs.png"),
+                    //             fit: BoxFit.fill)),
                     //   ),
                     // ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.38,
-                      height: 55,
+                      // height: 55,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                        padding: const EdgeInsets.fromLTRB(0, 8, 10, 8),
                         child: TextButton(
                           onPressed: () {
                             _SaveLoginDataTrends();

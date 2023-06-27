@@ -7,7 +7,7 @@ class Product {
   final double price;
   // bool isFavourite;
   final int Service_Id;
-  final int Service_Type_Id;
+  final String Service_Type_Id;
 
   Product(
       {required this.id,

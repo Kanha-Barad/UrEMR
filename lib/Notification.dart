@@ -271,7 +271,7 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
                           fontWeight: FontWeight.bold,
                           fontSize: 14.0)),
                   data.Uploaded_Prescription != "null" &&
-                          data.Uploaded_Prescription != null
+                          data.Uploaded_Prescription != null && data.Uploaded_Prescription != ""
                       ? Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: InkWell(
