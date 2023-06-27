@@ -77,3 +77,23 @@ class _PatientAppState extends State<PatientApp> {
         );
   }
 }
+
+
+// if (Platform.isIOS) {
+//     await Firebase.initializeApp(
+//         options: const FirebaseOptions(
+//             apiKey: "AIzaSyBZEGRMcioR0I5QDERsJKKMWZk690MgFQA",
+//             appId: "1:672492402457:ios:eecf5827b567ccb7acf788",
+//             messagingSenderId: "672492402457",
+//             projectId: "suvarna-crm")
+//     );
+//   }
+//   else {
+//     await Firebase.initializeApp(
+//         options: const FirebaseOptions(
+//             apiKey: "AIzaSyAhxDQpeF9G3a4BPWJ_8nYIF1B4E1h9KNM",
+//             appId: "1:672492402457:android:02183fb219c6b912acf788",
+//             messagingSenderId: "672492402457",
+//             projectId: "suvarna-crm")
+//     );
+//   }

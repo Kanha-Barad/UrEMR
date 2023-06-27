@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import './PatientLogin.dart';
@@ -163,6 +164,9 @@ class _PatientRegisterState extends State<PatientRegister> {
             padding: EdgeInsets.symmetric(vertical: 2),
             child: TextField(
               keyboardType: TextInputType.phone,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
               controller: MobNoController,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.phone_android),
@@ -178,6 +182,9 @@ class _PatientRegisterState extends State<PatientRegister> {
             padding: EdgeInsets.symmetric(vertical: 2),
             child: TextField(
               keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
               controller: AgeController,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.today),

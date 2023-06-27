@@ -73,7 +73,7 @@ class ProductController extends GetxController {
               title: responseData[i]["SERVICE_NAME"].toString(),
               price: responseData[i]["PRICE"],
               Service_Id: responseData[i]["SERVICE_ID"],
-              Service_Type_Id: responseData[i]["SERVICE_TYPE_ID"],
+              Service_Type_Id: responseData[i]["SERVICE_TYPE_ID"].toString(),
             ),
           );
         }

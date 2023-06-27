@@ -56,7 +56,8 @@ class _AllBottOMNaviGAtionBarState extends State<AllBottOMNaviGAtionBar> {
                   onTap: () async {
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
-                    if (prefs.getString('Mobileno') == "") {
+                    if (prefs.getString('Mobileno') == "" ||
+                        prefs.getString('Mobileno') == null) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -108,7 +109,7 @@ class _AllBottOMNaviGAtionBarState extends State<AllBottOMNaviGAtionBar> {
                     (prefs.setString('ConnectionString', ''));
                     // (prefs.setString('Status_FLag', ''));
                     (prefs.setString('SeSSion_ID', ''));
-                    // (prefs.setString('UMr_No', ''));
+                    (prefs.setString('singleUMr_No', ''));
                     cartController.items.clear();
 //ProductController.clear();
                     Navigator.push(

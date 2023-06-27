@@ -198,7 +198,7 @@ class _PatientLoginState extends State<PatientLogin> {
                 height: 80,
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
+                padding: const EdgeInsets.fromLTRB(0, 3, 0, 65),
                 child: SizedBox(
                     height: 70.0,
                     width: 150.0,
@@ -213,9 +213,7 @@ class _PatientLoginState extends State<PatientLogin> {
               //           image: AssetImage("assets/images/jariwala.jpg"),
               //           fit: BoxFit.fitHeight)),
               // ),
-              SizedBox(
-                height: 70,
-              ),
+
               Center(
                 child: Text(
                   'Please Login to Continue your Profile',

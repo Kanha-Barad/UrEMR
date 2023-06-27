@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uremr/OrdersHistory.dart';
 import '../Controllers/cart_controller.dart';
 import '../Controllers/order_controller.dart';
 import '../Coupons.dart';
@@ -244,7 +245,7 @@ class _CartScreenState extends State<CartScreen> {
             textColor: Colors.white,
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => PatientHome()));
+                  MaterialPageRoute(builder: (context) => OredersHistory()));
               cartController.clear();
               productcontroller.resetAll();
               globals.GlobalDiscountCoupons = "";
@@ -1000,7 +1001,7 @@ Widget userBookings(
           textColor: Colors.white,
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PatientHome()));
+                MaterialPageRoute(builder: (context) => OredersHistory()));
             cartController.clear();
             productcontroller.resetAll();
             globals.GlobalDiscountCoupons = "";

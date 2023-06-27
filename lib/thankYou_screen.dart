@@ -58,8 +58,8 @@ class _ThankYouScreenOFUploadPrescripTIOnState
               color: Color.fromARGB(255, 21, 29, 118),
             ),
           ),
-          const Text(
-            'Thank You!\nYour Home Visit Slot Has Been Booked.',
+           Text(
+            'Thank You!\nYour appointment Has Been Booked,\nphlebo will collect cash.',
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Color.fromARGB(255, 21, 29, 118),

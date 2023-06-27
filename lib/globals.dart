@@ -64,7 +64,7 @@ String PresCripTion_Image_Converter = "";
 /**-----------------------APP INFO---------------------------------------------------- */
 String Global_All_Client_Api_URL = "https://mobileappjw.softmed.in";
 String Global_Patient_Api_URL = "https://asterlabs.asterdmhealthcare.com/MOBILEAPPAPI/";
-String Patient_App_Connection_String = "Server=172.24.248.12;User id=ALUATDB.SVCA;Password=DSFg45THFD;Database=P_ASTER_Live_Testing";
+String Patient_App_Connection_String = "Server=172.24.248.12;User id=ALUATDB.SVCA;Password=DSFg45THFD;Database=P_ASTER_LIMS_UAT_2023";
 String All_Client_Logo = "http://137.59.200.62/slims_apps/App_img/AsterLogo.png";
 String Patient_report_URL = "";
 String Patient_OTP_URL = "";
