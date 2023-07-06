@@ -29,20 +29,20 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   DateTime selectedDate = DateTime.now();
-  _selectDate(BuildContext context) async {
-    final DateTime? selected = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2010),
-      lastDate: DateTime(2025),
-    );
-    if (selected != null && selected != selectedDate) {
-      setState(() {
-        selectedDate = selected;
-        globals.selectDate = DateFormat('yyyy-MM-dd').format(selectedDate);
-      });
-    }
-  }
+  // _selectDate(BuildContext context) async {
+  //   final DateTime? selected = await showDatePicker(
+  //     context: context,
+  //     initialDate: selectedDate,
+  //     firstDate: DateTime(2010),
+  //     lastDate: DateTime(2025),
+  //   );
+  //   if (selected != null && selected != selectedDate) {
+  //     setState(() {
+  //       selectedDate = selected;
+  //       globals.selectDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+  //     });
+  //   }
+  // }
 
   var _selectedItem;
   @override
@@ -238,7 +238,7 @@ class _CartScreenState extends State<CartScreen> {
         // globals.Preferedsrvs = jsonDecode(response.body);
         //  Push_Notification_Message(context, globals.Bill_No);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Booked Successfully!'),
+          content: Text('Thank you, Test booked Successfully'),
           backgroundColor: Color.fromARGB(255, 26, 177, 122),
           action: SnackBarAction(
             label: "View",
@@ -994,7 +994,7 @@ Widget userBookings(
 
       // globals.SelectedlocationId = "";
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Booked Successfully!'),
+        content: Text('Thank you, Test booked Successfully'),
         backgroundColor: Color.fromARGB(255, 26, 177, 122),
         action: SnackBarAction(
           label: "View",

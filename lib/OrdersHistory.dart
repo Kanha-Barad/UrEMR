@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uremr/Widgets/BottomNavigation.dart';
 import './MyTrends.dart';
 import 'Screens/Test_Cart_screen.dart';
@@ -7,6 +8,8 @@ import 'globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+
+TextEditingController CancelReason = TextEditingController();
 
 class OredersHistory extends StatefulWidget {
   const OredersHistory({Key? key}) : super(key: key);
@@ -568,6 +571,7 @@ class Orderhistory {
   final gender;
   final net_amt;
   final outstanding_due;
+  final ReQuire_CancEl;
   Orderhistory({
     required this.display_name,
     required this.bill_no,
@@ -576,6 +580,7 @@ class Orderhistory {
     required this.gender,
     required this.net_amt,
     required this.outstanding_due,
+    required this.ReQuire_CancEl,
   });
   factory Orderhistory.fromJson(Map<String, dynamic> json) {
     return Orderhistory(
@@ -586,6 +591,7 @@ class Orderhistory {
       gender: json['GENDER'].toString(),
       net_amt: json['NET_AMOUNT'].toString(),
       outstanding_due: json['OUTSTANDING_DUE'].toString(),
+      ReQuire_CancEl: json['IS_REQ_CANCEL'].toString(),
     );
   }
 }
@@ -600,6 +606,43 @@ ListView OrderListListView(data, BuildContext contex, String flg) {
 }
 
 Widget _OrderListDetails(var data, BuildContext context, flg) {
+  final mediaQuery = MediaQuery.of(context);
+
+  CanCELTesT(BILL_Number, cancelREASON) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (globals.Session_ID == null || globals.Session_ID == "") {
+      globals.Session_ID = prefs.getString('SeSSion_ID')!;
+    }
+    Map data = {
+      "Bill_no": BILL_Number,
+      "Session_id": globals.Session_ID,
+      "connection": globals.Patient_App_Connection_String,
+      "Service_id": cancelREASON,
+      //"Server_Flag":""
+    };
+    print(data.toString());
+
+    final response = await http.post(
+        Uri.parse(globals.Global_Patient_Api_URL +
+            '/PatinetMobileApp/CancelPatientBill'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      List jsonResponse = resposne["Data"];
+      Navigator.push(
+          context, MaterialPageRoute(builder: ((context) => OredersHistory())));
+      CancelReason.text = "";
+    } else {
+      throw Exception('Failed to load jobs from API');
+    }
+  }
+
   return GestureDetector(
     onTap: () {
       // globals.SelectedPatientDetails = data;
@@ -684,34 +727,135 @@ Widget _OrderListDetails(var data, BuildContext context, flg) {
                                 //   'Track',
                                 //   style: TextStyle(fontSize: 12),
                                 // ),
-                                // (double.parse(data.outstanding_due) > 0)
-                                //     ? SizedBox(
-                                //         height: 33,
-                                //         width: 69,
-                                //         child: InkWell(
-                                //             child: Card(
-                                //               color: Color.fromARGB(
-                                //                   255, 226, 145, 24),
-                                //               elevation: 2.0,
-                                //               shape: RoundedRectangleBorder(
-                                //                   borderRadius:
-                                //                       BorderRadius.circular(4)),
-                                //               child: Padding(
-                                //                 padding:
-                                //                     const EdgeInsets.all(3.0),
-                                //                 child: Center(
-                                //                     child: Text("Pay Now",
-                                //                         style: TextStyle(
-                                //                             color: Colors.white,
-                                //                             fontSize: 14,
-                                //                             fontWeight:
-                                //                                 FontWeight
-                                //                                     .w500))),
-                                //               ),
-                                //             ),
-                                //             onTap: () {}),
-                                //       )
-                                //     : SizedBox()
+                                (data.ReQuire_CancEl == "Y")
+                                    ? SizedBox(
+                                        height: 33,
+                                        width: 62,
+                                        child: InkWell(
+                                            child: Card(
+                                              color: Color.fromARGB(
+                                                  255, 237, 77, 37),
+                                              elevation: 2.0,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4)),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(3.0),
+                                                child: Center(
+                                                    child: Text("Cancel",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 14 *
+                                                                mediaQuery
+                                                                    .textScaleFactor,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500))),
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              showDialog<String>(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return StatefulBuilder(
+                                                        builder: (BuildContext
+                                                                context,
+                                                            StateSetter
+                                                                setState) {
+                                                      return AlertDialog(
+                                                          shape: const RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          16.0))),
+                                                          title: const Text(
+                                                              'Cancel Order :',
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500)),
+                                                          content:
+                                                              SingleChildScrollView(
+                                                                  child:
+                                                                      ConstrainedBox(
+                                                            constraints:
+                                                                BoxConstraints(
+                                                              maxHeight: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height *
+                                                                  0.12, // Set the preferred height here
+                                                            ),
+                                                            child: Column(
+                                                              children: [
+                                                                TextFormField(
+                                                                  autofocus:
+                                                                      true,
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .text,
+                                                                  controller:
+                                                                      CancelReason,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    border: OutlineInputBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(50)),
+                                                                    // prefixIcon:
+                                                                    //     Icon(Icons
+                                                                    //         .phone_android),
+                                                                    focusColor:
+                                                                        Color(
+                                                                            0xff123456),
+                                                                    hintText:
+                                                                        'Cancel Reason',
+                                                                  ),
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    InkWell(
+                                                                      child:
+                                                                          Card(
+                                                                          color: Color.fromARGB(
+                                                                            255,
+                                                                            21,
+                                                                            50,
+                                                                            179),
+                                                                          elevation:
+                                                                            2.0,
+                                                                          shape:
+                                                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                                                          child:
+                                                                            Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.all(3.0),
+                                                                          child:
+                                                                              Center(child: Text("ok", style: TextStyle(color: Colors.white, fontSize: 14 * mediaQuery.textScaleFactor, fontWeight: FontWeight.w600))),
+                                                                          ),
+                                                                        ),
+                                                                      onTap:
+                                                                          () {
+                                                                        CanCELTesT(
+                                                                            data.bill_no,
+                                                                            CancelReason.text);
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                          )));
+                                                    });
+                                                  });
+                                            }),
+                                      )
+                                    : SizedBox()
                               ],
                             ),
                           ),

@@ -59,7 +59,7 @@ class _ThankYouScreenOFUploadPrescripTIOnState
             ),
           ),
            Text(
-            'Thank You!\nYour appointment Has Been Booked,\nphlebo will collect cash.',
+            'Thank you ! Your Request has been taken.\nOur Customer care will connect and confirm the test mentioned in your prescription for booking.',
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Color.fromARGB(255, 21, 29, 118),
