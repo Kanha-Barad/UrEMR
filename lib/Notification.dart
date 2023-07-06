@@ -3,10 +3,13 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uremr/Widgets/BottomNavigation.dart';
 import './PatientHome.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
+
+TextEditingController CancelReaSON = TextEditingController();
 
 class BookingINProgressNotification extends StatefulWidget {
   const BookingINProgressNotification({Key? key}) : super(key: key);
@@ -142,25 +145,28 @@ class ProgressNotification {
   final Employee_Mob_No;
   final Reject_Reason;
   final Uploaded_Prescription;
-  ProgressNotification(
-      {required this.display_name,
-      required this.bill_no,
-      required this.bill_id,
-      required this.bill_dt,
-      required this.gender,
-      required this.net_amt,
-      required this.outstanding_due,
-      required this.Assigned_DT,
-      required this.Accepted_DT,
-      required this.Started_DT,
-      required this.Reached_DT,
-      required this.Reject_DT,
-      required this.Completed_DT,
-      required this.Status,
-      required this.Employee,
-      required this.Employee_Mob_No,
-      required this.Reject_Reason,
-      required this.Uploaded_Prescription});
+  final ReQuire_CancEl;
+  ProgressNotification({
+    required this.display_name,
+    required this.bill_no,
+    required this.bill_id,
+    required this.bill_dt,
+    required this.gender,
+    required this.net_amt,
+    required this.outstanding_due,
+    required this.Assigned_DT,
+    required this.Accepted_DT,
+    required this.Started_DT,
+    required this.Reached_DT,
+    required this.Reject_DT,
+    required this.Completed_DT,
+    required this.Status,
+    required this.Employee,
+    required this.Employee_Mob_No,
+    required this.Reject_Reason,
+    required this.Uploaded_Prescription,
+    required this.ReQuire_CancEl,
+  });
   factory ProgressNotification.fromJson(Map<String, dynamic> json) {
     return ProgressNotification(
       display_name: json['DISPLAY_NAME'].toString(),
@@ -181,6 +187,7 @@ class ProgressNotification {
       Employee_Mob_No: json['EMP_MOBILE'].toString(),
       Reject_Reason: json['REJECT_REASON'].toString(),
       Uploaded_Prescription: json['UPLOAD_PRESCRIPTION'].toString(),
+      ReQuire_CancEl: json['IS_REQ_CANCEL'].toString(),
     );
   }
 }
@@ -195,6 +202,45 @@ ListView _ProgressNotiFicationListView(data, BuildContext contex) {
 }
 
 Widget _ProgressNotiFication(var data, BuildContext context) {
+  final mediaQuery = MediaQuery.of(context);
+
+  CanCELTesT(BILL_Number, CANcelReason) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (globals.Session_ID == null || globals.Session_ID == "") {
+      globals.Session_ID = prefs.getString('SeSSion_ID')!;
+    }
+    Map data = {
+      "Bill_no": BILL_Number,
+      "Session_id": globals.Session_ID,
+      "connection": globals.Patient_App_Connection_String,
+      "Service_id": CANcelReason,
+      //"Server_Flag":""
+    };
+    print(data.toString());
+
+    final response = await http.post(
+        Uri.parse(globals.Global_Patient_Api_URL +
+            '/PatinetMobileApp/CancelPatientBill'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposne = jsonDecode(response.body);
+      List jsonResponse = resposne["Data"];
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: ((context) => BookingINProgressNotification())));
+      CancelReaSON.text = "";
+    } else {
+      throw Exception('Failed to load jobs from API');
+    }
+  }
+
   void ShowUploadPrescripTIon(BuildContext context, String PrescripTIONImage) {
     // Decode the Base64 string
     //Uint8List bytes = base64.decode(PrescripTIONImage);
@@ -271,7 +317,8 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
                           fontWeight: FontWeight.bold,
                           fontSize: 14.0)),
                   data.Uploaded_Prescription != "null" &&
-                          data.Uploaded_Prescription != null && data.Uploaded_Prescription != ""
+                          data.Uploaded_Prescription != null &&
+                          data.Uploaded_Prescription != ""
                       ? Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: InkWell(
@@ -292,11 +339,120 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
                           color: Color.fromARGB(255, 218, 75, 65),
                           fontWeight: FontWeight.bold,
                           fontSize: 13.0)),
+                  // (data.ReQuire_CancEl == "Y")
+                  //     ? InkWell(
+                  //         onTap: () {
+                  //           showDialog<String>(
+                  //               context: context,
+                  //               builder: (BuildContext context) {
+                  //                 return StatefulBuilder(builder:
+                  //                     (BuildContext context,
+                  //                         StateSetter setState) {
+                  //                   return AlertDialog(
+                  //                       shape: const RoundedRectangleBorder(
+                  //                           borderRadius: BorderRadius.all(
+                  //                               Radius.circular(16.0))),
+                  //                       title: const Text('Cancel Order :',
+                  //                           style: TextStyle(
+                  //                               fontSize: 16,
+                  //                               fontWeight: FontWeight.w500)),
+                  //                       content: SingleChildScrollView(
+                  //                           child: ConstrainedBox(
+                  //                         constraints: BoxConstraints(
+                  //                           maxHeight: MediaQuery.of(context)
+                  //                                   .size
+                  //                                   .height *
+                  //                               0.1, // Set the preferred height here
+                  //                         ),
+                  //                         child: Column(
+                  //                           children: [
+                  //                             TextFormField(
+                  //                               autofocus: true,
+                  //                               keyboardType:
+                  //                                   TextInputType.text,
+                  //                               controller: CancelReaSON,
+                  //                               decoration: InputDecoration(
+                  //                                 border: OutlineInputBorder(
+                  //                                     borderRadius:
+                  //                                         BorderRadius.circular(
+                  //                                             50)),
+                  //                                 // prefixIcon:
+                  //                                 //     Icon(Icons
+                  //                                 //         .phone_android),
+                  //                                 focusColor: Color(0xff123456),
+                  //                                 hintText: 'Cancel Reason',
+                  //                               ),
+                  //                             ),
+                  //                             Row(
+                  //                               mainAxisAlignment:
+                  //                                   MainAxisAlignment.end,
+                  //                               children: [
+                  //                                 InkWell(
+                  //                                   child: SizedBox(
+                  //                                     width: 50,
+                  //                                     height: 30,
+                  //                                     child: Card(
+                  //                                       color: Color.fromARGB(
+                  //                                           255, 21, 50, 179),
+                  //                                       elevation: 2.0,
+                  //                                       shape:
+                  //                                           RoundedRectangleBorder(
+                  //                                               borderRadius:
+                  //                                                   BorderRadius
+                  //                                                       .circular(
+                  //                                                           4)),
+                  //                                       child: Padding(
+                  //                                         padding:
+                  //                                             const EdgeInsets
+                  //                                                 .all(3.0),
+                  //                                         child: Center(
+                  //                                             child: Text("ok",
+                  //                                                 style: TextStyle(
+                  //                                                     color: Colors
+                  //                                                         .white,
+                  //                                                     fontSize: 14 *
+                  //                                                         mediaQuery
+                  //                                                             .textScaleFactor,
+                  //                                                     fontWeight:
+                  //                                                         FontWeight
+                  //                                                             .w600))),
+                  //                                       ),
+                  //                                     ),
+                  //                                   ),
+                  //                                   onTap: () {
+                  //                                     CanCELTesT(data.bill_no,
+                  //                                         CancelReaSON.text);
+                  //                                   },
+                  //                                 ),
+                  //                               ],
+                  //                             )
+                  //                           ],
+                  //                         ),
+                  //                       )));
+                  //                 });
+                  //               });
+                  //         },
+                  //         child: Card(
+                  //             color: Color.fromARGB(255, 216, 33, 20),
+                  //             shape: RoundedRectangleBorder(
+                  //                 borderRadius: BorderRadius.circular(8)),
+                  //             child: Padding(
+                  //                 padding:
+                  //                     const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                  //                 child: Center(
+                  //                   child: Text("Cancel",
+                  //                       style: TextStyle(
+                  //                           color: Colors.white,
+                  //                           fontWeight: FontWeight.w600,
+                  //                           fontSize: 11.0)),
+                  //                 ))),
+                  //       )
+                  //     : SizedBox(),
                 ],
               ),
             ),
             subtitle: Padding(
-              padding: const EdgeInsets.only(top: 2),
+              padding: const EdgeInsets.only(top: 4),
               child: Column(
                 children: [
                   Row(
@@ -306,122 +462,125 @@ Widget _ProgressNotiFication(var data, BuildContext context) {
                               color: Color.fromARGB(255, 90, 133, 173),
                               fontWeight: FontWeight.bold,
                               fontSize: 10.0)),
-                      Spacer(),
-                      if (data.Status == "Assigned")
-                        Card(
-                            color: Color.fromARGB(255, 221, 180, 65),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                child: Center(
-                                  child: Text("Assigned",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 11.0)),
-                                )))
-                      else if (data.Status == "Accepted")
-                        Card(
-                            color: Color.fromARGB(255, 25, 160, 66),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                child: Center(
-                                  child: Text("Accepted",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 11.0)),
-                                )))
-                      else if (data.Status == "Started")
-                        Card(
-                            color: Color.fromARGB(255, 174, 178, 178),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                child: Center(
-                                  child: Text("Started",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 11.0)),
-                                )))
-                      else if (data.Status == "Reached")
-                        Card(
-                            color: Color.fromARGB(255, 191, 76, 176),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                child: Center(
-                                  child: Text("Reached",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 11.0)),
-                                )))
-                      else if (data.Status == "Completed")
-                        Card(
-                            color: Color.fromARGB(255, 108, 86, 214),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                child: Center(
-                                  child: Text("Completed",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 11.0)),
-                                )))
-                      else if (data.Status == "Rejected")
-                        Card(
-                            color: Color.fromARGB(255, 235, 30, 26),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                child: Center(
-                                  child: Text("Rejected",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 11.0)),
-                                )))
-                      else
-                        Card(
-                            color: Color.fromARGB(255, 233, 117, 28),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
-                                child: Center(
-                                  child: Text("Pending",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 11.0)),
-                                ))),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Text(data.bill_dt.toString(),
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 90, 133, 173),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10.0)),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 3.0, bottom: 4),
+                    child: Row(
+                      children: [
+                        Text(data.bill_dt.toString(),
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 90, 133, 173),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10.0)),
+                        Spacer(),
+                        if (data.Status == "Assigned")
+                          Card(
+                              color: Color.fromARGB(255, 221, 180, 65),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                  child: Center(
+                                    child: Text("Assigned",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 11.0)),
+                                  )))
+                        else if (data.Status == "Accepted")
+                          Card(
+                              color: Color.fromARGB(255, 25, 160, 66),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                  child: Center(
+                                    child: Text("Accepted",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 11.0)),
+                                  )))
+                        else if (data.Status == "Started")
+                          Card(
+                              color: Color.fromARGB(255, 174, 178, 178),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                  child: Center(
+                                    child: Text("Started",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 11.0)),
+                                  )))
+                        else if (data.Status == "Reached")
+                          Card(
+                              color: Color.fromARGB(255, 191, 76, 176),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                  child: Center(
+                                    child: Text("Reached",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 11.0)),
+                                  )))
+                        else if (data.Status == "Completed")
+                          Card(
+                              color: Color.fromARGB(255, 108, 86, 214),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                  child: Center(
+                                    child: Text("Completed",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 11.0)),
+                                  )))
+                        else if (data.Status == "Rejected")
+                          Card(
+                              color: Color.fromARGB(255, 235, 30, 26),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                  child: Center(
+                                    child: Text("Rejected",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 11.0)),
+                                  )))
+                        else
+                          Card(
+                              color: Color.fromARGB(255, 233, 117, 28),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(6.0, 4, 6, 4),
+                                  child: Center(
+                                    child: Text("Pending",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 11.0)),
+                                  ))),
+                      ],
+                    ),
                   )
                 ],
               ),

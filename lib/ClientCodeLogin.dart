@@ -48,26 +48,36 @@ class _AccessClientCodeLoginState extends State<AccessClientCodeLogin> {
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         print(prefs.getString('AppCODE'));
-        setState(() {
+        //setState(() {
           prefs
               .setString(
                   'AppCODE', jsonDecode(response.body)['Data'][0]['APP_CD'])
               .toString();
           prefs
-              .setString('PatientAppApiURL',
-                  jsonDecode(response.body)['Data'][0]['API_URL'])
+              .setString(
+                  'PatientAppApiURL',
+                  utf8.decode(base64
+                      .decode(jsonDecode(response.body)['Data'][0]['API_URL'])))
               .toString();
-          prefs.setString("ConnectionString",
-              jsonDecode(response.body)['Data'][0]['CONNECTION_STRING']);
-
-          prefs.setString("CompanyLogo",
-              jsonDecode(response.body)['Data'][0]['COMPANY_LOGO']);
+          prefs.setString(
+              "ConnectionString",
+              utf8.decode(base64.decode(
+                  jsonDecode(response.body)['Data'][0]['CONNECTION_STRING'])));
 
           prefs.setString(
-              "ReportURL", jsonDecode(response.body)['Data'][0]['REPORT_URL']);
+              "CompanyLogo",
+              utf8.decode(base64.decode(
+                  jsonDecode(response.body)['Data'][0]['COMPANY_LOGO'])));
+
           prefs.setString(
-              "OTPURL", jsonDecode(response.body)['Data'][0]['OTP_URL']);
-        });
+              "ReportURL",
+              utf8.decode(base64
+                  .decode(jsonDecode(response.body)['Data'][0]['REPORT_URL'])));
+          prefs.setString(
+              "OTPURL",
+              utf8.decode(base64
+                  .decode(jsonDecode(response.body)['Data'][0]['OTP_URL'])));
+       // });
         globals.Client_App_Code = (prefs.getString('AppCODE') ?? '');
         globals.Global_Patient_Api_URL =
             (prefs.getString('PatientAppApiURL') ?? '');

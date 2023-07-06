@@ -61,7 +61,16 @@ String ToDate = "";
 String Booking_Status_Flag = "";
 String PresCripTion_Image_Converter = "";
 
-/**-----------------------APP INFO---------------------------------------------------- */
+// String Global_All_Client_Api_URL = "https://mobileappjw.softmed.in";
+// String Global_Patient_Api_URL = "";
+// String Patient_App_Connection_String = "";
+// String All_Client_Logo = "";
+// String Patient_report_URL = "";
+// String Patient_OTP_URL = "";
+// var Client_App_Code = null;
+
+
+/**-----------------------APP INFO For ASter ONly---------------------------------------------------- */
 String Global_All_Client_Api_URL = "https://mobileappjw.softmed.in";
 String Global_Patient_Api_URL = "https://asterlabs.asterdmhealthcare.com/MOBILEAPPAPI/";
 String Patient_App_Connection_String = "Server=172.24.248.12;User id=ALUATDB.SVCA;Password=DSFg45THFD;Database=P_ASTER_LIMS_UAT_2023";

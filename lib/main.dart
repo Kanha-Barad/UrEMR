@@ -11,11 +11,23 @@ import 'globals.dart' as globals;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-  //   alert: true,
-  //   badge: true,
-  //   sound: true,
-  // );
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+  // Handle the notification permission response
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    // User granted permission to display notifications
+    print('Notification permission granted');
+  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    // User granted provisional permission to display notifications (iOS 15+)
+    print('Provisional notification permission granted');
+  } else {
+    // User denied permission to display notifications
+    print('Notification permission denied');
+  }
   // await FirebaseMessaging.instance.requestPermission(
   //   alert: true,
   //   announcement: false,
@@ -63,18 +75,18 @@ class _PatientAppState extends State<PatientApp> {
     //   print(value);
     // });
     return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.grey,
-          accentColor: Color(0xff123456),
-          //  primaryColor: Color(0xff123456)
-        ),
-        home:
-            // (globals.Client_App_Code != "" && globals.Client_App_Code != null)
-            //     ?
-            PatientHome()
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.grey,
+        accentColor: Color(0xff123456),
+        //  primaryColor: Color(0xff123456)
+      ),
+      home: 
+      // (globals.Client_App_Code != "" && globals.Client_App_Code != null)
+      //     ? 
+          PatientHome()
         //  : AccessClientCodeLogin(),
-        );
+    );
   }
 }
 
