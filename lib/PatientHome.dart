@@ -385,7 +385,7 @@ class _PatientHomeState extends State<PatientHome> {
           child: Column(
             children: [
               SizedBox(
-                height: 120,
+                height: 150,
                 child: ListView(
                   children: [
                     CarouselSlider(
@@ -476,7 +476,7 @@ class _PatientHomeState extends State<PatientHome> {
                         ),
                       ],
                       options: CarouselOptions(
-                        height: 120.0,
+                        height: 150.0,
                         enlargeCenterPage: true,
                         autoPlay: true,
                         // aspectRatio: 16 / 40,
@@ -558,309 +558,312 @@ class _PatientHomeState extends State<PatientHome> {
                   ],
                 ),
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50.0)),
-                              color: Color(0xFFE8EAF6),
-                            ),
-                            child: Column(
-                              children: [
-                                new Image.asset(
-                                  'assets/images/microscope.png',
-                                  width: 30,
-                                  height: 45,
-                                  // fit:BoxFit.fill
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 14,
-                          ),
-                          Text(
-                            'Pathology',
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50.0)),
-                              color: Color(0xFFE8EAF6),
-                            ),
-                            child: Column(
-                              children: [
-                                new Image.asset(
-                                  'assets/images/diabetes1.png',
-                                  width: 30,
-                                  height: 45,
-                                  // fit:BoxFit.fill
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 14,
-                          ),
-                          Text(
-                            'Diabetic',
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50.0)),
-                              color: Color(0xFFE8EAF6),
-                            ),
-                            child: Column(
-                              children: [
-                                new Image.asset(
-                                  'assets/images/mri1.png',
-                                  width: 30,
-                                  height: 45,
-                                  // fit:BoxFit.fill
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 14,
-                          ),
-                          Text(
-                            'MRI',
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50.0)),
-                              color: Color(0xFFE8EAF6),
-                            ),
-                            child: Column(
-                              children: [
-                                new Image.asset(
-                                  'assets/images/ct-scan1.png',
-                                  width: 30,
-                                  height: 45,
-                                  // fit:BoxFit.fill
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 14,
-                          ),
-                          Text(
-                            'CT',
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50.0)),
-                              color: Color(0xFFE8EAF6),
-                            ),
-                            child: Column(
-                              children: [
-                                new Image.asset(
-                                  'assets/images/x-ray1.png',
-                                  width: 30,
-                                  height: 45,
-                                  // fit:BoxFit.fill
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 14,
-                          ),
-                          Text(
-                            'X-Ray',
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50.0)),
-                              color: Color(0xFFE8EAF6),
-                            ),
-                            child: Column(
-                              children: [
-                                new Image.asset(
-                                  'assets/images/pulse1.png',
-                                  width: 30,
-                                  height: 45,
-                                  // fit:BoxFit.fill
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 14,
-                          ),
-                          Text(
-                            'Cardiology',
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50.0)),
-                              color: Color(0xFFE8EAF6),
-                            ),
-                            child: Column(
-                              children: [
-                                new Image.asset(
-                                  'assets/images/liver1.png',
-                                  width: 30,
-                                  height: 45,
-                                  // fit:BoxFit.fill
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 14,
-                          ),
-                          Text(
-                            'Liver',
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50.0)),
-                              color: Color(0xFFE8EAF6),
-                            ),
-                            child: Column(
-                              children: [
-                                new Image.asset(
-                                  'assets/images/kidney1.png',
-                                  width: 30,
-                                  height: 45,
-                                  // fit:BoxFit.fill
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 14,
-                          ),
-                          Text(
-                            'Kidney',
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50.0)),
-                              color: Color(0xFFE8EAF6),
-                            ),
-                            child: Column(
-                              children: [
-                                new Image.asset(
-                                  'assets/images/gynecology1.png',
-                                  width: 30,
-                                  height: 45,
-                                  // fit:BoxFit.fill
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 14,
-                          ),
-                          Text(
-                            'Gynecology',
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              // SingleChildScrollView(
+              //   scrollDirection: Axis.horizontal,
+              //   child: Row(
+              //     children: [
+              //       Padding(
+              //         padding: const EdgeInsets.all(10.0),
+              //         child: Column(
+              //           children: [
+              //             Container(
+              //               width: 45,
+              //               height: 45,
+              //               decoration: BoxDecoration(
+              //                 borderRadius:
+              //                     BorderRadius.all(Radius.circular(50.0)),
+              //                 color: Color(0xFFE8EAF6),
+              //               ),
+              //               child: Column(
+              //                 children: [
+              //                   new Image.asset(
+              //                     'assets/images/microscope.png',
+              //                     width: 30,
+              //                     height: 45,
+              //                     // fit:BoxFit.fill
+              //                   )
+              //                 ],
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 14,
+              //             ),
+              //             Text(
+              //               'Pathology',
+              //               style: TextStyle(fontSize: 10),
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: const EdgeInsets.all(10.0),
+              //         child: Column(
+              //           children: [
+              //             Container(
+              //               width: 45,
+              //               height: 45,
+              //               decoration: BoxDecoration(
+              //                 borderRadius:
+              //                     BorderRadius.all(Radius.circular(50.0)),
+              //                 color: Color(0xFFE8EAF6),
+              //               ),
+              //               child: Column(
+              //                 children: [
+              //                   new Image.asset(
+              //                     'assets/images/diabetes1.png',
+              //                     width: 30,
+              //                     height: 45,
+              //                     // fit:BoxFit.fill
+              //                   )
+              //                 ],
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 14,
+              //             ),
+              //             Text(
+              //               'Diabetic',
+              //               style: TextStyle(fontSize: 10),
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: const EdgeInsets.all(10.0),
+              //         child: Column(
+              //           children: [
+              //             Container(
+              //               width: 45,
+              //               height: 45,
+              //               decoration: BoxDecoration(
+              //                 borderRadius:
+              //                     BorderRadius.all(Radius.circular(50.0)),
+              //                 color: Color(0xFFE8EAF6),
+              //               ),
+              //               child: Column(
+              //                 children: [
+              //                   new Image.asset(
+              //                     'assets/images/mri1.png',
+              //                     width: 30,
+              //                     height: 45,
+              //                     // fit:BoxFit.fill
+              //                   )
+              //                 ],
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 14,
+              //             ),
+              //             Text(
+              //               'MRI',
+              //               style: TextStyle(fontSize: 10),
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: const EdgeInsets.all(10.0),
+              //         child: Column(
+              //           children: [
+              //             Container(
+              //               width: 45,
+              //               height: 45,
+              //               decoration: BoxDecoration(
+              //                 borderRadius:
+              //                     BorderRadius.all(Radius.circular(50.0)),
+              //                 color: Color(0xFFE8EAF6),
+              //               ),
+              //               child: Column(
+              //                 children: [
+              //                   new Image.asset(
+              //                     'assets/images/ct-scan1.png',
+              //                     width: 30,
+              //                     height: 45,
+              //                     // fit:BoxFit.fill
+              //                   )
+              //                 ],
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 14,
+              //             ),
+              //             Text(
+              //               'CT',
+              //               style: TextStyle(fontSize: 10),
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: const EdgeInsets.all(10.0),
+              //         child: Column(
+              //           children: [
+              //             Container(
+              //               width: 45,
+              //               height: 45,
+              //               decoration: BoxDecoration(
+              //                 borderRadius:
+              //                     BorderRadius.all(Radius.circular(50.0)),
+              //                 color: Color(0xFFE8EAF6),
+              //               ),
+              //               child: Column(
+              //                 children: [
+              //                   new Image.asset(
+              //                     'assets/images/x-ray1.png',
+              //                     width: 30,
+              //                     height: 45,
+              //                     // fit:BoxFit.fill
+              //                   )
+              //                 ],
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 14,
+              //             ),
+              //             Text(
+              //               'X-Ray',
+              //               style: TextStyle(fontSize: 10),
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: const EdgeInsets.all(10.0),
+              //         child: Column(
+              //           children: [
+              //             Container(
+              //               width: 45,
+              //               height: 45,
+              //               decoration: BoxDecoration(
+              //                 borderRadius:
+              //                     BorderRadius.all(Radius.circular(50.0)),
+              //                 color: Color(0xFFE8EAF6),
+              //               ),
+              //               child: Column(
+              //                 children: [
+              //                   new Image.asset(
+              //                     'assets/images/pulse1.png',
+              //                     width: 30,
+              //                     height: 45,
+              //                     // fit:BoxFit.fill
+              //                   )
+              //                 ],
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 14,
+              //             ),
+              //             Text(
+              //               'Cardiology',
+              //               style: TextStyle(fontSize: 10),
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: const EdgeInsets.all(10.0),
+              //         child: Column(
+              //           children: [
+              //             Container(
+              //               width: 45,
+              //               height: 45,
+              //               decoration: BoxDecoration(
+              //                 borderRadius:
+              //                     BorderRadius.all(Radius.circular(50.0)),
+              //                 color: Color(0xFFE8EAF6),
+              //               ),
+              //               child: Column(
+              //                 children: [
+              //                   new Image.asset(
+              //                     'assets/images/liver1.png',
+              //                     width: 30,
+              //                     height: 45,
+              //                     // fit:BoxFit.fill
+              //                   )
+              //                 ],
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 14,
+              //             ),
+              //             Text(
+              //               'Liver',
+              //               style: TextStyle(fontSize: 10),
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: const EdgeInsets.all(10.0),
+              //         child: Column(
+              //           children: [
+              //             Container(
+              //               width: 45,
+              //               height: 45,
+              //               decoration: BoxDecoration(
+              //                 borderRadius:
+              //                     BorderRadius.all(Radius.circular(50.0)),
+              //                 color: Color(0xFFE8EAF6),
+              //               ),
+              //               child: Column(
+              //                 children: [
+              //                   new Image.asset(
+              //                     'assets/images/kidney1.png',
+              //                     width: 30,
+              //                     height: 45,
+              //                     // fit:BoxFit.fill
+              //                   )
+              //                 ],
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 14,
+              //             ),
+              //             Text(
+              //               'Kidney',
+              //               style: TextStyle(fontSize: 10),
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: const EdgeInsets.all(10.0),
+              //         child: Column(
+              //           children: [
+              //             Container(
+              //               width: 45,
+              //               height: 45,
+              //               decoration: BoxDecoration(
+              //                 borderRadius:
+              //                     BorderRadius.all(Radius.circular(50.0)),
+              //                 color: Color(0xFFE8EAF6),
+              //               ),
+              //               child: Column(
+              //                 children: [
+              //                   new Image.asset(
+              //                     'assets/images/gynecology1.png',
+              //                     width: 30,
+              //                     height: 45,
+              //                     // fit:BoxFit.fill
+              //                   )
+              //                 ],
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: 14,
+              //             ),
+              //             Text(
+              //               'Gynecology',
+              //               style: TextStyle(fontSize: 10),
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              SizedBox(
+                height: 10,
               ),
               Row(
                 children: const [
@@ -876,255 +879,332 @@ class _PatientHomeState extends State<PatientHome> {
                   ),
                 ],
               ),
+
               Padding(
                 padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
                 child: Card(
-                  elevation: 4.0,
+                  elevation: 3.0,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0)),
+                      borderRadius: BorderRadius.circular(10.0)),
                   child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 15, 10, 10),
-                                child: InkWell(
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Color(0xFFA18875),
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(5),
-                                          ),
-                                        ),
-                                        child: Icon(
-                                            Icons.account_circle_outlined,
-                                            color: Color(0xFFA18875)),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        'Book a Test',
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    globals.Location_BookedTest = "";
-
-                                    _SaveLoginDataBookATest();
-                                    cartController.clear();
-                                    productcontroller.resetAll();
-                                    globals.GlobalDiscountCoupons = '';
-                                  },
+                      GestureDetector(
+                        onTap: (() {
+                          globals.Location_BookedTest = "";
+                          _SaveLoginDataBookATest();
+                          cartController.clear();
+                          productcontroller.resetAll();
+                          globals.GlobalDiscountCoupons = '';
+                        }),
+                        child: ListTile(
+                          leading: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Color(0xFFA18875),
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: InkWell(
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Color(0xFF26A69A),
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(5),
-                                          ),
-                                        ),
-                                        child: Icon(
-                                            Icons.now_wallpaper_outlined,
-                                            color: Color(0xFF26A69A)),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        'Walk-In Consultation',
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             PatientRegister()));
-                                  },
-                                ),
-                              ),
-                            ],
+                              child: Icon(Icons.account_circle_outlined,
+                                  color: Color(
+                                      0xFFA18875))), // You can replace this with your own icon or image
+                          title: Text(
+                            'Book a Test',
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w500),
                           ),
-                          Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 15, 10, 10),
-                                child: InkWell(
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Color(0xFFEC407A),
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(5),
-                                          ),
-                                        ),
-                                        child: Icon(Icons.home_outlined,
-                                            color: Color(0xFFEC407A)),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        'Book a Home Visit',
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    globals.selectDate = "";
-                                    globals.SelectedlocationId = "";
-                                    HomeVisitBook();
-
-                                    globals.GlobalDiscountCoupons = '';
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: InkWell(
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Color(0xFF4527A0),
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(5),
-                                          ),
-                                        ),
-                                        child: Icon(Icons.video_call_outlined,
-                                            color: Color(0xFF4527A0)),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        'Video Consultation',
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  onTap: () {},
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 15, 10, 10),
-                                child: InkWell(
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Color(0xFF69F0AE),
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(5),
-                                          ),
-                                        ),
-                                        child: Icon(
-                                          Icons.airport_shuttle_outlined,
-                                          color: Color(0xFF69F0AE),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        'Book a Ambulance',
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  onTap: () {},
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: InkWell(
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Color(0xFF81D4FA),
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(5),
-                                          ),
-                                        ),
-                                        child: Icon(
-                                          Icons.home,
-                                          color: Color(0xFF81D4FA),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        'Tests Enquiry',
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                UpLoadPrescrIPtioN()));
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                          // subtitle: Text('Description of first content'),
+                        ),
                       ),
+                      Divider(), // Optional: add a divider between the two pieces of content
+                      GestureDetector(
+                          onTap: (() {
+                            globals.selectDate = "";
+                            globals.SelectedlocationId = "";
+                            HomeVisitBook();
+                            globals.GlobalDiscountCoupons = '';
+                          }),
+                          child: ListTile(
+                            leading: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xFFEC407A),
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5),
+                                  ),
+                                ),
+                                child: Icon(Icons.home_outlined,
+                                    color: Color(
+                                        0xFFEC407A))), // You can replace this with your own icon or image
+                            title: Text(
+                              'Book a Home Visit',
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w500),
+                            ),
+                            // subtitle: Text('Description of second content'),
+                          )),
                     ],
                   ),
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+              //   child: Container(
+              //     height: 150,
+              //     child: Card(
+              //       elevation: 4.0,
+              //       shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(5.0)),
+              //       child: Column(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           Row(
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: [
+              //               Column(
+              //                 children: [
+              //                   Padding(
+              //                     padding:
+              //                         const EdgeInsets.fromLTRB(10, 15, 10, 10),
+              //                     child: InkWell(
+              //                       child: Column(
+              //                         children: [
+              //                           Container(
+              //                             decoration: BoxDecoration(
+              //                               border: Border.all(
+              //                                 color: Color(0xFFA18875),
+              //                               ),
+              //                               borderRadius: BorderRadius.all(
+              //                                 Radius.circular(5),
+              //                               ),
+              //                             ),
+              //                             child: Icon(
+              //                                 Icons.account_circle_outlined,
+              //                                 color: Color(0xFFA18875)),
+              //                           ),
+              //                           SizedBox(
+              //                             height: 5,
+              //                           ),
+              //                           Text(
+              //                             'Book a Test',
+              //                             style: TextStyle(
+              //                               fontSize: 10,
+              //                             ),
+              //                           )
+              //                         ],
+              //                       ),
+              //                       onTap: () {
+              //                         globals.Location_BookedTest = "";
+
+              //                         _SaveLoginDataBookATest();
+              //                         cartController.clear();
+              //                         productcontroller.resetAll();
+              //                         globals.GlobalDiscountCoupons = '';
+              //                       },
+              //                     ),
+              //                   ),
+              //                   // Padding(
+              //                   //   padding: const EdgeInsets.all(10.0),
+              //                   //   child: InkWell(
+              //                   //     child: Column(
+              //                   //       children: [
+              //                   //         Container(
+              //                   //           decoration: BoxDecoration(
+              //                   //             border: Border.all(
+              //                   //               color: Color(0xFF26A69A),
+              //                   //             ),
+              //                   //             borderRadius: BorderRadius.all(
+              //                   //               Radius.circular(5),
+              //                   //             ),
+              //                   //           ),
+              //                   //           child: Icon(
+              //                   //               Icons.now_wallpaper_outlined,
+              //                   //               color: Color(0xFF26A69A)),
+              //                   //         ),
+              //                   //         SizedBox(
+              //                   //           height: 5,
+              //                   //         ),
+              //                   //         Text(
+              //                   //           'Walk-In Consultation',
+              //                   //           style: TextStyle(
+              //                   //             fontSize: 10,
+              //                   //           ),
+              //                   //         )
+              //                   //       ],
+              //                   //     ),
+              //                   //     onTap: () {
+              //                   //       // Navigator.push(
+              //                   //       //     context,
+              //                   //       //     MaterialPageRoute(
+              //                   //       //         builder: (context) =>
+              //                   //       //             PatientRegister()));
+              //                   //     },
+              //                   //   ),
+              //                   // ),
+              //                 ],
+              //               ),
+              //               Column(
+              //                 children: [
+              //                   Padding(
+              //                     padding:
+              //                         const EdgeInsets.fromLTRB(10, 15, 10, 10),
+              //                     child: InkWell(
+              //                       child: Column(
+              //                         children: [
+              //                           Container(
+              //                             decoration: BoxDecoration(
+              //                               border: Border.all(
+              //                                 color: Color(0xFFEC407A),
+              //                               ),
+              //                               borderRadius: BorderRadius.all(
+              //                                 Radius.circular(5),
+              //                               ),
+              //                             ),
+              //                             child: Icon(Icons.home_outlined,
+              //                                 color: Color(0xFFEC407A)),
+              //                           ),
+              //                           SizedBox(
+              //                             height: 5,
+              //                           ),
+              //                           Text(
+              //                             'Book a Home Visit',
+              //                             style: TextStyle(
+              //                               fontSize: 10,
+              //                             ),
+              //                           )
+              //                         ],
+              //                       ),
+              //                       onTap: () {
+              //                         globals.selectDate = "";
+              //                         globals.SelectedlocationId = "";
+              //                         HomeVisitBook();
+
+              //                         globals.GlobalDiscountCoupons = '';
+              //                       },
+              //                     ),
+              //                   ),
+              //                   // Padding(
+              //                   //   padding: const EdgeInsets.all(10.0),
+              //                   //   child: InkWell(
+              //                   //     child: Column(
+              //                   //       children: [
+              //                   //         Container(
+              //                   //           decoration: BoxDecoration(
+              //                   //             border: Border.all(
+              //                   //               color: Color(0xFF4527A0),
+              //                   //             ),
+              //                   //             borderRadius: BorderRadius.all(
+              //                   //               Radius.circular(5),
+              //                   //             ),
+              //                   //           ),
+              //                   //           child: Icon(Icons.video_call_outlined,
+              //                   //               color: Color(0xFF4527A0)),
+              //                   //         ),
+              //                   //         SizedBox(
+              //                   //           height: 5,
+              //                   //         ),
+              //                   //         Text(
+              //                   //           'Video Consultation',
+              //                   //           style: TextStyle(
+              //                   //             fontSize: 10,
+              //                   //           ),
+              //                   //         )
+              //                   //       ],
+              //                   //     ),
+              //                   //     onTap: () {},
+              //                   //   ),
+              //                   // ),
+              //                 ],
+              //               ),
+              //               // Column(
+              //               //   children: [
+              //               //     Padding(
+              //               //       padding:
+              //               //           const EdgeInsets.fromLTRB(10, 15, 10, 10),
+              //               //       child: InkWell(
+              //               //         child: Column(
+              //               //           children: [
+              //               //             Container(
+              //               //               decoration: BoxDecoration(
+              //               //                 border: Border.all(
+              //               //                   color: Color(0xFF69F0AE),
+              //               //                 ),
+              //               //                 borderRadius: BorderRadius.all(
+              //               //                   Radius.circular(5),
+              //               //                 ),
+              //               //               ),
+              //               //               child: Icon(
+              //               //                 Icons.airport_shuttle_outlined,
+              //               //                 color: Color(0xFF69F0AE),
+              //               //               ),
+              //               //             ),
+              //               //             SizedBox(
+              //               //               height: 5,
+              //               //             ),
+              //               //             Text(
+              //               //               'Book a Ambulance',
+              //               //               style: TextStyle(
+              //               //                 fontSize: 10,
+              //               //               ),
+              //               //             )
+              //               //           ],
+              //               //         ),
+              //               //         onTap: () {},
+              //               //       ),
+              //               //     ),
+              //               //     Padding(
+              //               //       padding: const EdgeInsets.all(10.0),
+              //               //       child: InkWell(
+              //               //         child: Column(
+              //               //           children: [
+              //               //             Container(
+              //               //               decoration: BoxDecoration(
+              //               //                 border: Border.all(
+              //               //                   color: Color(0xFF81D4FA),
+              //               //                 ),
+              //               //                 borderRadius: BorderRadius.all(
+              //               //                   Radius.circular(5),
+              //               //                 ),
+              //               //               ),
+              //               //               child: Icon(
+              //               //                 Icons.home,
+              //               //                 color: Color(0xFF81D4FA),
+              //               //               ),
+              //               //             ),
+              //               //             SizedBox(
+              //               //               height: 5,
+              //               //             ),
+              //               //             Text(
+              //               //               'Tests Enquiry',
+              //               //               style: TextStyle(
+              //               //                 fontSize: 10,
+              //               //               ),
+              //               //             )
+              //               //           ],
+              //               //         ),
+              //               //         onTap: () {
+              //               //           Navigator.push(
+              //               //               context,
+              //               //               MaterialPageRoute(
+              //               //                   builder: (context) =>
+              //               //                       UpLoadPrescrIPtioN()));
+              //               //         },
+              //               //       ),
+              //               //     ),
+              //               //   ],
+              //               // ),
+              //             ],
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: 50,
+              // ),
               Row(
                 children: [
                   SizedBox(
