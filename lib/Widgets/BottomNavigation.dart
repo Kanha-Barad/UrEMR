@@ -112,15 +112,12 @@ class _AllBottOMNaviGAtionBarState extends State<AllBottOMNaviGAtionBar> {
                     (prefs.setString('singleUMr_No', ''));
                     cartController.items.clear();
 //ProductController.clear();
+
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PatientLogin("")),
+                      MaterialPageRoute(
+                          builder: (context) => AccessClientCodeLogin()),
                     );
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => AccessClientCodeLogin()),
-                    // );
                   },
                   child: Column(children: [
                     Icon(

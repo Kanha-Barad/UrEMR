@@ -19,69 +19,13 @@ class UsersProfile extends StatefulWidget {
 class _UsersProfileState extends State<UsersProfile> {
   @override
   Widget build(BuildContext context) {
-    // Future<List<UserProfile>> _fetchSaleTransaction() async {
-    //   // var jobsListAPIUrl = null;
-    //   // var dsetName = '';
-
-    //   // Map data = {
-
-    //   //   "msg_id": globals.MsgId.split('.')[0],
-    //   //   "otp": OTPController.text
-    //   // };
-    //   // dsetName = 'Data';
-    //   // jobsListAPIUrl = Uri.parse("");
-    //   //    // 'http://115.112.254.129/MobileSalesApi/PatinetMobileApp/ValidateOtp');
-    //   // var response = await http.post(jobsListAPIUrl,
-    //   //     headers: {
-    //   //       "Accept": "application/json",
-    //   //       "Content-Type": "application/x-www-form-urlencoded"
-    //   //     },
-    //   //     body: data,
-    //   //     encoding: Encoding.getByName("utf-8"));
-
-    //   // if (response.statusCode == 200) {
-    //   //   Map<String, dynamic> resposne = jsonDecode(response.body);
-    //   //   List jsonResponse = resposne[dsetName];
-
-    //   //   return jsonResponse
-    //   //       .map((strans) => new UserProfile.fromJson(strans))
-    //   //       .toList();
-    //   // } else {
-    //   //   throw Exception('Failed to load jobs from API');
-    //   // }
-    // }
+   
 
     Widget UserProfileverticalLists =
         //if(globals.selectedLogin_Data!=""){
         UserProfileListView(globals.selectedLogin_Data);
     //     }  ;
-    // Container(
-    //   // height: MediaQuery.of(context).size.height * 0.4,
-    //   margin: EdgeInsets.symmetric(vertical: 2.0),
-    //   child: FutureBuilder<List<UserProfile>>(
-    //       future: _fetchSaleTransaction(),
-    //       builder: (context, snapshot) {
-    //         if (snapshot.hasData) {
-    //           var data = snapshot.data;
-    //           if (snapshot.data!.isEmpty == true) {
-    //             return NoContent();
-    //           } else {
-    //             return UserProfileListView(data);
-    //           }
-    //         } else if (snapshot.hasError) {
-    //           return Text("${snapshot.error}");
-    //         }
-    //          if(globals.selectedLogin_Data!=""){
-    //          return UserProfileListView(globals.selectedLogin_Data);
-    //       }
-    //         return Center(
-    //             child: CircularProgressIndicator(
-    //           strokeWidth: 4.0,
-    //         ));
-
-    //       }),
-
-    // );
+   
     Widget myBottomNavigationBar = Container(
         // height: 150,
         width: MediaQuery.of(context).size.width,

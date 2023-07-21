@@ -28,15 +28,6 @@ void main() async {
     // User denied permission to display notifications
     print('Notification permission denied');
   }
-  // await FirebaseMessaging.instance.requestPermission(
-  //   alert: true,
-  //   announcement: false,
-  //   badge: true,
-  //   carPlay: false,
-  //   criticalAlert: false,
-  //   provisional: false,
-  //   sound: true,
-  // );
   runApp(PatientApp());
 }
 
@@ -48,32 +39,28 @@ class PatientApp extends StatefulWidget {
 
 class _PatientAppState extends State<PatientApp> {
   @override
-  // Future<bool> setUserStatus() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   if (prefs.getString('AppCODE') != "" &&
-  //       prefs.getString('AppCODE') != null) {
-  //     globals.Client_App_Code = (prefs.getString('AppCODE') ?? '');
-  //     globals.Global_Patient_Api_URL =
-  //         (prefs.getString('PatientAppApiURL') ?? '');
-  //     globals.Patient_App_Connection_String =
-  //         (prefs.getString('ConnectionString') ?? '');
-  //     globals.All_Client_Logo = (prefs.getString('CompanyLogo') ?? '');
-  //     globals.Patient_report_URL = (prefs.getString('ReportURL') ?? '');
-  //     globals.Patient_OTP_URL = (prefs.getString('OTPURL') ?? '');
-  //   }
-  //   setState(() {});
-  //   return true;
-  // }
+  Future<bool> setUserStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('AppCODE') != "" &&
+        prefs.getString('AppCODE') != null) {
+      globals.Client_App_Code = (prefs.getString('AppCODE') ?? '');
+      globals.Global_Patient_Api_URL =
+          (prefs.getString('PatientAppApiURL') ?? '');
+      globals.Patient_App_Connection_String =
+          (prefs.getString('ConnectionString') ?? '');
+      globals.All_Client_Logo = (prefs.getString('CompanyLogo') ?? '');
+      globals.Patient_report_URL = (prefs.getString('ReportURL') ?? '');
+      globals.Patient_OTP_URL = (prefs.getString('OTPURL') ?? '');
+    }
+    setState(() {});
+    return true;
+  }
 
-  // void initState() {
-  //   setUserStatus();
-  // }
+  void initState() {
+    setUserStatus();
+  }
 
   Widget build(BuildContext context) {
-    // FirebaseMessaging.instance.getToken().then((value) {
-    // //  Device_token_ID = value.toString();
-    //   print(value);
-    // });
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -81,11 +68,9 @@ class _PatientAppState extends State<PatientApp> {
         accentColor: Color(0xff123456),
         //  primaryColor: Color(0xff123456)
       ),
-      home: 
-      // (globals.Client_App_Code != "" && globals.Client_App_Code != null)
-      //     ? 
-          PatientHome()
-        //  : AccessClientCodeLogin(),
+      home: (globals.Client_App_Code != "" && globals.Client_App_Code != null)
+          ? PatientHome()
+          : AccessClientCodeLogin(),
     );
   }
 }

@@ -751,64 +751,76 @@ class _CartScreenState extends State<CartScreen> {
                                       )))
                         ],
                       )
-                    : Container(
-                        color: Color(0xff123456),
-                        width: 350,
-                        child: TextButton(
-                            onPressed: () async {
-                              //  OrderPayments();
-                              //    _buildUserBookingPopup(context);
-                              bool isButtonDisabled = false;
+                    : Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 20),
+                        child: GestureDetector(
+                          onTap: () async {
+                            //  OrderPayments();
+                            //    _buildUserBookingPopup(context);
+                            bool isButtonDisabled = false;
+                            void SingleUserPaymentsBooking() {
+                              if (!isButtonDisabled) {
+                                isButtonDisabled = true; // Disable the button
 
-                              void SingleUserPaymentsBooking() {
-                                if (!isButtonDisabled) {
-                                  isButtonDisabled = true; // Disable the button
-
-                                  // Call your API here to book the test
-                                  SingleUserOrderPayments();
-                                  // Example delay to simulate API call
-                                  Future.delayed(Duration(seconds: 2), () {
-                                    // Enable the button again after the delay
-                                    isButtonDisabled = false;
-                                  });
-                                }
+                                // Call your API here to book the test
+                                SingleUserOrderPayments();
+                                // Example delay to simulate API call
+                                Future.delayed(Duration(seconds: 2), () {
+                                  // Enable the button again after the delay
+                                  isButtonDisabled = false;
+                                });
                               }
+                            }
 
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
 
-                              String? encodedJson = prefs.getString('data1');
-                              // List<dynamic> decodedJson = json.decode(encodedJson!);
-                              if (globals.selectedLogin_Data == null) {
-                                globals.selectedLogin_Data =
-                                    json.decode(encodedJson!);
-                              }
-
-                              (globals.selectedLogin_Data["Data"].length > 1)
-                                  ? _UserListBookingsBottomPicker(context)
-                                  : (globals.Booking_Status_Flag == "0")
-                                      ? Fluttertoast.showToast(
-                                          msg: "Booking InProgress",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.CENTER,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor:
-                                              Color.fromARGB(230, 228, 55, 32),
-                                          textColor: Colors.white,
-                                          fontSize: 16.0)
-                                      : SingleUserPaymentsBooking();
-                              // cartController.clear();
-                              // productcontroller.resetAll();
-                              // Navigator.pop(context, true);
-                            },
-                            child: Center(
+                            String? encodedJson = prefs.getString('data1');
+                            // List<dynamic> decodedJson = json.decode(encodedJson!);
+                            if (globals.selectedLogin_Data == null) {
+                              globals.selectedLogin_Data =
+                                  json.decode(encodedJson!);
+                            }
+                            (globals.selectedLogin_Data["Data"].length > 1)
+                                ? _UserListBookingsBottomPicker(context)
+                                : (globals.Booking_Status_Flag == "0")
+                                    ? Fluttertoast.showToast(
+                                        msg: "Booking InProgress",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor:
+                                            Color.fromARGB(230, 228, 55, 32),
+                                        textColor: Colors.white,
+                                        fontSize: 16.0)
+                                    : SingleUserPaymentsBooking();
+                            // cartController.clear();
+                            // productcontroller.resetAll();
+                            // Navigator.pop(context, true);
+                          },
+                          child: Card(
+                            color: Color(0xff123456),
+                            elevation: 2.0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                side: BorderSide(
+                                    color: Color.fromARGB(255, 230, 228, 228))),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(10, 12, 10, 12),
+                              child: Center(
                                 child: Text(
-                              "OK",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontSize: 20),
-                            ))))
+                                  "Book Now",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
               ],
             ),
           ),

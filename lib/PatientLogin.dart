@@ -200,8 +200,8 @@ class _PatientLoginState extends State<PatientLogin> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 3, 0, 65),
                 child: SizedBox(
-                    height: 70.0,
-                    width: 150.0,
+                    height: 90.0,
+                    width: 200.0,
                     child: Image(image: NetworkImage(globals.All_Client_Logo))),
               ),
               // Container(
@@ -327,18 +327,20 @@ class _PatientLoginState extends State<PatientLogin> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(50, 0.0, 50, 0.0),
-                child: RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: 'Terms & Conditions ',
-                          style: TextStyle(color: Color(0xff123456))),
-                      TextSpan(
-                          text: '& ', style: TextStyle(color: Colors.black)),
-                      TextSpan(
-                          text: 'Privacy Policy',
-                          style: TextStyle(color: Color(0xff123456)))
-                    ],
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Terms & Conditions ',
+                            style: TextStyle(color: Color(0xff123456))),
+                        TextSpan(
+                            text: '& ', style: TextStyle(color: Colors.black)),
+                        TextSpan(
+                            text: 'Privacy Policy',
+                            style: TextStyle(color: Color(0xff123456)))
+                      ],
+                    ),
                   ),
                 ),
               ),
