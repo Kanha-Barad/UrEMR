@@ -112,7 +112,7 @@ class _AllBottOMNaviGAtionBarState extends State<AllBottOMNaviGAtionBar> {
                     (prefs.setString('singleUMr_No', ''));
                     cartController.items.clear();
 //ProductController.clear();
-
+                    prefs.clear();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
