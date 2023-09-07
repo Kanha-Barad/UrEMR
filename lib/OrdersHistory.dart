@@ -822,23 +822,24 @@ Widget _OrderListDetails(var data, BuildContext context, flg) {
                                                                     InkWell(
                                                                       child:
                                                                           Card(
-                                                                          color: Color.fromARGB(
+                                                                        color: Color.fromARGB(
                                                                             255,
                                                                             21,
                                                                             50,
                                                                             179),
-                                                                          elevation:
+                                                                        elevation:
                                                                             2.0,
-                                                                          shape:
-                                                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                                                                          child:
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(4)),
+                                                                        child:
                                                                             Padding(
                                                                           padding:
                                                                               const EdgeInsets.all(3.0),
                                                                           child:
                                                                               Center(child: Text("ok", style: TextStyle(color: Colors.white, fontSize: 14 * mediaQuery.textScaleFactor, fontWeight: FontWeight.w600))),
-                                                                          ),
                                                                         ),
+                                                                      ),
                                                                       onTap:
                                                                           () {
                                                                         CanCELTesT(
@@ -1394,7 +1395,7 @@ Widget _PatientDataCard(data, BuildContext context, index) {
                         onPressed: () {
                           (globals.SelectedPatientDetails.outstanding_due ==
                                   '0.0')
-                              ? _launchURL(data.reportCd.toString())
+                              ? _launchURL(context, data.reportCd.toString())
                               : AlertError();
                         },
                         icon: Icon(
@@ -1460,14 +1461,21 @@ void _BottomPicker(BuildContext context, billno, flg) {
   print(res);
 }
 
-_launchURL(reportCd) async {
+_launchURL(BuildContext context, reportCd) async {
   var url = globals.Patient_report_URL + reportCd;
 //NM live
   //"http://115.112.254.129/NM_SRV_GRP_MERGE_PDFS/" + reportCd + ".pdf"
-  if (await launch(url)) {
-    await launch(url);
+  if (await canLaunch(url)) {
+    launch(url);
   } else {
-    throw 'Could not launch $url';
+    // Handle the case where the URL cannot be launched
+    print('Could not launch $url');
+    // Display an error message to the user
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Could not open the URL'),
+      ),
+    );
   }
 }
 

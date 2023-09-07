@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:uremr/Widgets/BottomNavigation.dart';
 import './OrdersHistory.dart';
 import './PatientHome.dart';
 import './PatientLogin.dart';
@@ -26,114 +27,114 @@ class _UsersProfileState extends State<UsersProfile> {
         UserProfileListView(globals.selectedLogin_Data);
     //     }  ;
    
-    Widget myBottomNavigationBar = Container(
-        // height: 150,
-        width: MediaQuery.of(context).size.width,
-        height: 48,
-        color: Color(0xff123456),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
-              child: InkWell(
-                onTap: () {
-                  globals.SelectedlocationId = "";
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PatientHome()));
-                },
-                child: Column(children: [
-                  Icon(
-                    Icons.home,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "Home",
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  )
-                ]),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => UsersProfile()),
-                  );
-                },
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      "Profile",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 30, 0),
-              child: InkWell(
-                onTap: () async {
-                  globals.umr_no = "";
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
+    // Widget myBottomNavigationBar = Container(
+    //     // height: 150,
+    //     width: MediaQuery.of(context).size.width,
+    //     height: 48,
+    //     color: Color(0xff123456),
+    //     child: Row(
+    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //       children: [
+    //         Padding(
+    //           padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
+    //           child: InkWell(
+    //             onTap: () {
+    //               globals.SelectedlocationId = "";
+    //               Navigator.push(context,
+    //                   MaterialPageRoute(builder: (context) => PatientHome()));
+    //             },
+    //             child: Column(children: [
+    //               Icon(
+    //                 Icons.home,
+    //                 color: Colors.white,
+    //                 size: 18,
+    //               ),
+    //               SizedBox(
+    //                 height: 2,
+    //               ),
+    //               Text(
+    //                 "Home",
+    //                 style: TextStyle(color: Colors.white, fontSize: 12),
+    //               )
+    //             ]),
+    //           ),
+    //         ),
+    //         Padding(
+    //           padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+    //           child: InkWell(
+    //             onTap: () {
+    //               Navigator.push(
+    //                 context,
+    //                 MaterialPageRoute(builder: (context) => UsersProfile()),
+    //               );
+    //             },
+    //             child: Column(
+    //               children: [
+    //                 Icon(
+    //                   Icons.person,
+    //                   color: Colors.white,
+    //                   size: 18,
+    //                 ),
+    //                 SizedBox(
+    //                   height: 2,
+    //                 ),
+    //                 Text(
+    //                   "Profile",
+    //                   style: TextStyle(color: Colors.white, fontSize: 12),
+    //                 )
+    //               ],
+    //             ),
+    //           ),
+    //         ),
+    //         Padding(
+    //           padding: const EdgeInsets.fromLTRB(0, 5, 30, 0),
+    //           child: InkWell(
+    //             onTap: () async {
+    //               globals.umr_no = "";
+    //               SharedPreferences prefs =
+    //                   await SharedPreferences.getInstance();
 
-                  if (prefs.getString('Mobileno') != "") {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AccessClientCodeLogin()),
-                    );
-                  } else {
-                    prefs.setString("Msg_id", "");
-                    prefs.setString('Mobileno', "");
+    //               if (prefs.getString('Mobileno') != "") {
+    //                 Navigator.push(
+    //                   context,
+    //                   MaterialPageRoute(
+    //                       builder: (context) => AccessClientCodeLogin()),
+    //                 );
+    //               } else {
+    //                 prefs.setString("Msg_id", "");
+    //                 prefs.setString('Mobileno', "");
 
-                    prefs.setString('email', "");
-                    //     prefs.setString('Mobileno', MobNocontroller.text.toString()).toString();
-                    prefs.setString("Otp", "");
-                    // prefs.getStringList('data1') ?? [];
-                    (prefs.setString('data1', ""));
-                    (prefs.setString('AppCODE', ''));
-                    (prefs.setString('CompanyLogo', ''));
-                    (prefs.setString('ReportURL', ''));
-                    (prefs.setString('OTPURL', ''));
-                    (prefs.setString('PatientAppApiURL', ''));
-                    (prefs.setString('ConnectionString', ''));
-                  }
-                },
-                child: Column(children: [
-                  Icon(
-                    Icons.logout_rounded,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "Log Out",
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  )
-                ]),
-              ),
-            )
-          ],
-        ));
+    //                 prefs.setString('email', "");
+    //                 //     prefs.setString('Mobileno', MobNocontroller.text.toString()).toString();
+    //                 prefs.setString("Otp", "");
+    //                 // prefs.getStringList('data1') ?? [];
+    //                 (prefs.setString('data1', ""));
+    //                 (prefs.setString('AppCODE', ''));
+    //                 (prefs.setString('CompanyLogo', ''));
+    //                 (prefs.setString('ReportURL', ''));
+    //                 (prefs.setString('OTPURL', ''));
+    //                 (prefs.setString('PatientAppApiURL', ''));
+    //                 (prefs.setString('ConnectionString', ''));
+    //               }
+    //             },
+    //             child: Column(children: [
+    //               Icon(
+    //                 Icons.logout_rounded,
+    //                 color: Colors.white,
+    //                 size: 18,
+    //               ),
+    //               SizedBox(
+    //                 height: 2,
+    //               ),
+    //               Text(
+    //                 "Log Out",
+    //                 style: TextStyle(color: Colors.white, fontSize: 12),
+    //               )
+    //             ]),
+    //           ),
+    //         )
+    //       ],
+    //     ));
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -154,7 +155,7 @@ class _UsersProfileState extends State<UsersProfile> {
         body: Container(
           child: UserProfileverticalLists,
         ),
-        bottomNavigationBar: myBottomNavigationBar);
+        bottomNavigationBar: AllBottOMNaviGAtionBar());
   }
 }
 
