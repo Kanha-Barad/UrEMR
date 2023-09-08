@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:uremr/PatientHome.dart';
-import 'package:uremr/Widgets/BottomNavigation.dart';
+
+import 'OrdersHistory.dart';
+import 'PatientHome.dart';
+import 'Widgets/BottomNavigation.dart';
 
 String Bill_NUMber = "";
 String BIlling_DATe = "";
+String TestBookNav = "";
 
 class ThankYouScreenOFUploadPrescripTIOn extends StatefulWidget {
-  ThankYouScreenOFUploadPrescripTIOn(billno, Billdate) {
+  ThankYouScreenOFUploadPrescripTIOn(billno, Billdate, tsetBOOKNAV) {
     Bill_NUMber = "";
     Bill_NUMber = billno;
     BIlling_DATe = "";
     BIlling_DATe = Billdate;
+    TestBookNav = "";
+    TestBookNav = tsetBOOKNAV;
   }
 
   @override
@@ -35,8 +40,15 @@ class _ThankYouScreenOFUploadPrescripTIOnState
             return IconButton(
               icon: const Icon(Icons.arrow_back_ios),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => PatientHome())));
+                (TestBookNav == "TBNO")
+                    ? Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => OredersHistory())))
+                    : Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => PatientHome())));
               },
               // tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
             );
@@ -58,7 +70,7 @@ class _ThankYouScreenOFUploadPrescripTIOnState
               color: Color.fromARGB(255, 21, 29, 118),
             ),
           ),
-           Text(
+          Text(
             'Thank you ! Your Request has been taken.\nOur Customer care will connect and confirm the test mentioned in your prescription for booking.',
             textAlign: TextAlign.center,
             style: TextStyle(

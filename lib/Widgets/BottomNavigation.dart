@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uremr/Controllers/product_controller.dart';
-import 'package:uremr/Coupons.dart';
+import 'package:uremr/ClientCodeLogin.dart';
 
-import '../ClientCodeLogin.dart';
+import '../Cartprovider.dart';
 import '../PatientHome.dart';
 import '../PatientLogin.dart';
+import '../TestBooking.dart';
 import '../UserProfile.dart';
 import '../globals.dart' as globals;
 
@@ -25,17 +26,20 @@ class _AllBottOMNaviGAtionBarState extends State<AllBottOMNaviGAtionBar> {
         height: 63,
         color: Color(0xff123456),
         child: Padding(
-          padding: const EdgeInsets.only(top: 4.0),
+          padding: const EdgeInsets.only(top: 10.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
+                padding: const EdgeInsets.only(left: 30),
                 child: InkWell(
                   onTap: () {
                     globals.SelectedlocationId = "";
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => PatientHome()));
+                    searchController.clear();
+                    // Trigger a UI update by rebuilding the widget tree
+                    context.read<CartProvider>().notifyListeners();
                   },
                   child: Column(children: [
                     Icon(
@@ -50,43 +54,42 @@ class _AllBottOMNaviGAtionBarState extends State<AllBottOMNaviGAtionBar> {
                   ]),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                child: InkWell(
-                  onTap: () async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    if (prefs.getString('Mobileno') == "" ||
-                        prefs.getString('Mobileno') == null) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PatientLogin("")),
-                      );
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => UsersProfile()),
-                      );
-                    }
-                  },
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.person,
-                        color: Colors.white,
-                        size: 19,
-                      ),
-                      Text(
-                        "Profile",
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      )
-                    ],
-                  ),
+              InkWell(
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  if (prefs.getString('Mobileno') == "" ||
+                      prefs.getString('Mobileno') == null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PatientLogin("")),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => UsersProfile()),
+                    );
+                  }
+                  searchController.clear();
+                  // Trigger a UI update by rebuilding the widget tree
+                  context.read<CartProvider>().notifyListeners();
+                },
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 19,
+                    ),
+                    Text(
+                      "Profile",
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    )
+                  ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 5, 30, 0),
+                padding: const EdgeInsets.only(right: 30),
                 child: InkWell(
                   onTap: () async {
                     // globals.umr_no = "";
@@ -110,14 +113,16 @@ class _AllBottOMNaviGAtionBarState extends State<AllBottOMNaviGAtionBar> {
                     // (prefs.setString('Status_FLag', ''));
                     (prefs.setString('SeSSion_ID', ''));
                     (prefs.setString('singleUMr_No', ''));
-                    cartController.items.clear();
-//ProductController.clear();
+
+                    searchController.clear();
                     prefs.clear();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => AccessClientCodeLogin()),
                     );
+                    // Trigger a UI update by rebuilding the widget tree
+                    context.read<CartProvider>().notifyListeners();
                   },
                   child: Column(children: [
                     Icon(

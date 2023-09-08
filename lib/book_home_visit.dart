@@ -2,13 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:uremr/Controllers/product_controller.dart';
+import 'package:uremr/TestBooking.dart';
 import 'package:uremr/Upload_Prescription.dart';
 import 'package:uremr/Widgets/BottomNavigation.dart';
-import 'Models/product.dart';
 import 'PatientHome.dart';
-import 'Screens/Book_Test_screen.dart';
-import 'Widgets/cart_items.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'package:loading_indicator/loading_indicator.dart';
@@ -178,31 +175,20 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
   }
 
   void _onLoading() {
-    // SizedBox(
-    //   height: 100,
-    //   width: 100,
-    //   child: Center(
-    //     child: LoadingIndicator(
-    //       indicatorType: Indicator.ballClipRotateMultiple,
-    //       colors: Colors.primaries,
-    //       strokeWidth: 4.0,
-    //       //   pathBackgroundColor:ColorSwatch(Action[])
-    //     ),
-    //   ),
-    // );
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return Center(
           child: SizedBox(
-            width: 100,
             height: 100,
+            width: 100,
             child: LoadingIndicator(
               indicatorType: Indicator.ballClipRotateMultiple,
-              colors: Colors.primaries,
+              colors: [
+                Color.fromARGB(255, 49, 114, 179),
+              ],
               strokeWidth: 4.0,
-              //   pathBackgroundColor:ColorSwatch(Action[])
             ),
           ),
         );
@@ -482,15 +468,16 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
-            return SizedBox(
-              height: 100,
-              width: 100,
-              child: Center(
+            return Center(
+              child: SizedBox(
+                height: 100,
+                width: 100,
                 child: LoadingIndicator(
                   indicatorType: Indicator.ballClipRotateMultiple,
-                  colors: Colors.primaries,
+                  colors: [
+                    Color.fromARGB(255, 49, 114, 179),
+                  ],
                   strokeWidth: 4.0,
-                  //   pathBackgroundColor:ColorSwatch(Action[])
                 ),
               ),
             );
@@ -746,7 +733,7 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
                                                                         context,
                                                                         MaterialPageRoute(
                                                                             builder: (context) =>
-                                                                                ProductOverviewPage()));
+                                                                                bookATeSt(globals.SelectedlocationId)));
                                                               },
                                                               child: Container(
                                                                 width: 300,
@@ -1094,7 +1081,7 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
                                                                     MaterialPageRoute(
                                                                         builder:
                                                                             (context) =>
-                                                                                ProductOverviewPage()));
+                                                                                bookATeSt(globals.SelectedlocationId)));
                                                           },
                                                           child: Container(
                                                             width: 300,

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,6 +34,7 @@ class PatientLogin extends StatefulWidget {
 
 class _PatientLoginState extends State<PatientLogin> {
   var myFocusNode = FocusNode();
+  bool isLoading = false;
 
   get Math => null;
   @override
@@ -61,7 +63,7 @@ class _PatientLoginState extends State<PatientLogin> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
-        backgroundColor: Color.fromARGB(190, 38, 238, 38),
+        backgroundColor: Color.fromARGB(189, 59, 227, 180),
         textColor: Colors.white,
         fontSize: 16.0);
     EnterMobNo(MobileNocontroller.text.toString(), randomNumber.toString());
@@ -93,15 +95,6 @@ class _PatientLoginState extends State<PatientLogin> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> resposne = jsonDecode(response.body);
-      //if (resposne["Data"][0]["MSG_ID"].toString().split('.')[0] != "0") {
-      Fluttertoast.showToast(
-          msg: "OTP sent sucessfully",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Color.fromARGB(189, 134, 223, 134),
-          textColor: Colors.white,
-          fontSize: 16.0);
       globals.mobNO = MobileNocontroller.text.toString();
 
       globals.selectedLogin_Data = jsonDecode(response.body);
@@ -119,25 +112,27 @@ class _PatientLoginState extends State<PatientLogin> {
           MaterialPageRoute(
               builder: (context) => ValidateOTP(Login_flag.toString())));
       MobileNocontroller.text = "";
-      //  // } else {
-      //     Fluttertoast.showToast(
-      //         msg: "Please Register the Mobile Number",
-      //         toastLength: Toast.LENGTH_SHORT,
-      //         gravity: ToastGravity.CENTER,
-      //         timeInSecForIosWeb: 1,
-      //         backgroundColor: Color.fromARGB(232, 243, 49, 24),
-      //         textColor: Colors.white,
-      //         fontSize: 16.0);
-      //   }
-    } else {
-      // Fluttertoast.showToast(
-      //     msg: "OTP sent Failed",
-      //     toastLength: Toast.LENGTH_SHORT,
-      //     gravity: ToastGravity.CENTER,
-      //     timeInSecForIosWeb: 1,
-      //     backgroundColor: Color.fromARGB(232, 243, 49, 24),
-      //     textColor: Colors.white,
-      //     fontSize: 16.0);
+    } else {}
+  }
+
+  bool isButtonDisabled = false;
+
+  Future<void> SendOTPtoMobileNUmber() async {
+    if (!isButtonDisabled) {
+      setState(() {
+        isButtonDisabled = true; // Disable the button
+        isLoading = true; // Start loading
+      });
+
+      await EnterMobNo1(MobileNocontroller.text, "");
+
+      // No need for the delay here
+
+      // Enable the button and stop loading
+      setState(() {
+        isButtonDisabled = false;
+        isLoading = false;
+      });
     }
   }
 
@@ -176,7 +171,7 @@ class _PatientLoginState extends State<PatientLogin> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
-          backgroundColor: Color.fromARGB(246, 255, 106, 101),
+          backgroundColor: Color.fromARGB(255, 235, 103, 93),
           textColor: Colors.white,
           fontSize: 16.0,
         );
@@ -189,164 +184,179 @@ class _PatientLoginState extends State<PatientLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(12),
-        child: ListView(
-            // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            children: <Widget>[
-              SizedBox(
-                height: 80,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 3, 0, 65),
-                child: SizedBox(
-                    height: 90.0,
-                    width: 200.0,
-                    child: Image(image: NetworkImage(globals.All_Client_Logo))),
-              ),
-              // Container(
-              //   height: 100.0,
-              //   width: 100.0,
-              //   decoration: const BoxDecoration(
-              //       shape: BoxShape.rectangle,
-              //       image: DecorationImage(
-              //           image: AssetImage("assets/images/jariwala.jpg"),
-              //           fit: BoxFit.fitHeight)),
-              // ),
-
-              Center(
-                child: Text(
-                  'Please Login to Continue your Profile',
-                  style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+      body: Stack(children: [
+        Padding(
+          padding: EdgeInsets.all(12),
+          child: ListView(
+              // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 80, 0, 45),
+                  child: SizedBox(
+                      height: 150.0,
+                      width: 150.0,
+                      child:
+                          Image(image: NetworkImage(globals.All_Client_Logo))),
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: 60,
-                padding: EdgeInsets.symmetric(vertical: 2),
-                child: TextField(
-                  focusNode: myFocusNode,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                  // obscureText: true,
-                  controller: MobileNocontroller,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50)),
-                    prefixIcon: Icon(Icons.phone_android),
-                    focusColor: Color(0xff123456),
-                    hintText: 'Enter 10 digit mobile number',
+
+                Center(
+                  child: Text(
+                    'Please Login to Continue your Profile',
+                    style:
+                        TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 18,
-              ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 50,
-                    width: 100,
-                    child: Card(
-                        color: Color(0xff123456),
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.blueGrey),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: TextButton(
-                            onPressed: () {
-                              EnterMobNo1(MobileNocontroller.text, "");
-                            },
-                            child: Text('Send OTP',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15)))),
-                  ),
-                  SizedBox(
-                    height: 50,
-                    width: 100,
-                    child: Card(
-                        color: Color.fromARGB(255, 177, 199, 234),
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PatientHome()));
-                              // MobileNocontroller.clear();
-                            },
-                            child: Text('Cancel',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 16)))),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Not a User? ', style: TextStyle(fontSize: 15)),
-                  InkWell(
-                      child: Text('Register',
-                          style: TextStyle(
-                              color: Color(0xff123579),
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500)),
-                      onTap: () {
-                        NameController.text = '';
-                        MobNoController.text = '';
-                        AgeController.text = '';
-                        MailIdController.text = '';
-                        AddressController.text = '';
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PatientRegister()));
-                      }),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-
-              TextButton(
-                child: Text(
-                  'By Clicking above to login, you\'r agreeing to our',
-                  style: TextStyle(color: Colors.black, fontSize: 13),
-                ),
-                onPressed: () {},
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(50, 0.0, 50, 0.0),
-                child: Center(
-                  child: RichText(
-                    text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: 'Terms & Conditions ',
-                            style: TextStyle(color: Color(0xff123456))),
-                        TextSpan(
-                            text: '& ', style: TextStyle(color: Colors.black)),
-                        TextSpan(
-                            text: 'Privacy Policy',
-                            style: TextStyle(color: Color(0xff123456)))
+                Padding(
+                  padding: const EdgeInsets.only(top: 30.0),
+                  child: Container(
+                    height: 60,
+                    padding: EdgeInsets.symmetric(vertical: 2),
+                    child: TextField(
+                      focusNode: myFocusNode,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
                       ],
+                      // obscureText: true,
+                      controller: MobileNocontroller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50)),
+                        prefixIcon: Icon(Icons.phone_android),
+                        focusColor: Color(0xff123456),
+                        hintText: 'Enter 10 digit mobile number',
+                      ),
                     ),
                   ),
                 ),
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 30.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          SendOTPtoMobileNUmber();
+                        },
+                        child: Card(
+                            color: Color(0xff123456),
+                            shape: RoundedRectangleBorder(
+                                side: BorderSide(color: Colors.blueGrey),
+                                borderRadius: BorderRadius.circular(25)),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(18, 12, 18, 12),
+                              child: Text('Send OTP',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500)),
+                            )),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PatientHome()));
+                        },
+                        child: Card(
+                            color: Color.fromARGB(255, 177, 199, 234),
+                            shape: RoundedRectangleBorder(
+                                side: BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(25)),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(25, 11, 25, 11),
+                              child: Text('Cancel',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500)),
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Not a User? ', style: TextStyle(fontSize: 15)),
+                    InkWell(
+                        child: Text('Register',
+                            style: TextStyle(
+                                color: Color(0xff123579),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500)),
+                        onTap: () {
+                          NameController.text = '';
+                          MobNoController.text = '';
+                          AgeController.text = '';
+                          MailIdController.text = '';
+                          AddressController.text = '';
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PatientRegister()));
+                        }),
+                  ],
+                ),
+
+                TextButton(
+                  child: Text(
+                    'By Clicking above to login, you\'r agreeing to our',
+                    style: TextStyle(color: Colors.black, fontSize: 13),
+                  ),
+                  onPressed: () {},
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(50, 0.0, 50, 0.0),
+                  child: Center(
+                    child: RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: 'Terms & Conditions ',
+                              style: TextStyle(color: Color(0xff123456))),
+                          TextSpan(
+                              text: '& ',
+                              style: TextStyle(color: Colors.black)),
+                          TextSpan(
+                              text: 'Privacy Policy',
+                              style: TextStyle(color: Color(0xff123456)))
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                // UserProfileverticalLists
+              ]),
+        ),
+        if (isLoading)
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Center(
+              child: SizedBox(
+                height: 100,
+                width: 100,
+                child: LoadingIndicator(
+                  indicatorType: Indicator.ballClipRotateMultiple,
+                  colors: [
+                    // Color.fromARGB(255, 49, 213, 169),
+                    // Color.fromARGB(255, 246, 246, 246),
+                    Color.fromARGB(255, 49, 114, 179),
+                  ],
+                  strokeWidth: 4.0,
+                ),
               ),
-              // UserProfileverticalLists
-            ]),
-      ),
+            ),
+          ),
+      ]),
     );
   }
 }
@@ -357,7 +367,7 @@ mobileError() {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
+      backgroundColor: Color.fromARGB(255, 235, 103, 93),
       textColor: Colors.white,
       fontSize: 16.0);
 }
@@ -368,7 +378,7 @@ Validatemobno() {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
+      backgroundColor: Color.fromARGB(255, 235, 103, 93),
       textColor: Colors.white,
       fontSize: 16.0);
 }
@@ -379,7 +389,7 @@ OTPError() {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
-      backgroundColor: Color.fromARGB(255, 206, 19, 12),
+      backgroundColor: Color.fromARGB(255, 235, 103, 93),
       textColor: Colors.white,
       fontSize: 16.0);
 }
@@ -430,7 +440,7 @@ loginerror() {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
-      backgroundColor: Color.fromARGB(230, 228, 55, 32),
+      backgroundColor: Color.fromARGB(255, 235, 103, 93),
       textColor: Colors.white,
       fontSize: 16.0);
 }

@@ -69,4 +69,3 @@ String All_Client_Logo = "";
 String Patient_report_URL = "";
 String Patient_OTP_URL = "";
 var Client_App_Code = null;
-
