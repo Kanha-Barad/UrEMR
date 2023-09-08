@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uremr/Widgets/BottomNavigation.dart';
 import './MyTrends.dart';
-import 'Screens/Test_Cart_screen.dart';
+import 'Widgets/BottomNavigation.dart';
 import 'globals.dart' as globals;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -250,8 +249,8 @@ class _OredersHistoryState extends State<OredersHistory> {
           leadingWidth: 0,
           bottom: TabBar(
               labelColor: Colors.white,
-              labelStyle: TextStyle(),
-              unselectedLabelColor: Colors.grey,
+              labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              unselectedLabelColor: Color.fromARGB(255, 182, 181, 181),
               tabs: [
                 Tab(text: 'Completed'),
                 Tab(text: 'In Progress'),
@@ -734,7 +733,7 @@ Widget _OrderListDetails(var data, BuildContext context, flg) {
                                         child: InkWell(
                                             child: Card(
                                               color: Color.fromARGB(
-                                                  255, 237, 77, 37),
+                                                  255, 30, 92, 153),
                                               elevation: 2.0,
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
@@ -808,8 +807,11 @@ Widget _OrderListDetails(var data, BuildContext context, flg) {
                                                                     //     Icon(Icons
                                                                     //         .phone_android),
                                                                     focusColor:
-                                                                        Color(
-                                                                            0xff123456),
+                                                                        Color.fromARGB(
+                                                                            255,
+                                                                            30,
+                                                                            92,
+                                                                            153),
                                                                     hintText:
                                                                         'Cancel Reason',
                                                                   ),
@@ -866,10 +868,11 @@ Widget _OrderListDetails(var data, BuildContext context, flg) {
                             child: SizedBox(
                                 child: Theme(
                               data: ThemeData(
-                                  accentColor: Colors.green,
-                                  primarySwatch: Colors.green,
-                                  colorScheme:
-                                      ColorScheme.light(primary: Colors.green)),
+                                  accentColor: Color.fromARGB(255, 7, 185, 141),
+                                  //primarySwatch: Colors.greenAccent,
+                                  colorScheme: ColorScheme.light(
+                                      primary:
+                                          Color.fromARGB(255, 7, 185, 141))),
                               child: Stepper(
                                 type: StepperType.horizontal,
                                 physics: const ScrollPhysics(),
@@ -1290,44 +1293,6 @@ class _PatientBottomPopupState extends State<PatientBottomPopup> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white)),
               ),
-              Spacer(),
-              // (repeat_Flag == 'A')
-              //     ? SizedBox(
-              //         height: 33,
-              //         width: 69,
-              //         child: InkWell(
-              //             child: Card(
-              //               color: Color.fromARGB(255, 26, 177, 122),
-              //               elevation: 2.0,
-              //               shape: RoundedRectangleBorder(
-              //                   borderRadius: BorderRadius.circular(4)),
-              //               child: Padding(
-              //                 padding: const EdgeInsets.all(5.0),
-              //                 child: Center(
-              //                     child: Text("Repeat",
-              //                         style: TextStyle(
-              //                             color: Colors.white,
-              //                             fontSize: 15,
-              //                             fontWeight: FontWeight.w500))),
-              //               ),
-              //             ),
-              //             onTap: () {
-              //               print(globals.PatientRepeatOrder["Data"]);
-              //               Navigator.push(
-              //                   context,
-              //                   MaterialPageRoute(
-              //                       builder: (context) => CartScreen()));
-              //             }),
-              //       )
-              //     : Text(
-              //         // globals.PatientDetails.age.split(',')[0].toString() +
-              //         //     '/' +
-              //         globals.SelectedPatientDetails.gender.toString(),
-              //         style: TextStyle(
-              //             fontSize: 15,
-              //             fontWeight: FontWeight.bold,
-              //             color: Colors.white),
-              //       ),
             ],
           ),
           backgroundColor: Color(0xff123456),
@@ -1466,7 +1431,7 @@ _launchURL(BuildContext context, reportCd) async {
 //NM live
   //"http://115.112.254.129/NM_SRV_GRP_MERGE_PDFS/" + reportCd + ".pdf"
   if (await canLaunch(url)) {
-    launch(url);
+   await launch(url);
   } else {
     // Handle the case where the URL cannot be launched
     print('Could not launch $url');
@@ -1491,7 +1456,7 @@ class NoContent extends StatelessWidget {
           children: <Widget>[
             Icon(
               Icons.verified_rounded,
-              color: Color.fromARGB(255, 45, 72, 194),
+              color: Color.fromARGB(255, 30, 92, 153),
               size: 30,
             ),
             const Text('No Data Found', style: TextStyle(fontSize: 12)),
@@ -1508,7 +1473,7 @@ AlertError() {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
+      backgroundColor: Color.fromARGB(255, 235, 103, 93),
       textColor: Colors.white,
       fontSize: 16.0);
 }

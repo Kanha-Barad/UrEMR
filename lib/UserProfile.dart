@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:uremr/Widgets/BottomNavigation.dart';
 import './OrdersHistory.dart';
 import './PatientHome.dart';
 import './PatientLogin.dart';
 import 'package:http/http.dart' as http;
 import 'ClientCodeLogin.dart';
+import 'Widgets/BottomNavigation.dart';
 import 'globals.dart' as globals;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,121 +20,11 @@ class UsersProfile extends StatefulWidget {
 class _UsersProfileState extends State<UsersProfile> {
   @override
   Widget build(BuildContext context) {
-   
-
     Widget UserProfileverticalLists =
         //if(globals.selectedLogin_Data!=""){
         UserProfileListView(globals.selectedLogin_Data);
     //     }  ;
-   
-    // Widget myBottomNavigationBar = Container(
-    //     // height: 150,
-    //     width: MediaQuery.of(context).size.width,
-    //     height: 48,
-    //     color: Color(0xff123456),
-    //     child: Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //       children: [
-    //         Padding(
-    //           padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
-    //           child: InkWell(
-    //             onTap: () {
-    //               globals.SelectedlocationId = "";
-    //               Navigator.push(context,
-    //                   MaterialPageRoute(builder: (context) => PatientHome()));
-    //             },
-    //             child: Column(children: [
-    //               Icon(
-    //                 Icons.home,
-    //                 color: Colors.white,
-    //                 size: 18,
-    //               ),
-    //               SizedBox(
-    //                 height: 2,
-    //               ),
-    //               Text(
-    //                 "Home",
-    //                 style: TextStyle(color: Colors.white, fontSize: 12),
-    //               )
-    //             ]),
-    //           ),
-    //         ),
-    //         Padding(
-    //           padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-    //           child: InkWell(
-    //             onTap: () {
-    //               Navigator.push(
-    //                 context,
-    //                 MaterialPageRoute(builder: (context) => UsersProfile()),
-    //               );
-    //             },
-    //             child: Column(
-    //               children: [
-    //                 Icon(
-    //                   Icons.person,
-    //                   color: Colors.white,
-    //                   size: 18,
-    //                 ),
-    //                 SizedBox(
-    //                   height: 2,
-    //                 ),
-    //                 Text(
-    //                   "Profile",
-    //                   style: TextStyle(color: Colors.white, fontSize: 12),
-    //                 )
-    //               ],
-    //             ),
-    //           ),
-    //         ),
-    //         Padding(
-    //           padding: const EdgeInsets.fromLTRB(0, 5, 30, 0),
-    //           child: InkWell(
-    //             onTap: () async {
-    //               globals.umr_no = "";
-    //               SharedPreferences prefs =
-    //                   await SharedPreferences.getInstance();
 
-    //               if (prefs.getString('Mobileno') != "") {
-    //                 Navigator.push(
-    //                   context,
-    //                   MaterialPageRoute(
-    //                       builder: (context) => AccessClientCodeLogin()),
-    //                 );
-    //               } else {
-    //                 prefs.setString("Msg_id", "");
-    //                 prefs.setString('Mobileno', "");
-
-    //                 prefs.setString('email', "");
-    //                 //     prefs.setString('Mobileno', MobNocontroller.text.toString()).toString();
-    //                 prefs.setString("Otp", "");
-    //                 // prefs.getStringList('data1') ?? [];
-    //                 (prefs.setString('data1', ""));
-    //                 (prefs.setString('AppCODE', ''));
-    //                 (prefs.setString('CompanyLogo', ''));
-    //                 (prefs.setString('ReportURL', ''));
-    //                 (prefs.setString('OTPURL', ''));
-    //                 (prefs.setString('PatientAppApiURL', ''));
-    //                 (prefs.setString('ConnectionString', ''));
-    //               }
-    //             },
-    //             child: Column(children: [
-    //               Icon(
-    //                 Icons.logout_rounded,
-    //                 color: Colors.white,
-    //                 size: 18,
-    //               ),
-    //               SizedBox(
-    //                 height: 2,
-    //               ),
-    //               Text(
-    //                 "Log Out",
-    //                 style: TextStyle(color: Colors.white, fontSize: 12),
-    //               )
-    //             ]),
-    //           ),
-    //         )
-    //       ],
-    //     ));
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -189,7 +79,7 @@ Widget _UserProfileCard(data, BuildContext context, index) {
                             Icon(
                               Icons.account_circle_rounded,
                               size: 90,
-                              color: Color(0xff123456),
+                              color: Color.fromARGB(255, 90, 133, 173),
                             ),
                             SizedBox(
                               height: 8,
@@ -220,7 +110,7 @@ Widget _UserProfileCard(data, BuildContext context, index) {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Color(0xff123456),
+                                  color: Color.fromARGB(255, 90, 133, 173),
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(50.0),
                                   ),
@@ -264,7 +154,7 @@ Widget _UserProfileCard(data, BuildContext context, index) {
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                color: Color(0xff123456),
+                                color: Color.fromARGB(255, 90, 133, 173),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(50.0),
                                 ),
@@ -301,35 +191,35 @@ Widget _UserProfileCard(data, BuildContext context, index) {
           : Column());
 }
 
-class UserProfile {
-  final mob_no;
-  final display_name;
-  final gender;
-  final email_id;
-  final address;
-  final date_of_birth;
-  UserProfile({
-    required this.mob_no,
-    required this.display_name,
-    required this.gender,
-    required this.email_id,
-    required this.address,
-    required this.date_of_birth,
-  });
-  factory UserProfile.fromJson(Map<String, dynamic> json) {
-    if (json['EMAIL_ID'] == null || json['EMAIL_ID'] == "") {
-      json['EMAIL_ID'] = 'Not Specified.';
-    }
-    if (json['ADDRESS1'] == null || json['EMAIL_ID'] == "") {
-      json['ADDRESS1'] = 'Not Specified.';
-    }
-    return UserProfile(
-      mob_no: json['MOBILE_NO1'].toString(),
-      display_name: json['DISPLAY_NAME'].toString(),
-      gender: json['GENDER'].toString(),
-      email_id: json['EMAIL_ID'].toString(),
-      address: json['ADDRESS1'].toString(),
-      date_of_birth: json['DOB'].toString(),
-    );
-  }
-}
+// class UserProfile {
+//   final mob_no;
+//   final display_name;
+//   final gender;
+//   final email_id;
+//   final address;
+//   final date_of_birth;
+//   UserProfile({
+//     required this.mob_no,
+//     required this.display_name,
+//     required this.gender,
+//     required this.email_id,
+//     required this.address,
+//     required this.date_of_birth,
+//   });
+//   factory UserProfile.fromJson(Map<String, dynamic> json) {
+//     if (json['EMAIL_ID'] == null || json['EMAIL_ID'] == "") {
+//       json['EMAIL_ID'] = 'Not Specified.';
+//     }
+//     if (json['ADDRESS1'] == null || json['EMAIL_ID'] == "") {
+//       json['ADDRESS1'] = 'Not Specified.';
+//     }
+//     return UserProfile(
+//       mob_no: json['MOBILE_NO1'].toString(),
+//       display_name: json['DISPLAY_NAME'].toString(),
+//       gender: json['GENDER'].toString(),
+//       email_id: json['EMAIL_ID'].toString(),
+//       address: json['ADDRESS1'].toString(),
+//       date_of_birth: json['DOB'].toString(),
+//     );
+//   }
+// }

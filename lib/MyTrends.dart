@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:uremr/Widgets/BottomNavigation.dart';
 import './OrdersHistory.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:math';
 
-import './PatientHome.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
-import 'ClientCodeLogin.dart';
-import 'PatientLogin.dart';
-import 'UserProfile.dart';
+import 'Widgets/BottomNavigation.dart';
 import 'globals.dart' as globals;
 import 'package:flutter_charts/flutter_charts.dart';
 
@@ -410,7 +403,7 @@ class NoContent3 extends StatelessWidget {
           children: <Widget>[
             Icon(
               Icons.verified_rounded,
-              color: Colors.indigo,
+              color: Color(0xff123456),
               size: 50,
             ),
             const Text('No Data Found'),
@@ -711,7 +704,7 @@ class NoContent extends StatelessWidget {
           children: <Widget>[
             Icon(
               Icons.verified_rounded,
-              color: Color.fromARGB(255, 45, 72, 194),
+              color: Color.fromARGB(255, 30, 92, 153),
               size: 40,
             ),
             const Text('No Data Found'),

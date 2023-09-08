@@ -1,15 +1,12 @@
 import 'dart:convert';
 
-import 'package:badges/badges.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 import './OrdersHistory.dart';
 import './UserProfile.dart';
 
-import 'ClientCodeLogin.dart';
-import 'Screens/Book_Test_screen.dart';
-import 'Upload_Prescription.dart';
+import 'TestBooking.dart';
 import 'Widgets/BottomNavigation.dart';
-import 'Widgets/cart_items.dart';
 import 'book_home_visit.dart';
 import 'globals.dart' as globals;
 import 'package:flutter/material.dart';
@@ -22,22 +19,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './Notification.dart';
 
 class PatientHome extends StatefulWidget {
-  String empID = "0";
-  Dashboard(String iEmpid) {
-    empID = iEmpid;
-    this.empID = iEmpid;
-  }
+  const PatientHome({super.key});
 
   @override
   State<PatientHome> createState() => _PatientHomeState();
 }
 
 class _PatientHomeState extends State<PatientHome> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   //_loadCounter();
-  // }
+  bool isLoading = true; // Step 1
 
   _loadCounter() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -98,8 +87,8 @@ class _PatientHomeState extends State<PatientHome> {
       // (globals.Session_ID != "0" &&
       //     globals.Session_ID != "" &&
       //     globals.Session_ID != null) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => ProductOverviewPage()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => bookATeSt("0")));
     } else if (globals.mobNO == "") {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => PatientLogin("B")));
@@ -200,10 +189,11 @@ class _PatientHomeState extends State<PatientHome> {
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
-              return const Center(
-                  child: const CircularProgressIndicator(
-                strokeWidth: 4.0,
-              ));
+              return Container();
+              // Center(
+              //     child: const CircularProgressIndicator(
+              //   strokeWidth: 4.0,
+              // ));
             }));
 
     return WillPopScope(
@@ -214,7 +204,7 @@ class _PatientHomeState extends State<PatientHome> {
           // backgroundColor: Color.fromARGB(179, 239, 243, 247),
           leading: Builder(
             builder: (context) => IconButton(
-              icon: Icon(Icons.menu_rounded, color: Colors.white),
+              icon: Image(image: NetworkImage(globals.All_Client_Logo)),
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
           ),
@@ -269,27 +259,6 @@ class _PatientHomeState extends State<PatientHome> {
                         ),
                       )
                     : new Container()
-                //        Padding(
-                // padding: const EdgeInsets.only(top: 14, right: 20),
-                // child: new Stack(
-                //   children: <Widget>[
-                //     Badge(
-                //         position: BadgePosition.topEnd(),
-                //         showBadge: NotificationCount == 0 ? false : true,
-                //         badgeContent: Text(
-                //           NotificationCount.toString(),
-                //           style: (TextStyle(color: Colors.white, fontSize: 10)),
-                //         ),
-                //         child: InkWell(
-                //           onTap: () {
-                //             InProgressNotofication();
-                //           },
-                //           child: Icon(
-                //             Icons.notifications,
-                //             color: Colors.white,
-                //             size: 20,
-                //           ),
-                //         ))
               ],
             ),
           ],
@@ -370,7 +339,7 @@ class _PatientHomeState extends State<PatientHome> {
                     }
                   },
                   leading: const Icon(Icons.shopping_cart),
-                  title: const Text("Order History")),
+                  title: const Text("My Reports")),
               SizedBox(
                 height: 380,
               ),
@@ -381,853 +350,394 @@ class _PatientHomeState extends State<PatientHome> {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 150,
-                child: ListView(
-                  children: [
-                    CarouselSlider(
-                      items: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Container(
-                            //  margin: EdgeInsets.all(0.0),
+        body: Stack(
+          children: [
+            // if (isLoading)
+            //   Center(
+            //     child: SizedBox(
+            //       height: 100,
+            //       width: 100,
+            //       child: LoadingIndicator(
+            //         indicatorType: Indicator.ballClipRotateMultiple,
+            //         colors: [
+            //           Color.fromARGB(255, 49, 114, 179),
+            //         ],
+            //         strokeWidth: 4.0,
+            //       ),
+            //     ),
+            //   ),
+            FutureBuilder<List<PreferredServices>>(
+              future: _fetchManagerDetails(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData && !snapshot.hasError) {
+                  // Loading indicator while waiting for data
+                  return Center(
+                    child: SizedBox(
+                      height: 100,
+                      width: 100,
+                      child: LoadingIndicator(
+                        indicatorType: Indicator.ballClipRotateMultiple,
+                        colors: [
+                          Color.fromARGB(255, 49, 114, 179),
+                        ],
+                        strokeWidth: 4.0,
+                      ),
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  // Data has been fetched successfully, build UI using snapshot.data
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 150,
+                          child: ListView(
+                            children: [
+                              CarouselSlider(
+                                items: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                    child: Container(
+                                      //  margin: EdgeInsets.all(0.0),
 
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(0.0),
-                              image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage(
-                                  "assets/images/slider1.jpg",
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(0.0),
+                                        image: DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: AssetImage(
+                                            "assets/images/slider1.jpg",
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  // 2nd Image of Slider
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                    child: Container(
+                                      //   margin: EdgeInsets.all(0.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(0.0),
+                                        image: DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: AssetImage(
+                                            "assets/images/slider2.jpg",
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  // 3rd Image of Slider
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                    child: Container(
+                                      //   margin: EdgeInsets.all(0.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(0.0),
+                                        image: DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: AssetImage(
+                                            "assets/images/slider3.jpg",
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                    child: Container(
+                                      //   margin: EdgeInsets.all(0.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(0.0),
+                                        image: DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: AssetImage(
+                                            "assets/images/slider4.jpg",
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                    child: Container(
+                                      //   margin: EdgeInsets.all(0.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(0.0),
+                                        image: DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: AssetImage(
+                                            "assets/images/slider5.jpg",
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                options: CarouselOptions(
+                                  height: 150.0,
+                                  enlargeCenterPage: true,
+                                  autoPlay: true,
+                                  // aspectRatio: 16 / 40,
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  enableInfiniteScroll: true,
+                                  autoPlayAnimationDuration:
+                                      Duration(milliseconds: 800),
+                                  viewportFraction: 0.8,
                                 ),
                               ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          color: Color.fromARGB(179, 168, 185, 202),
+                          // height: 60,
+                          // width: MediaQuery.of(context).size.width * 1,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0, right: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextButton(
+                                    onPressed: () {
+                                      _SaveOrderHIStroy();
+                                    },
+                                    child: Card(
+                                      color: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            26, 11, 26, 11),
+                                        child: Text(
+                                          "My Reports",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    )),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 3, 0, 3),
+                                  child: SizedBox(
+                                      height: 43.0,
+                                      width: 80.0,
+                                      child: Image(
+                                          image: NetworkImage(
+                                              globals.All_Client_Logo))),
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      _SaveLoginDataTrends();
+                                    },
+                                    child: Card(
+                                      color: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            26, 11, 26, 11),
+                                        child: Text(
+                                          "My Trends",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    )),
+                              ],
                             ),
                           ),
                         ),
-
-                        //2nd Image of Slider
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: const [
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              "Our Services",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 49, 114, 179),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Container(
-                            //   margin: EdgeInsets.all(0.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(0.0),
-                              image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage(
-                                  "assets/images/slider2.jpg",
+                          padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+                          child: Card(
+                            elevation: 3.0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: BorderSide(
+                                    color: Color.fromARGB(255, 196, 218, 241))),
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: (() {
+                                    globals.Location_BookedTest = "";
+                                    _SaveLoginDataBookATest();
+                                    // cartController.clear();
+                                    // productcontroller.resetAll();
+                                    globals.GlobalDiscountCoupons = '';
+                                  }),
+                                  child: ListTile(
+                                    leading: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Color(0xFFA18875),
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(5),
+                                          ),
+                                        ),
+                                        child: Icon(
+                                            Icons.account_circle_outlined,
+                                            size: 30,
+                                            color: Color(
+                                                0xFFA18875))), // You can replace this with your own icon or image
+                                    title: Text(
+                                      'Test Enquiry',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    // subtitle: Text('Description of first content'),
+                                  ),
                                 ),
-                              ),
+                                Divider(), // Optional: add a divider between the two pieces of content
+                                GestureDetector(
+                                    onTap: (() {
+                                      globals.selectDate = "";
+                                      globals.SelectedlocationId = "";
+                                      HomeVisitBook();
+                                      globals.GlobalDiscountCoupons = '';
+
+                                      // globals.Glb_PATIENT_APP_STATES_ID = null;
+                                      // globals.Glb_PATIENT_APP_CITTY_ID = null;
+                                    }),
+                                    child: ListTile(
+                                      leading: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Color(0xFFEC407A),
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(5),
+                                            ),
+                                          ),
+                                          child: Icon(Icons.home_outlined,
+                                              size: 30,
+                                              color: Color(
+                                                  0xFFEC407A))), // You can replace this with your own icon or image
+                                      title: Text(
+                                        'Book a Home Visit',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      // subtitle: Text('Description of second content'),
+                                    )),
+                              ],
                             ),
                           ),
                         ),
-
-                        //3rd Image of Slider
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Container(
-                            //   margin: EdgeInsets.all(0.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(0.0),
-                              image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage(
-                                  "assets/images/slider3.jpg",
-                                ),
-                              ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 15,
                             ),
-                          ),
+                            Text('Health Packages',
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 49, 114, 179),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18))
+                          ],
                         ),
-
-                        //4th Image of Slider
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Container(
-                            //    margin: EdgeInsets.all(0.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(0.0),
-                              image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage(
-                                  "assets/images/slider4.jpg",
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        //5th Image of Slider
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Container(
-                            //     margin: EdgeInsets.all(0.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(0.0),
-                              image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage(
-                                  "assets/images/slider5.jpg",
-                                ),
-                              ),
-                            ),
+                        SizedBox(height: 8),
+                        Container(
+                          color: Color.fromARGB(179, 168, 185, 202),
+                          height: MediaQuery.of(context).size.height * 0.18,
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: PreferredServicesDetails,
                           ),
                         ),
                       ],
-                      options: CarouselOptions(
-                        height: 150.0,
-                        enlargeCenterPage: true,
-                        autoPlay: true,
-                        // aspectRatio: 16 / 40,
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        enableInfiniteScroll: true,
-                        autoPlayAnimationDuration: Duration(milliseconds: 800),
-                        viewportFraction: 0.8,
-                      ),
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                color: Color.fromARGB(179, 168, 185, 202),
-                // height: 60,
-                // width: MediaQuery.of(context).size.width * 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.38,
-                      // height: 55,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 8, 0, 8),
-                        child: TextButton(
-                          onPressed: () {
-                            _SaveOrderHIStroy();
-                          },
-                          child: Text(
-                            'My Reports',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          style: TextButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              backgroundColor: Colors.white),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
-                      child: SizedBox(
-                          height: 43.0,
-                          width: 80.0,
-                          child: Image(
-                              image: NetworkImage(globals.All_Client_Logo))),
-                    ),
-                    // Padding(
-                    //   padding: EdgeInsets.fromLTRB(0, 3, 0, 3),
-                    //   child: Container(
-                    //     height: 43.0,
-                    //     width: 50.0,
-                    //     decoration: const BoxDecoration(
-                    //         shape: BoxShape.rectangle,
-                    //         image: DecorationImage(
-                    //             image:
-                    //                 AssetImage("assets/images/asterlabs.png"),
-                    //             fit: BoxFit.fill)),
-                    //   ),
-                    // ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.38,
-                      // height: 55,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 10, 8),
-                        child: TextButton(
-                          onPressed: () {
-                            _SaveLoginDataTrends();
-                          },
-                          child: Text('My Trends',
-                              style: TextStyle(color: Colors.black)),
-                          style: TextButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              backgroundColor: Colors.white),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              // SingleChildScrollView(
-              //   scrollDirection: Axis.horizontal,
-              //   child: Row(
-              //     children: [
-              //       Padding(
-              //         padding: const EdgeInsets.all(10.0),
-              //         child: Column(
-              //           children: [
-              //             Container(
-              //               width: 45,
-              //               height: 45,
-              //               decoration: BoxDecoration(
-              //                 borderRadius:
-              //                     BorderRadius.all(Radius.circular(50.0)),
-              //                 color: Color(0xFFE8EAF6),
-              //               ),
-              //               child: Column(
-              //                 children: [
-              //                   new Image.asset(
-              //                     'assets/images/microscope.png',
-              //                     width: 30,
-              //                     height: 45,
-              //                     // fit:BoxFit.fill
-              //                   )
-              //                 ],
-              //               ),
-              //             ),
-              //             SizedBox(
-              //               height: 14,
-              //             ),
-              //             Text(
-              //               'Pathology',
-              //               style: TextStyle(fontSize: 10),
-              //             )
-              //           ],
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.all(10.0),
-              //         child: Column(
-              //           children: [
-              //             Container(
-              //               width: 45,
-              //               height: 45,
-              //               decoration: BoxDecoration(
-              //                 borderRadius:
-              //                     BorderRadius.all(Radius.circular(50.0)),
-              //                 color: Color(0xFFE8EAF6),
-              //               ),
-              //               child: Column(
-              //                 children: [
-              //                   new Image.asset(
-              //                     'assets/images/diabetes1.png',
-              //                     width: 30,
-              //                     height: 45,
-              //                     // fit:BoxFit.fill
-              //                   )
-              //                 ],
-              //               ),
-              //             ),
-              //             SizedBox(
-              //               height: 14,
-              //             ),
-              //             Text(
-              //               'Diabetic',
-              //               style: TextStyle(fontSize: 10),
-              //             )
-              //           ],
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.all(10.0),
-              //         child: Column(
-              //           children: [
-              //             Container(
-              //               width: 45,
-              //               height: 45,
-              //               decoration: BoxDecoration(
-              //                 borderRadius:
-              //                     BorderRadius.all(Radius.circular(50.0)),
-              //                 color: Color(0xFFE8EAF6),
-              //               ),
-              //               child: Column(
-              //                 children: [
-              //                   new Image.asset(
-              //                     'assets/images/mri1.png',
-              //                     width: 30,
-              //                     height: 45,
-              //                     // fit:BoxFit.fill
-              //                   )
-              //                 ],
-              //               ),
-              //             ),
-              //             SizedBox(
-              //               height: 14,
-              //             ),
-              //             Text(
-              //               'MRI',
-              //               style: TextStyle(fontSize: 10),
-              //             )
-              //           ],
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.all(10.0),
-              //         child: Column(
-              //           children: [
-              //             Container(
-              //               width: 45,
-              //               height: 45,
-              //               decoration: BoxDecoration(
-              //                 borderRadius:
-              //                     BorderRadius.all(Radius.circular(50.0)),
-              //                 color: Color(0xFFE8EAF6),
-              //               ),
-              //               child: Column(
-              //                 children: [
-              //                   new Image.asset(
-              //                     'assets/images/ct-scan1.png',
-              //                     width: 30,
-              //                     height: 45,
-              //                     // fit:BoxFit.fill
-              //                   )
-              //                 ],
-              //               ),
-              //             ),
-              //             SizedBox(
-              //               height: 14,
-              //             ),
-              //             Text(
-              //               'CT',
-              //               style: TextStyle(fontSize: 10),
-              //             )
-              //           ],
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.all(10.0),
-              //         child: Column(
-              //           children: [
-              //             Container(
-              //               width: 45,
-              //               height: 45,
-              //               decoration: BoxDecoration(
-              //                 borderRadius:
-              //                     BorderRadius.all(Radius.circular(50.0)),
-              //                 color: Color(0xFFE8EAF6),
-              //               ),
-              //               child: Column(
-              //                 children: [
-              //                   new Image.asset(
-              //                     'assets/images/x-ray1.png',
-              //                     width: 30,
-              //                     height: 45,
-              //                     // fit:BoxFit.fill
-              //                   )
-              //                 ],
-              //               ),
-              //             ),
-              //             SizedBox(
-              //               height: 14,
-              //             ),
-              //             Text(
-              //               'X-Ray',
-              //               style: TextStyle(fontSize: 10),
-              //             )
-              //           ],
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.all(10.0),
-              //         child: Column(
-              //           children: [
-              //             Container(
-              //               width: 45,
-              //               height: 45,
-              //               decoration: BoxDecoration(
-              //                 borderRadius:
-              //                     BorderRadius.all(Radius.circular(50.0)),
-              //                 color: Color(0xFFE8EAF6),
-              //               ),
-              //               child: Column(
-              //                 children: [
-              //                   new Image.asset(
-              //                     'assets/images/pulse1.png',
-              //                     width: 30,
-              //                     height: 45,
-              //                     // fit:BoxFit.fill
-              //                   )
-              //                 ],
-              //               ),
-              //             ),
-              //             SizedBox(
-              //               height: 14,
-              //             ),
-              //             Text(
-              //               'Cardiology',
-              //               style: TextStyle(fontSize: 10),
-              //             )
-              //           ],
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.all(10.0),
-              //         child: Column(
-              //           children: [
-              //             Container(
-              //               width: 45,
-              //               height: 45,
-              //               decoration: BoxDecoration(
-              //                 borderRadius:
-              //                     BorderRadius.all(Radius.circular(50.0)),
-              //                 color: Color(0xFFE8EAF6),
-              //               ),
-              //               child: Column(
-              //                 children: [
-              //                   new Image.asset(
-              //                     'assets/images/liver1.png',
-              //                     width: 30,
-              //                     height: 45,
-              //                     // fit:BoxFit.fill
-              //                   )
-              //                 ],
-              //               ),
-              //             ),
-              //             SizedBox(
-              //               height: 14,
-              //             ),
-              //             Text(
-              //               'Liver',
-              //               style: TextStyle(fontSize: 10),
-              //             )
-              //           ],
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.all(10.0),
-              //         child: Column(
-              //           children: [
-              //             Container(
-              //               width: 45,
-              //               height: 45,
-              //               decoration: BoxDecoration(
-              //                 borderRadius:
-              //                     BorderRadius.all(Radius.circular(50.0)),
-              //                 color: Color(0xFFE8EAF6),
-              //               ),
-              //               child: Column(
-              //                 children: [
-              //                   new Image.asset(
-              //                     'assets/images/kidney1.png',
-              //                     width: 30,
-              //                     height: 45,
-              //                     // fit:BoxFit.fill
-              //                   )
-              //                 ],
-              //               ),
-              //             ),
-              //             SizedBox(
-              //               height: 14,
-              //             ),
-              //             Text(
-              //               'Kidney',
-              //               style: TextStyle(fontSize: 10),
-              //             )
-              //           ],
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.all(10.0),
-              //         child: Column(
-              //           children: [
-              //             Container(
-              //               width: 45,
-              //               height: 45,
-              //               decoration: BoxDecoration(
-              //                 borderRadius:
-              //                     BorderRadius.all(Radius.circular(50.0)),
-              //                 color: Color(0xFFE8EAF6),
-              //               ),
-              //               child: Column(
-              //                 children: [
-              //                   new Image.asset(
-              //                     'assets/images/gynecology1.png',
-              //                     width: 30,
-              //                     height: 45,
-              //                     // fit:BoxFit.fill
-              //                   )
-              //                 ],
-              //               ),
-              //             ),
-              //             SizedBox(
-              //               height: 14,
-              //             ),
-              //             Text(
-              //               'Gynecology',
-              //               style: TextStyle(fontSize: 10),
-              //             )
-              //           ],
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: const [
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Text(
-                    "Our Services",
-                    style: TextStyle(
-                        color: Color(0xff123456),
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-
-              Padding(
-                padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
-                child: Card(
-                  elevation: 3.0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: (() {
-                          globals.Location_BookedTest = "";
-                          _SaveLoginDataBookATest();
-                          cartController.clear();
-                          productcontroller.resetAll();
-                          globals.GlobalDiscountCoupons = '';
-                        }),
-                        child: ListTile(
-                          leading: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Color(0xFFA18875),
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5),
-                                ),
-                              ),
-                              child: Icon(Icons.account_circle_outlined,
-                                  color: Color(
-                                      0xFFA18875))), // You can replace this with your own icon or image
-                          title: Text(
-                            'Book a Test',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
-                          ),
-                          // subtitle: Text('Description of first content'),
-                        ),
-                      ),
-                      Divider(), // Optional: add a divider between the two pieces of content
-                      GestureDetector(
-                          onTap: (() {
-                            globals.selectDate = "";
-                            globals.SelectedlocationId = "";
-                            HomeVisitBook();
-                            globals.GlobalDiscountCoupons = '';
-                          }),
-                          child: ListTile(
-                            leading: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Color(0xFFEC407A),
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(5),
-                                  ),
-                                ),
-                                child: Icon(Icons.home_outlined,
-                                    color: Color(
-                                        0xFFEC407A))), // You can replace this with your own icon or image
-                            title: Text(
-                              'Book a Home Visit',
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500),
-                            ),
-                            // subtitle: Text('Description of second content'),
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
-              //   child: Container(
-              //     height: 150,
-              //     child: Card(
-              //       elevation: 4.0,
-              //       shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(5.0)),
-              //       child: Column(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         children: [
-              //           Row(
-              //             mainAxisAlignment: MainAxisAlignment.center,
-              //             children: [
-              //               Column(
-              //                 children: [
-              //                   Padding(
-              //                     padding:
-              //                         const EdgeInsets.fromLTRB(10, 15, 10, 10),
-              //                     child: InkWell(
-              //                       child: Column(
-              //                         children: [
-              //                           Container(
-              //                             decoration: BoxDecoration(
-              //                               border: Border.all(
-              //                                 color: Color(0xFFA18875),
-              //                               ),
-              //                               borderRadius: BorderRadius.all(
-              //                                 Radius.circular(5),
-              //                               ),
-              //                             ),
-              //                             child: Icon(
-              //                                 Icons.account_circle_outlined,
-              //                                 color: Color(0xFFA18875)),
-              //                           ),
-              //                           SizedBox(
-              //                             height: 5,
-              //                           ),
-              //                           Text(
-              //                             'Book a Test',
-              //                             style: TextStyle(
-              //                               fontSize: 10,
-              //                             ),
-              //                           )
-              //                         ],
-              //                       ),
-              //                       onTap: () {
-              //                         globals.Location_BookedTest = "";
-
-              //                         _SaveLoginDataBookATest();
-              //                         cartController.clear();
-              //                         productcontroller.resetAll();
-              //                         globals.GlobalDiscountCoupons = '';
-              //                       },
-              //                     ),
-              //                   ),
-              //                   // Padding(
-              //                   //   padding: const EdgeInsets.all(10.0),
-              //                   //   child: InkWell(
-              //                   //     child: Column(
-              //                   //       children: [
-              //                   //         Container(
-              //                   //           decoration: BoxDecoration(
-              //                   //             border: Border.all(
-              //                   //               color: Color(0xFF26A69A),
-              //                   //             ),
-              //                   //             borderRadius: BorderRadius.all(
-              //                   //               Radius.circular(5),
-              //                   //             ),
-              //                   //           ),
-              //                   //           child: Icon(
-              //                   //               Icons.now_wallpaper_outlined,
-              //                   //               color: Color(0xFF26A69A)),
-              //                   //         ),
-              //                   //         SizedBox(
-              //                   //           height: 5,
-              //                   //         ),
-              //                   //         Text(
-              //                   //           'Walk-In Consultation',
-              //                   //           style: TextStyle(
-              //                   //             fontSize: 10,
-              //                   //           ),
-              //                   //         )
-              //                   //       ],
-              //                   //     ),
-              //                   //     onTap: () {
-              //                   //       // Navigator.push(
-              //                   //       //     context,
-              //                   //       //     MaterialPageRoute(
-              //                   //       //         builder: (context) =>
-              //                   //       //             PatientRegister()));
-              //                   //     },
-              //                   //   ),
-              //                   // ),
-              //                 ],
-              //               ),
-              //               Column(
-              //                 children: [
-              //                   Padding(
-              //                     padding:
-              //                         const EdgeInsets.fromLTRB(10, 15, 10, 10),
-              //                     child: InkWell(
-              //                       child: Column(
-              //                         children: [
-              //                           Container(
-              //                             decoration: BoxDecoration(
-              //                               border: Border.all(
-              //                                 color: Color(0xFFEC407A),
-              //                               ),
-              //                               borderRadius: BorderRadius.all(
-              //                                 Radius.circular(5),
-              //                               ),
-              //                             ),
-              //                             child: Icon(Icons.home_outlined,
-              //                                 color: Color(0xFFEC407A)),
-              //                           ),
-              //                           SizedBox(
-              //                             height: 5,
-              //                           ),
-              //                           Text(
-              //                             'Book a Home Visit',
-              //                             style: TextStyle(
-              //                               fontSize: 10,
-              //                             ),
-              //                           )
-              //                         ],
-              //                       ),
-              //                       onTap: () {
-              //                         globals.selectDate = "";
-              //                         globals.SelectedlocationId = "";
-              //                         HomeVisitBook();
-
-              //                         globals.GlobalDiscountCoupons = '';
-              //                       },
-              //                     ),
-              //                   ),
-              //                   // Padding(
-              //                   //   padding: const EdgeInsets.all(10.0),
-              //                   //   child: InkWell(
-              //                   //     child: Column(
-              //                   //       children: [
-              //                   //         Container(
-              //                   //           decoration: BoxDecoration(
-              //                   //             border: Border.all(
-              //                   //               color: Color(0xFF4527A0),
-              //                   //             ),
-              //                   //             borderRadius: BorderRadius.all(
-              //                   //               Radius.circular(5),
-              //                   //             ),
-              //                   //           ),
-              //                   //           child: Icon(Icons.video_call_outlined,
-              //                   //               color: Color(0xFF4527A0)),
-              //                   //         ),
-              //                   //         SizedBox(
-              //                   //           height: 5,
-              //                   //         ),
-              //                   //         Text(
-              //                   //           'Video Consultation',
-              //                   //           style: TextStyle(
-              //                   //             fontSize: 10,
-              //                   //           ),
-              //                   //         )
-              //                   //       ],
-              //                   //     ),
-              //                   //     onTap: () {},
-              //                   //   ),
-              //                   // ),
-              //                 ],
-              //               ),
-              //               // Column(
-              //               //   children: [
-              //               //     Padding(
-              //               //       padding:
-              //               //           const EdgeInsets.fromLTRB(10, 15, 10, 10),
-              //               //       child: InkWell(
-              //               //         child: Column(
-              //               //           children: [
-              //               //             Container(
-              //               //               decoration: BoxDecoration(
-              //               //                 border: Border.all(
-              //               //                   color: Color(0xFF69F0AE),
-              //               //                 ),
-              //               //                 borderRadius: BorderRadius.all(
-              //               //                   Radius.circular(5),
-              //               //                 ),
-              //               //               ),
-              //               //               child: Icon(
-              //               //                 Icons.airport_shuttle_outlined,
-              //               //                 color: Color(0xFF69F0AE),
-              //               //               ),
-              //               //             ),
-              //               //             SizedBox(
-              //               //               height: 5,
-              //               //             ),
-              //               //             Text(
-              //               //               'Book a Ambulance',
-              //               //               style: TextStyle(
-              //               //                 fontSize: 10,
-              //               //               ),
-              //               //             )
-              //               //           ],
-              //               //         ),
-              //               //         onTap: () {},
-              //               //       ),
-              //               //     ),
-              //               //     Padding(
-              //               //       padding: const EdgeInsets.all(10.0),
-              //               //       child: InkWell(
-              //               //         child: Column(
-              //               //           children: [
-              //               //             Container(
-              //               //               decoration: BoxDecoration(
-              //               //                 border: Border.all(
-              //               //                   color: Color(0xFF81D4FA),
-              //               //                 ),
-              //               //                 borderRadius: BorderRadius.all(
-              //               //                   Radius.circular(5),
-              //               //                 ),
-              //               //               ),
-              //               //               child: Icon(
-              //               //                 Icons.home,
-              //               //                 color: Color(0xFF81D4FA),
-              //               //               ),
-              //               //             ),
-              //               //             SizedBox(
-              //               //               height: 5,
-              //               //             ),
-              //               //             Text(
-              //               //               'Tests Enquiry',
-              //               //               style: TextStyle(
-              //               //                 fontSize: 10,
-              //               //               ),
-              //               //             )
-              //               //           ],
-              //               //         ),
-              //               //         onTap: () {
-              //               //           Navigator.push(
-              //               //               context,
-              //               //               MaterialPageRoute(
-              //               //                   builder: (context) =>
-              //               //                       UpLoadPrescrIPtioN()));
-              //               //         },
-              //               //       ),
-              //               //     ),
-              //               //   ],
-              //               // ),
-              //             ],
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: 50,
-              // ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Text('Health Packages',
-                      style: TextStyle(
-                          color: Color(0xff123456),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20))
-                ],
-              ),
-              SizedBox(height: 8),
-              Container(
-                  color: Color.fromARGB(179, 168, 185, 202),
-                  height: MediaQuery.of(context).size.height * 0.18,
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: PreferredServicesDetails,
-                  )),
-            ],
-          ),
+                  ); // You can replace this with your UI components
+                } else if (snapshot.hasError) {
+                  // Error occurred while fetching data
+                  return Text("${snapshot.error}");
+                }
+                return Container(); // Placeholder when none of the conditions are met
+              },
+            ),
+          ],
         ),
+
+        // Centered CircularProgressIndicator
+        // if (isLoading) // Step 2
+        //   Center(
+        //     child: SizedBox(
+        //       height: 100,
+        //       width: 100,
+        //       child: LoadingIndicator(
+        //         indicatorType: Indicator.ballClipRotateMultiple,
+        //         colors: [
+        //           Color.fromARGB(255, 49, 114, 179),
+        //         ],
+        //         strokeWidth: 4.0,
+        //       ),
+        //     ),
+        //   ),
+        // FutureBuilder<List<PreferredServices>>(
+        //   future: _fetchManagerDetails(),
+        //   builder: (context, snapshot) {
+        //     if (!snapshot.hasData && !snapshot.hasError) {
+        //       return Center(
+        //         child: SizedBox(
+        //           height: 100,
+        //           width: 100,
+        //           child: LoadingIndicator(
+        //             indicatorType: Indicator.ballClipRotateMultiple,
+        //             colors: [
+        //               // Color.fromARGB(255, 49, 213, 169),
+        //               // Color.fromARGB(255, 246, 246, 246),
+        //               Color.fromARGB(255, 49, 114, 179),
+        //             ],
+        //             strokeWidth: 4.0,
+        //           ),
+        //         ),
+        //       );
+        //     } else {
+        //       // Return an empty container to avoid overlapping content
+        //       return Container();
+        //     }
+        //   },
+        // ),
+        //   ],
+        // ),
         bottomNavigationBar: AllBottOMNaviGAtionBar(),
       ),
     );
@@ -1264,26 +774,26 @@ Widget _PreferredServicesDetails(var data, BuildContext context) {
                               data.srv_grp_name,
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
                             )),
                         Padding(
                             padding: const EdgeInsets.fromLTRB(10, 0, 0, 18),
                             child: Text(
                               '\u{20B9} ' + data.srv_price,
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.red,
                                   fontSize: 15,
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.w600),
                             )),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(5, 0, 2, 2),
                           child: Text(
                             data.srv_name,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.blueGrey,
                                 fontSize: 11,
-                                fontWeight: FontWeight.w400),
+                                fontWeight: FontWeight.w500),
                           ),
                         )
                       ])),

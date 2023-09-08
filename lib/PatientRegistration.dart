@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:loading_indicator/loading_indicator.dart';
 import './PatientLogin.dart';
 import './PatientLogin.dart';
 import 'globals.dart' as globals;
@@ -24,7 +25,9 @@ class PatientRegister extends StatefulWidget {
 class _PatientRegisterState extends State<PatientRegister> {
   var selectedSalutation;
   var Gender_Id = '';
-  RegisterPatient() async {
+  bool isRegistering = false;
+
+  Future<void> RegisterPatient() async {
     if (selectedSalutation == 'Male') {
       Gender_Id = '1';
     } else {
@@ -61,38 +64,31 @@ class _PatientRegisterState extends State<PatientRegister> {
       globals.patient_id =
           resposne["Data"][0]['PATIENT_ID'].toString().split('.')[0];
       globals.Session_ID = resposne["Data"][0]['SESSION_ID'].toString();
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      //     setState(() {
-      //       prefs.setString('Patient_ID',
-      //           jsonDecode(response.body)['PATIENT_ID'].toString().split('.')[0]);
-      //       prefs.setString(
-      //           'SeSSion_ID', jsonDecode(response.body)['Data'][0]['SESSION_ID'].toString());
-      //           });
-      // globals.patient_id = (prefs.getString('Patient_ID') ?? '');
-      //   //  resposne["Data"][0]['PATIENT_ID'].toString().split('.')[0];
-      // globals.Session_ID = (prefs.getString('SeSSion_ID') ?? '');
 
-      // globals.selectedLogin_Data = jsonDecode(response.body);
       Fluttertoast.showToast(
           msg: "Registered Sucessfully",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
-          backgroundColor: Color.fromARGB(255, 27, 165, 114),
+          backgroundColor: Color.fromARGB(189, 59, 227, 180),
           textColor: Colors.white,
           fontSize: 16.0);
 
+      print("Before navigation");
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => PatientLogin(MobNoController.text)));
+        context,
+        MaterialPageRoute(
+          builder: (context) => PatientLogin(MobNoController.text),
+        ),
+      );
+      print("After navigation");
     } else {
       Fluttertoast.showToast(
           msg: "Registration Failed",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
-          backgroundColor: Color.fromARGB(232, 243, 49, 24),
+          backgroundColor: Color.fromARGB(255, 235, 103, 93),
           textColor: Colors.white,
           fontSize: 16.0);
     }
@@ -100,20 +96,19 @@ class _PatientRegisterState extends State<PatientRegister> {
 
   bool isButtonDisabled = false;
 
-  void PatientREGIstraTIoN() {
+  Future<void> PatientREGIstraTIoN() async {
     if (!isButtonDisabled) {
       setState(() {
-        isButtonDisabled = true; // Disable the button
+        isButtonDisabled = true;
+        isRegistering = true; // Show the indicator
       });
 
-      // Call your API here to book the test
-      RegisterPatient();
-      // Example delay to simulate API call
-      Future.delayed(Duration(seconds: 5), () {
-        // Enable the button again after the delay
-        setState(() {
-          isButtonDisabled = false;
-        });
+      // Call your API here to register the patient
+      await RegisterPatient();
+
+      setState(() {
+        isButtonDisabled = false;
+        isRegistering = false; // Hide the indicator
       });
     }
   }
@@ -142,14 +137,14 @@ class _PatientRegisterState extends State<PatientRegister> {
       ),
     );
     return Scaffold(
-      body: SingleChildScrollView(
-          child: Center(
-        child: Column(children: [
+      body: Stack(children: [
+        SingleChildScrollView(
+            child: Column(children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 110, 0, 3),
+            padding: const EdgeInsets.fromLTRB(0, 100, 0, 40),
             child: SizedBox(
-                height: 90.0,
-                width: 200.0,
+                height: 150.0,
+                width: 150.0,
                 child: Image(image: NetworkImage(globals.All_Client_Logo))),
           ),
           Padding(
@@ -228,118 +223,134 @@ class _PatientRegisterState extends State<PatientRegister> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 30.0),
+            padding: const EdgeInsets.only(top: 35.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: 50,
-                  width: 110,
+                InkWell(
+                  onTap: () {
+                    if (NameController.text == null ||
+                        NameController.text == "") {
+                      Fluttertoast.showToast(
+                          msg: "Please Enter Name",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 235, 103, 93),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (MobNoController.text == null ||
+                        MobNoController.text == "") {
+                      Fluttertoast.showToast(
+                          msg: "Please Enter Mobile No",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 235, 103, 93),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (selectedSalutation == null ||
+                        selectedSalutation == "") {
+                      Fluttertoast.showToast(
+                          msg: "Please Enter Gender",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 235, 103, 93),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (AgeController.text == null ||
+                        AgeController.text == "") {
+                      Fluttertoast.showToast(
+                          msg: "Please Enter Age",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 235, 103, 93),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (MailIdController.text == null ||
+                        MailIdController.text == "") {
+                      Fluttertoast.showToast(
+                          msg: "Please Enter Mail Id",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 235, 103, 93),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (AddressController.text == null ||
+                        AddressController.text == "") {
+                      Fluttertoast.showToast(
+                          msg: "Please Enter Address",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Color.fromARGB(255, 235, 103, 93),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else {
+                      PatientREGIstraTIoN();
+                    }
+                    // RegisterPatient();
+                    //PatientREGIstraTIoN();
+                  },
                   child: Card(
                       color: Color(0xff123456),
                       shape: RoundedRectangleBorder(
                           side: BorderSide(color: Colors.blueGrey),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: TextButton(
-                          onPressed: () {
-                            if (NameController.text == null ||
-                                NameController.text == "") {
-                              Fluttertoast.showToast(
-                                  msg: "Please Enter Name",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor:
-                                      Color.fromARGB(232, 243, 49, 24),
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            } else if (MobNoController.text == null ||
-                                MobNoController.text == "") {
-                              Fluttertoast.showToast(
-                                  msg: "Please Enter Mobile No",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor:
-                                      Color.fromARGB(232, 243, 49, 24),
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            } else if (selectedSalutation == null ||
-                                selectedSalutation == "") {
-                              Fluttertoast.showToast(
-                                  msg: "Please Enter Gender",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor:
-                                      Color.fromARGB(232, 243, 49, 24),
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            } else if (AgeController.text == null ||
-                                AgeController.text == "") {
-                              Fluttertoast.showToast(
-                                  msg: "Please Enter Age",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor:
-                                      Color.fromARGB(232, 243, 49, 24),
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            } else if (MailIdController.text == null ||
-                                MailIdController.text == "") {
-                              Fluttertoast.showToast(
-                                  msg: "Please Enter Mail Id",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor:
-                                      Color.fromARGB(232, 243, 49, 24),
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            } else if (AddressController.text == null ||
-                                AddressController.text == "") {
-                              Fluttertoast.showToast(
-                                  msg: "Please Enter Address",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor:
-                                      Color.fromARGB(232, 243, 49, 24),
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            } else {
-                              return PatientREGIstraTIoN();
-                            }
-                          },
-                          child: Text('Register',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 16)))),
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 14, 20, 14),
+                        child: Text('Register',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500)),
+                      )),
                 ),
-                SizedBox(
-                  height: 50,
-                  width: 110,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PatientLogin("")));
+                  },
                   child: Card(
                       color: Color.fromARGB(237, 198, 219, 239),
                       shape: RoundedRectangleBorder(
                           side: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PatientLogin("")));
-                          },
-                          child: Text('Cancel',
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 16)))),
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(25, 12, 25, 12),
+                        child: Text('Cancel',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500)),
+                      )),
                 ),
               ],
             ),
-          )
-        ]),
-      )),
+          ),
+        ])),
+        if (isRegistering)
+          Center(
+            child: SizedBox(
+              height: 100,
+              width: 100,
+              child: LoadingIndicator(
+                indicatorType: Indicator.ballClipRotateMultiple,
+                colors: [
+                  // Color.fromARGB(255, 49, 213, 169),
+                  // Color.fromARGB(255, 246, 246, 246),
+                  Color.fromARGB(255, 49, 114, 179),
+                ],
+                strokeWidth: 4.0,
+              ),
+            ),
+          ),
+      ]),
     );
   }
 }
@@ -350,7 +361,37 @@ RegistrationError() {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
-      backgroundColor: Color.fromARGB(232, 243, 49, 24),
+      backgroundColor: Color.fromARGB(255, 235, 103, 93),
       textColor: Colors.white,
       fontSize: 16.0);
 }
+
+
+
+  
+
+  //FutureBuilder<void>(
+    //   future: RegisterPatient(),
+    //   builder: (context, snapshot) {
+    //     switch (snapshot.connectionState) {
+    //       case ConnectionState.none:
+    //         return SizedBox(); // Placeholder, could be an empty container
+    //       case ConnectionState.waiting:
+    //       case ConnectionState.active:
+    //         return CircularProgressIndicator(); // Show a loading indicator
+    //       case ConnectionState.done:
+    //         // Registration is complete, handle the UI accordingly
+    //         if (snapshot.hasError) {
+    //           // Error occurred during registration
+    //           return Text('Registration Failed',
+    //               style: TextStyle(color: Colors.red, fontSize: 16));
+    //         } else {
+    //           // Registration is successful
+    //           return Text('Registration Successful!',
+    //               style: TextStyle(color: Colors.green, fontSize: 16));
+    //         }
+    //       default:
+    //         return SizedBox(); // Placeholder, could be an empty container
+    //     }
+    //   },
+    // );
