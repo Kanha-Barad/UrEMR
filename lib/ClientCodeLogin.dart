@@ -30,7 +30,12 @@ class _AccessClientCodeLoginState extends State<AccessClientCodeLogin> {
               '/Logistics/APP_VALIDATION_MOBILE'),
           headers: {
             "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "DENY",
+            "X-XSS-Protection": "1; mode=block",
+            "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline';",
           },
           body: data,
           encoding: Encoding.getByName("utf-8"));
@@ -49,35 +54,35 @@ class _AccessClientCodeLoginState extends State<AccessClientCodeLogin> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         print(prefs.getString('AppCODE'));
         //setState(() {
-          prefs
-              .setString(
-                  'AppCODE', jsonDecode(response.body)['Data'][0]['APP_CD'])
-              .toString();
-          prefs
-              .setString(
-                  'PatientAppApiURL',
-                  utf8.decode(base64
-                      .decode(jsonDecode(response.body)['Data'][0]['API_URL'])))
-              .toString();
-          prefs.setString(
-              "ConnectionString",
-              utf8.decode(base64.decode(
-                  jsonDecode(response.body)['Data'][0]['CONNECTION_STRING'])));
+        prefs
+            .setString(
+                'AppCODE', jsonDecode(response.body)['Data'][0]['APP_CD'])
+            .toString();
+        prefs
+            .setString(
+                'PatientAppApiURL',
+                utf8.decode(base64
+                    .decode(jsonDecode(response.body)['Data'][0]['API_URL'])))
+            .toString();
+        prefs.setString(
+            "ConnectionString",
+            utf8.decode(base64.decode(
+                jsonDecode(response.body)['Data'][0]['CONNECTION_STRING'])));
 
-          prefs.setString(
-              "CompanyLogo",
-              utf8.decode(base64.decode(
-                  jsonDecode(response.body)['Data'][0]['COMPANY_LOGO'])));
+        prefs.setString(
+            "CompanyLogo",
+            utf8.decode(base64
+                .decode(jsonDecode(response.body)['Data'][0]['COMPANY_LOGO'])));
 
-          prefs.setString(
-              "ReportURL",
-              utf8.decode(base64
-                  .decode(jsonDecode(response.body)['Data'][0]['REPORT_URL'])));
-          prefs.setString(
-              "OTPURL",
-              utf8.decode(base64
-                  .decode(jsonDecode(response.body)['Data'][0]['OTP_URL'])));
-       // });
+        prefs.setString(
+            "ReportURL",
+            utf8.decode(base64
+                .decode(jsonDecode(response.body)['Data'][0]['REPORT_URL'])));
+        prefs.setString(
+            "OTPURL",
+            utf8.decode(base64
+                .decode(jsonDecode(response.body)['Data'][0]['OTP_URL'])));
+        // });
         globals.Client_App_Code = (prefs.getString('AppCODE') ?? '');
         globals.Global_Patient_Api_URL =
             (prefs.getString('PatientAppApiURL') ?? '');

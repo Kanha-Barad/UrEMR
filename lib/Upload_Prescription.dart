@@ -49,7 +49,16 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
       var bodys = json.encode(data);
 
       var response = await http.post(jobsListAPIUrl,
-          headers: {"Content-Type": "application/json"}, body: bodys);
+          headers: {
+            "Content-Type": "application/json",
+            "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "DENY",
+            "X-XSS-Protection": "1; mode=block",
+            "Content-Security-Policy":
+                "default-src 'self'; script-src 'self' 'unsafe-inline';",
+          },
+          body: bodys);
       print("${response.statusCode}");
       print("${response.body}");
       if (response.statusCode == 200) {
@@ -119,7 +128,12 @@ class _UpLoadPrescrIPtioNState extends State<UpLoadPrescrIPtioN> {
       var bodys = json.encode(data);
 
       var response = await http.post(jobsListAPIUrl,
-          headers: {"Content-Type": "application/json"}, body: bodys);
+          headers: {"Content-Type": "application/json","Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "DENY",
+            "X-XSS-Protection": "1; mode=block",
+            "Content-Security-Policy":
+                "default-src 'self'; script-src 'self' 'unsafe-inline';",}, body: bodys);
       print("${response.statusCode}");
       print("${response.body}");
 

@@ -88,7 +88,13 @@ class _PatientLoginState extends State<PatientLogin> {
         Uri.parse(globals.Global_Patient_Api_URL + '/PatinetMobileApp/Login'),
         headers: {
           "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY",
+          "X-XSS-Protection": "1; mode=block",
+          "Content-Security-Policy":
+              "default-src 'self'; script-src 'self' 'unsafe-inline';",
         },
         body: data,
         encoding: Encoding.getByName("utf-8"));
@@ -157,7 +163,13 @@ class _PatientLoginState extends State<PatientLogin> {
         Uri.parse(globals.Global_Patient_Api_URL + '/PatinetMobileApp/Login'),
         headers: {
           "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY",
+          "X-XSS-Protection": "1; mode=block",
+          "Content-Security-Policy":
+              "default-src 'self'; script-src 'self' 'unsafe-inline';",
         },
         body: data,
         encoding: Encoding.getByName("utf-8"));
@@ -212,17 +224,27 @@ class _PatientLoginState extends State<PatientLogin> {
                   child: Container(
                     height: 60,
                     padding: EdgeInsets.symmetric(vertical: 2),
-                    child: TextField(
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a mobile number';
+                        } else if (value.length != 10) {
+                          return 'Mobile number must be 10 digits long';
+                        }
+                        return null; // Return null if the input is valid
+                      },
                       focusNode: myFocusNode,
                       keyboardType: TextInputType.number,
                       inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(10),
                       ],
                       // obscureText: true,
                       controller: MobileNocontroller,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50)),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
                         prefixIcon: Icon(Icons.phone_android),
                         focusColor: Color(0xff123456),
                         hintText: 'Enter 10 digit mobile number',

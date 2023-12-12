@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './MyTrends.dart';
 import 'Widgets/BottomNavigation.dart';
@@ -200,7 +201,13 @@ class _OredersHistoryState extends State<OredersHistory> {
       var response = await http.post(jobsListAPIUrl,
           headers: {
             "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "DENY",
+            "X-XSS-Protection": "1; mode=block",
+            "Content-Security-Policy":
+                "default-src 'self'; script-src 'self' 'unsafe-inline';",
           },
           body: data,
           encoding: Encoding.getByName("utf-8"));
@@ -358,7 +365,13 @@ class _InProgressTabState extends State<InProgressTab> {
       var response = await http.post(jobsListAPIUrl,
           headers: {
             "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "DENY",
+            "X-XSS-Protection": "1; mode=block",
+            "Content-Security-Policy":
+                "default-src 'self'; script-src 'self' 'unsafe-inline';",
           },
           body: data,
           encoding: Encoding.getByName("utf-8"));
@@ -438,7 +451,13 @@ class _CompletedTabState extends State<CompletedTab> {
       var response = await http.post(jobsListAPIUrl,
           headers: {
             "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "DENY",
+            "X-XSS-Protection": "1; mode=block",
+            "Content-Security-Policy":
+                "default-src 'self'; script-src 'self' 'unsafe-inline';",
           },
           body: data,
           encoding: Encoding.getByName("utf-8"));
@@ -514,7 +533,13 @@ class _CancelledTabState extends State<CancelledTab> {
       var response = await http.post(jobsListAPIUrl,
           headers: {
             "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "DENY",
+            "X-XSS-Protection": "1; mode=block",
+            "Content-Security-Policy":
+                "default-src 'self'; script-src 'self' 'unsafe-inline';",
           },
           body: data,
           encoding: Encoding.getByName("utf-8"));
@@ -626,7 +651,13 @@ Widget _OrderListDetails(var data, BuildContext context, flg) {
             '/PatinetMobileApp/CancelPatientBill'),
         headers: {
           "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY",
+          "X-XSS-Protection": "1; mode=block",
+          "Content-Security-Policy":
+              "default-src 'self'; script-src 'self' 'unsafe-inline';",
         },
         body: data,
         encoding: Encoding.getByName("utf-8"));
@@ -726,139 +757,139 @@ Widget _OrderListDetails(var data, BuildContext context, flg) {
                                 //   'Track',
                                 //   style: TextStyle(fontSize: 12),
                                 // ),
-                                (data.ReQuire_CancEl == "Y")
-                                    ? SizedBox(
-                                        height: 33,
-                                        width: 62,
-                                        child: InkWell(
-                                            child: Card(
-                                              color: Color.fromARGB(
-                                                  255, 30, 92, 153),
-                                              elevation: 2.0,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(4)),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(3.0),
-                                                child: Center(
-                                                    child: Text("Cancel",
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 14 *
-                                                                mediaQuery
-                                                                    .textScaleFactor,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500))),
-                                              ),
-                                            ),
-                                            onTap: () {
-                                              showDialog<String>(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return StatefulBuilder(
-                                                        builder: (BuildContext
-                                                                context,
-                                                            StateSetter
-                                                                setState) {
-                                                      return AlertDialog(
-                                                          shape: const RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          16.0))),
-                                                          title: const Text(
-                                                              'Cancel Order :',
-                                                              style: TextStyle(
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500)),
-                                                          content:
-                                                              SingleChildScrollView(
-                                                                  child:
-                                                                      ConstrainedBox(
-                                                            constraints:
-                                                                BoxConstraints(
-                                                              maxHeight: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height *
-                                                                  0.12, // Set the preferred height here
-                                                            ),
-                                                            child: Column(
-                                                              children: [
-                                                                TextFormField(
-                                                                  autofocus:
-                                                                      true,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .text,
-                                                                  controller:
-                                                                      CancelReason,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    border: OutlineInputBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(50)),
-                                                                    // prefixIcon:
-                                                                    //     Icon(Icons
-                                                                    //         .phone_android),
-                                                                    focusColor:
-                                                                        Color.fromARGB(
-                                                                            255,
-                                                                            30,
-                                                                            92,
-                                                                            153),
-                                                                    hintText:
-                                                                        'Cancel Reason',
-                                                                  ),
-                                                                ),
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .end,
-                                                                  children: [
-                                                                    InkWell(
-                                                                      child:
-                                                                          Card(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            21,
-                                                                            50,
-                                                                            179),
-                                                                        elevation:
-                                                                            2.0,
-                                                                        shape: RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(4)),
-                                                                        child:
-                                                                            Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.all(3.0),
-                                                                          child:
-                                                                              Center(child: Text("ok", style: TextStyle(color: Colors.white, fontSize: 14 * mediaQuery.textScaleFactor, fontWeight: FontWeight.w600))),
-                                                                        ),
-                                                                      ),
-                                                                      onTap:
-                                                                          () {
-                                                                        CanCELTesT(
-                                                                            data.bill_no,
-                                                                            CancelReason.text);
-                                                                      },
-                                                                    ),
-                                                                  ],
-                                                                )
-                                                              ],
-                                                            ),
-                                                          )));
-                                                    });
-                                                  });
-                                            }),
-                                      )
-                                    : SizedBox()
+                                // (data.ReQuire_CancEl == "Y")
+                                //     ? SizedBox(
+                                //         height: 33,
+                                //         width: 62,
+                                //         child: InkWell(
+                                //             child: Card(
+                                //               color: Color.fromARGB(
+                                //                   255, 30, 92, 153),
+                                //               elevation: 2.0,
+                                //               shape: RoundedRectangleBorder(
+                                //                   borderRadius:
+                                //                       BorderRadius.circular(4)),
+                                //               child: Padding(
+                                //                 padding:
+                                //                     const EdgeInsets.all(3.0),
+                                //                 child: Center(
+                                //                     child: Text("Cancel",
+                                //                         style: TextStyle(
+                                //                             color: Colors.white,
+                                //                             fontSize: 14 *
+                                //                                 mediaQuery
+                                //                                     .textScaleFactor,
+                                //                             fontWeight:
+                                //                                 FontWeight
+                                //                                     .w500))),
+                                //               ),
+                                //             ),
+                                //             onTap: () {
+                                //               showDialog<String>(
+                                //                   context: context,
+                                //                   builder:
+                                //                       (BuildContext context) {
+                                //                     return StatefulBuilder(
+                                //                         builder: (BuildContext
+                                //                                 context,
+                                //                             StateSetter
+                                //                                 setState) {
+                                //                       return AlertDialog(
+                                //                           shape: const RoundedRectangleBorder(
+                                //                               borderRadius: BorderRadius
+                                //                                   .all(Radius
+                                //                                       .circular(
+                                //                                           16.0))),
+                                //                           title: const Text(
+                                //                               'Cancel Order :',
+                                //                               style: TextStyle(
+                                //                                   fontSize: 16,
+                                //                                   fontWeight:
+                                //                                       FontWeight
+                                //                                           .w500)),
+                                //                           content:
+                                //                               SingleChildScrollView(
+                                //                                   child:
+                                //                                       ConstrainedBox(
+                                //                             constraints:
+                                //                                 BoxConstraints(
+                                //                               maxHeight: MediaQuery.of(
+                                //                                           context)
+                                //                                       .size
+                                //                                       .height *
+                                //                                   0.12, // Set the preferred height here
+                                //                             ),
+                                //                             child: Column(
+                                //                               children: [
+                                //                                 TextFormField(
+                                //                                   autofocus:
+                                //                                       true,
+                                //                                   keyboardType:
+                                //                                       TextInputType
+                                //                                           .text,
+                                //                                   controller:
+                                //                                       CancelReason,
+                                //                                   decoration:
+                                //                                       InputDecoration(
+                                //                                     border: OutlineInputBorder(
+                                //                                         borderRadius:
+                                //                                             BorderRadius.circular(50)),
+                                //                                     // prefixIcon:
+                                //                                     //     Icon(Icons
+                                //                                     //         .phone_android),
+                                //                                     focusColor:
+                                //                                         Color.fromARGB(
+                                //                                             255,
+                                //                                             30,
+                                //                                             92,
+                                //                                             153),
+                                //                                     hintText:
+                                //                                         'Cancel Reason',
+                                //                                   ),
+                                //                                 ),
+                                //                                 Row(
+                                //                                   mainAxisAlignment:
+                                //                                       MainAxisAlignment
+                                //                                           .end,
+                                //                                   children: [
+                                //                                     InkWell(
+                                //                                       child:
+                                //                                           Card(
+                                //                                         color: Color.fromARGB(
+                                //                                             255,
+                                //                                             21,
+                                //                                             50,
+                                //                                             179),
+                                //                                         elevation:
+                                //                                             2.0,
+                                //                                         shape: RoundedRectangleBorder(
+                                //                                             borderRadius:
+                                //                                                 BorderRadius.circular(4)),
+                                //                                         child:
+                                //                                             Padding(
+                                //                                           padding:
+                                //                                               const EdgeInsets.all(3.0),
+                                //                                           child:
+                                //                                               Center(child: Text("ok", style: TextStyle(color: Colors.white, fontSize: 14 * mediaQuery.textScaleFactor, fontWeight: FontWeight.w600))),
+                                //                                         ),
+                                //                                       ),
+                                //                                       onTap:
+                                //                                           () {
+                                //                                         CanCELTesT(
+                                //                                             data.bill_no,
+                                //                                             CancelReason.text);
+                                //                                       },
+                                //                                     ),
+                                //                                   ],
+                                //                                 )
+                                //                               ],
+                                //                             ),
+                                //                           )));
+                                //                     });
+                                //                   });
+                                //             }),
+                                //       )
+                                //     : SizedBox()
                               ],
                             ),
                           ),
@@ -1050,10 +1081,11 @@ Widget _OrderListDetails(var data, BuildContext context, flg) {
                             child: SizedBox(
                                 child: Theme(
                               data: ThemeData(
-                                  accentColor: Colors.green,
-                                  primarySwatch: Colors.green,
-                                  colorScheme:
-                                      ColorScheme.light(primary: Colors.green)),
+                                  accentColor: Color.fromARGB(255, 7, 185, 141),
+                                  //  primarySwatch: Color.fromARGB(255, 7, 185, 141),
+                                  colorScheme: ColorScheme.light(
+                                      primary:
+                                          Color.fromARGB(255, 7, 185, 141))),
                               child: Stepper(
                                 type: StepperType.horizontal,
                                 physics: const ScrollPhysics(),
@@ -1239,7 +1271,13 @@ class _PatientBottomPopupState extends State<PatientBottomPopup> {
       var response = await http.post(jobsListAPIUrl,
           headers: {
             "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "DENY",
+            "X-XSS-Protection": "1; mode=block",
+            "Content-Security-Policy":
+                "default-src 'self'; script-src 'self' 'unsafe-inline';",
           },
           body: data,
           encoding: Encoding.getByName("utf-8"));
@@ -1257,123 +1295,203 @@ class _PatientBottomPopupState extends State<PatientBottomPopup> {
       }
     }
 
-    Widget PatientDataverticalLists = Container(
-      height: MediaQuery.of(context).size.height * 0.4,
-      margin: EdgeInsets.symmetric(vertical: 2.0),
-      child: FutureBuilder<List<patientDetails>>(
-          future: _fetchSaleTransaction(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              var data = snapshot.data;
-              if (snapshot.data!.isEmpty == true) {
-                return NoContent();
-              } else {
-                return PatientDataListView(data);
-              }
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            return Center(
-                child: CircularProgressIndicator(
-              strokeWidth: 4.0,
-            ));
-          }),
-    );
-    return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Row(
-            children: [
-              SizedBox(
-                width: 200,
-                child: Text(
-                    globals.SelectedPatientDetails.display_name.toString(),
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white)),
+    return FutureBuilder<List<patientDetails>>(
+      future: _fetchSaleTransaction(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: SizedBox(
+              height: 100,
+              width: 100,
+              child: LoadingIndicator(
+                indicatorType: Indicator.ballClipRotateMultiple,
+                colors: [
+                  Color.fromARGB(255, 49, 114, 179),
+                ],
+                strokeWidth: 4.0,
               ),
-            ],
-          ),
-          backgroundColor: Color(0xff123456),
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            child: PatientDataverticalLists,
-          ),
-        ));
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: Text('No data available'),
+          );
+        } else {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                globals.SelectedPatientDetails.display_name.toString(),
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              backgroundColor: Color(0xff123456),
+              automaticallyImplyLeading: false,
+            ),
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                          onTap: () {
+                            //   globals.PatientDetails = data;
+                            // globals.PatientRepeatOrder = data;
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 6),
+                            child: Card(
+                              elevation: 4.0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  side: BorderSide(
+                                      color: Colors.grey, width: 0.6)),
+                              color: MaterialStateColor.resolveWith((states) =>
+                                  Color.fromARGB(255, 248, 248, 248)),
+                              child: Column(children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    SizedBox(
+                                      width: 150,
+                                      child: Text(snapshot.data![index].srvname,
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          )),
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      snapshot.data![index].srvstats1,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    (snapshot.data![index].srvstats1 ==
+                                                "Completed" ||
+                                            snapshot.data![index].srvstats1 ==
+                                                "Dispatch")
+                                        ? IconButton(
+                                            onPressed: () {
+                                              (globals.SelectedPatientDetails
+                                                          .outstanding_due ==
+                                                      '0.0')
+                                                  ? _launchURL(
+                                                      context,
+                                                      snapshot.data![index]
+                                                          .REpoRTPATH
+                                                          .toString())
+                                                  : AlertError();
+                                            },
+                                            icon: Icon(
+                                              Icons.picture_as_pdf,
+                                              color: Colors.red,
+                                            ))
+                                        : IconButton(
+                                            onPressed: () {}, icon: Icon(null))
+                                  ],
+                                ),
+                              ]),
+                            ),
+                          ));
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+      },
+    );
   }
 }
 
-Widget PatientDataListView(data) {
-  return ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (context, index) {
-        return _PatientDataCard(data[index], context, index);
-      });
-}
+// Widget PatientDataListView(data) {
+//   return ListView.builder(
+//       itemCount: data.length,
+//       itemBuilder: (context, index) {
+//         return _PatientDataCard(data[index], context, index);
+//       });
+// }
 
-Widget _PatientDataCard(data, BuildContext context, index) {
-  return GestureDetector(
-      onTap: () {
-        //   globals.PatientDetails = data;
-        // globals.PatientRepeatOrder = data;
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(top: 6),
-        child: Card(
-          elevation: 4.0,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: BorderSide(color: Colors.grey, width: 0.6)),
-          color: MaterialStateColor.resolveWith(
-              (states) => Color.fromARGB(255, 248, 248, 248)),
-          child: Column(children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                SizedBox(
-                  width: 150,
-                  child: Text(data.srvname,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      )),
-                ),
-                Spacer(),
-                Text(
-                  data.srvstats1,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                (data.srvstats1 == "Completed" || data.srvstats1 == "Dispatch")
-                    ? IconButton(
-                        onPressed: () {
-                          (globals.SelectedPatientDetails.outstanding_due ==
-                                  '0.0')
-                              ? _launchURL(context, data.reportCd.toString())
-                              : AlertError();
-                        },
-                        icon: Icon(
-                          Icons.picture_as_pdf,
-                          color: Colors.red,
-                        ))
-                    : IconButton(onPressed: () {}, icon: Icon(null))
-              ],
-            ),
-          ]),
-        ),
-      ));
-}
+// Widget _PatientDataCard(data, BuildContext context) {
+//   return GestureDetector(
+//       onTap: () {
+//         //   globals.PatientDetails = data;
+//         // globals.PatientRepeatOrder = data;
+//       },
+//       child: Padding(
+//         padding: const EdgeInsets.only(top: 6),
+//         child: Card(
+//           elevation: 4.0,
+//           shape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(12),
+//               side: BorderSide(color: Colors.grey, width: 0.6)),
+//           color: MaterialStateColor.resolveWith(
+//               (states) => Color.fromARGB(255, 248, 248, 248)),
+//           child: Column(children: [
+//             Row(
+//               children: [
+//                 SizedBox(
+//                   width: 10,
+//                 ),
+//                 SizedBox(
+//                   width: 150,
+//                   child: Text(data.srvname,
+//                       style: TextStyle(
+//                         fontSize: 13,
+//                         fontWeight: FontWeight.bold,
+//                         color: Colors.black,
+//                       )),
+//                 ),
+//                 Spacer(),
+//                 Text(
+//                   data.srvstats1,
+//                   style: TextStyle(
+//                     fontSize: 13,
+//                     fontWeight: FontWeight.bold,
+//                     color: Colors.black,
+//                   ),
+//                 ),
+//                 SizedBox(
+//                   width: 10,
+//                 ),
+//                 (data.srvstats1 == "Completed" || data.srvstats1 == "Dispatch")
+//                     ? IconButton(
+//                         onPressed: () {
+//                           (globals.SelectedPatientDetails.outstanding_due ==
+//                                   '0.0')
+//                               ? _launchURL(context, data.reportCd.toString())
+//                               : AlertError();
+//                         },
+//                         icon: Icon(
+//                           Icons.picture_as_pdf,
+//                           color: Colors.red,
+//                         ))
+//                     : IconButton(onPressed: () {}, icon: Icon(null))
+//               ],
+//             ),
+//           ]),
+//         ),
+//       ));
+// }
 
 class patientDetails {
   final srvname;
@@ -1384,6 +1502,7 @@ class patientDetails {
   final age;
   final gendr;
   final reportCd;
+  final REpoRTPATH;
 
   patientDetails(
       {required this.srvname,
@@ -1393,7 +1512,8 @@ class patientDetails {
       required this.mobNo1,
       required this.age,
       required this.gendr,
-      required this.reportCd});
+      required this.reportCd,
+      required this.REpoRTPATH});
 
   factory patientDetails.fromJson(Map<String, dynamic> json) {
     // var pdfdownloader =
@@ -1406,7 +1526,8 @@ class patientDetails {
         mobNo1: json['MOBILE_NO1'].toString(),
         age: json['AGE'].toString(),
         gendr: json['GENDER'].toString(),
-        reportCd: json['REPORT_CD'].toString());
+        reportCd: json['REPORT_CD'].toString(),
+        REpoRTPATH: json['REPORT_PATH'].toString());
   }
 }
 
@@ -1415,10 +1536,6 @@ void _BottomPicker(BuildContext context, billno, flg) {
     context: context,
     isScrollControlled: true,
     builder: (_) => Container(
-      //  width: ,
-      //  height: MediaQuery.of(context).size.height * 0.4,
-      //  color: Color(0xff123456),
-      //  width: 300,
       height: MediaQuery.of(context).size.height * 0.4,
       child: PatientBottomPopup(billno.toString(), flg),
     ),
@@ -1426,12 +1543,13 @@ void _BottomPicker(BuildContext context, billno, flg) {
   print(res);
 }
 
-_launchURL(BuildContext context, reportCd) async {
-  var url = globals.Patient_report_URL + reportCd;
+_launchURL(BuildContext context, reportPATH) async {
+  var url = reportPATH;
+  //globals.Patient_report_URL + reportCd;
 //NM live
   //"http://115.112.254.129/NM_SRV_GRP_MERGE_PDFS/" + reportCd + ".pdf"
   if (await canLaunch(url)) {
-   await launch(url);
+    await launch(url);
   } else {
     // Handle the case where the URL cannot be launched
     print('Could not launch $url');
