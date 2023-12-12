@@ -30,18 +30,25 @@ class _MyBookingState extends State<MyBooking> {
         "connection": globals.Patient_App_Connection_String
         //"Server_Flag":""
       };
+      print(data);
       final jobsListAPIUrl = Uri.parse(
           globals.Global_Patient_Api_URL + '/PatinetMobileApp/BillsOrderList');
       var response = await http.post(jobsListAPIUrl,
           headers: {
             "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "DENY",
+            "X-XSS-Protection": "1; mode=block",
+            "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline';",
           },
           body: data,
           encoding: Encoding.getByName("utf-8"));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> resposne = jsonDecode(response.body);
+        print(resposne);
         List jsonResponse = resposne["Data"];
         return jsonResponse
             .map((managers) => UserBOOKINGs.fromJson(managers))
@@ -61,18 +68,26 @@ class _MyBookingState extends State<MyBooking> {
           "connection": globals.Patient_App_Connection_String
           //"Server_Flag":""
         };
+        print(data);
         final jobsListAPIUrl = Uri.parse(globals.Global_Patient_Api_URL +
             '/PatinetMobileApp/BillsOrderList');
         var response = await http.post(jobsListAPIUrl,
             headers: {
               "Accept": "application/json",
-              "Content-Type": "application/x-www-form-urlencoded"
+              "Content-Type": "application/x-www-form-urlencoded",
+              "Strict-Transport-Security":
+                  "max-age=31536000; includeSubDomains",
+              "X-Content-Type-Options": "nosniff",
+              "X-Frame-Options": "DENY",
+              "X-XSS-Protection": "1; mode=block",
+              "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline';",
             },
             body: data,
             encoding: Encoding.getByName("utf-8"));
 
         if (response.statusCode == 200) {
           Map<String, dynamic> resposne = jsonDecode(response.body);
+          print(response);
           List jsonResponse = resposne["Data"];
           globals.TestDetails = jsonDecode(response.body);
           // globals.Booking_Test_Name = resposne["Data"][0]["SERVICE_NAME"].toString();

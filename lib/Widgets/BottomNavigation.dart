@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,6 +8,7 @@ import 'package:uremr/ClientCodeLogin.dart';
 import '../Cartprovider.dart';
 import '../PatientHome.dart';
 import '../PatientLogin.dart';
+import '../Reports.dart';
 import '../TestBooking.dart';
 import '../UserProfile.dart';
 import '../globals.dart' as globals;
@@ -58,8 +61,53 @@ class _AllBottOMNaviGAtionBarState extends State<AllBottOMNaviGAtionBar> {
                 onTap: () async {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
+                  globals.selectedLogin_Data = (prefs.getString('data1') != "")
+                      ? (jsonDecode(prefs.getString('data1') ?? ''))
+                      : "";
                   if (prefs.getString('Mobileno') == "" ||
-                      prefs.getString('Mobileno') == null) {
+                      prefs.getString('Mobileno') == null ||
+                      globals.selectedLogin_Data == null ||
+                      globals.selectedLogin_Data == "") {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PatientLogin("RF")),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RepoRTSBillWise()),
+                    );
+                  }
+                  searchController.clear();
+                  // Trigger a UI update by rebuilding the widget tree
+                  context.read<CartProvider>().notifyListeners();
+                },
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.description_outlined,
+                      color: Colors.white,
+                      size: 19,
+                    ),
+                    Text(
+                      "Report",
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    )
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  globals.selectedLogin_Data = (prefs.getString('data1') != "")
+                      ? (jsonDecode(prefs.getString('data1') ?? ''))
+                      : "";
+                  if (prefs.getString('Mobileno') == "" ||
+                      prefs.getString('Mobileno') == null ||
+                      globals.selectedLogin_Data == null ||
+                      globals.selectedLogin_Data == "") {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => PatientLogin("")),
@@ -113,13 +161,12 @@ class _AllBottOMNaviGAtionBarState extends State<AllBottOMNaviGAtionBar> {
                     // (prefs.setString('Status_FLag', ''));
                     (prefs.setString('SeSSion_ID', ''));
                     (prefs.setString('singleUMr_No', ''));
-
+                    (prefs.setString('data1', ''));
                     searchController.clear();
                     prefs.clear();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => AccessClientCodeLogin()),
+                      MaterialPageRoute(builder: (context) => PatientLogin("")),
                     );
                     // Trigger a UI update by rebuilding the widget tree
                     context.read<CartProvider>().notifyListeners();

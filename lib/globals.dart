@@ -63,9 +63,9 @@ String Booking_Status_Flag = "";
 String PresCripTion_Image_Converter = "";
 
 String Global_All_Client_Api_URL = "https://mobileappjw.softmed.in";
-String Global_Patient_Api_URL = "";
-String Patient_App_Connection_String = "";
-String All_Client_Logo = "";
-String Patient_report_URL = "";
+String Global_Patient_Api_URL = "https://mobileappjw.softmed.in/";
+String Patient_App_Connection_String = "Server=103.231.126.238,1433;User id=Eshwar;Password=Suvarna@123;Database=P_SUVARNA_SLIMS";
+String All_Client_Logo = "http://137.59.200.62/slims_apps/App_img/81c9149a-078d-4e5d-a0de-985403175d3a.png";
+String Patient_report_URL = "http://103.231.126.238/SUVARNA_BILLING/public/himsreportviewer.aspx?uniuq_id=";
 String Patient_OTP_URL = "";
 var Client_App_Code = null;

@@ -147,6 +147,7 @@ class _PatientHomeState extends State<PatientHome> {
   Widget build(BuildContext context) {
     Future<List<PreferredServices>> _fetchManagerDetails() async {
       Map data = {
+        "IP_SESSION_ID": "0",
         "connection": globals.Patient_App_Connection_String,
         //  "employee_id": "",
         // "mobile": globals.mobNO,
@@ -159,7 +160,13 @@ class _PatientHomeState extends State<PatientHome> {
       var response = await http.post(jobsListAPIUrl,
           headers: {
             "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "DENY",
+            "X-XSS-Protection": "1; mode=block",
+            "Content-Security-Policy":
+                "default-src 'self'; script-src 'self' 'unsafe-inline';",
           },
           body: data,
           encoding: Encoding.getByName("utf-8"));
@@ -203,9 +210,11 @@ class _PatientHomeState extends State<PatientHome> {
           backgroundColor: Color(0xff123456),
           // backgroundColor: Color.fromARGB(179, 239, 243, 247),
           leading: Builder(
-            builder: (context) => IconButton(
-              icon: Image(image: NetworkImage(globals.All_Client_Logo)),
-              onPressed: () => Scaffold.of(context).openDrawer(),
+            builder: (context) => Card(color: Colors.white,
+              child: IconButton(
+                icon: Image(image: NetworkImage(globals.All_Client_Logo)),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
             ),
           ),
           title: Row(
@@ -390,7 +399,7 @@ class _PatientHomeState extends State<PatientHome> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 150,
+                          height: 180,
                           child: ListView(
                             children: [
                               CarouselSlider(
@@ -487,7 +496,7 @@ class _PatientHomeState extends State<PatientHome> {
                                   ),
                                 ],
                                 options: CarouselOptions(
-                                  height: 150.0,
+                                  height: 180.0,
                                   enlargeCenterPage: true,
                                   autoPlay: true,
                                   // aspectRatio: 16 / 40,
@@ -506,7 +515,8 @@ class _PatientHomeState extends State<PatientHome> {
                           // height: 60,
                           // width: MediaQuery.of(context).size.width * 1,
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0, right: 8),
+                            padding: const EdgeInsets.only(
+                                left: 8.0, right: 8, top: 8, bottom: 8),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -521,7 +531,7 @@ class _PatientHomeState extends State<PatientHome> {
                                               BorderRadius.circular(12)),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            26, 11, 26, 11),
+                                            26, 14, 26, 14),
                                         child: Text(
                                           "My Reports",
                                           style: TextStyle(
@@ -535,7 +545,7 @@ class _PatientHomeState extends State<PatientHome> {
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 3, 0, 3),
                                   child: SizedBox(
-                                      height: 43.0,
+                                      height: 50.0,
                                       width: 80.0,
                                       child: Image(
                                           image: NetworkImage(
@@ -552,7 +562,7 @@ class _PatientHomeState extends State<PatientHome> {
                                               BorderRadius.circular(12)),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            26, 11, 26, 11),
+                                            26, 14, 26, 14),
                                         child: Text(
                                           "My Trends",
                                           style: TextStyle(
@@ -567,7 +577,7 @@ class _PatientHomeState extends State<PatientHome> {
                           ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 16,
                         ),
                         Row(
                           children: const [
@@ -584,7 +594,7 @@ class _PatientHomeState extends State<PatientHome> {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+                          padding: const EdgeInsets.fromLTRB(14, 14, 14, 16),
                           child: Card(
                             elevation: 3.0,
                             shape: RoundedRectangleBorder(
@@ -593,39 +603,39 @@ class _PatientHomeState extends State<PatientHome> {
                                     color: Color.fromARGB(255, 196, 218, 241))),
                             child: Column(
                               children: [
-                                GestureDetector(
-                                  onTap: (() {
-                                    globals.Location_BookedTest = "";
-                                    _SaveLoginDataBookATest();
-                                    // cartController.clear();
-                                    // productcontroller.resetAll();
-                                    globals.GlobalDiscountCoupons = '';
-                                  }),
-                                  child: ListTile(
-                                    leading: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Color(0xFFA18875),
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(5),
-                                          ),
-                                        ),
-                                        child: Icon(
-                                            Icons.account_circle_outlined,
-                                            size: 30,
-                                            color: Color(
-                                                0xFFA18875))), // You can replace this with your own icon or image
-                                    title: Text(
-                                      'Test Enquiry',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    // subtitle: Text('Description of first content'),
-                                  ),
-                                ),
-                                Divider(), // Optional: add a divider between the two pieces of content
+                                // GestureDetector(
+                                //   onTap: (() {
+                                //     globals.Location_BookedTest = "";
+                                //     _SaveLoginDataBookATest();
+                                //     // cartController.clear();
+                                //     // productcontroller.resetAll();
+                                //     globals.GlobalDiscountCoupons = '';
+                                //   }),
+                                //   child: ListTile(
+                                //     leading: Container(
+                                //         decoration: BoxDecoration(
+                                //           border: Border.all(
+                                //             color: Color(0xFFA18875),
+                                //           ),
+                                //           borderRadius: BorderRadius.all(
+                                //             Radius.circular(5),
+                                //           ),
+                                //         ),
+                                //         child: Icon(
+                                //             Icons.account_circle_outlined,
+                                //             size: 30,
+                                //             color: Color(
+                                //                 0xFFA18875))), // You can replace this with your own icon or image
+                                //     title: Text(
+                                //       'Test Enquiry',
+                                //       style: TextStyle(
+                                //           fontSize: 14,
+                                //           fontWeight: FontWeight.w500),
+                                //     ),
+                                //     // subtitle: Text('Description of first content'),
+                                //   ),
+                                // ),
+                                // Divider(), // Optional: add a divider between the two pieces of content
                                 GestureDetector(
                                     onTap: (() {
                                       globals.selectDate = "";
@@ -664,20 +674,20 @@ class _PatientHomeState extends State<PatientHome> {
                         ),
                         Row(
                           children: [
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Text('Health Packages',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 49, 114, 179),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18))
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(15, 0, 0, 16),
+                              child: Text('Health Packages',
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 49, 114, 179),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18)),
+                            )
                           ],
                         ),
-                        SizedBox(height: 8),
+                        //SizedBox(height: 8),
                         Container(
                           color: Color.fromARGB(179, 168, 185, 202),
-                          height: MediaQuery.of(context).size.height * 0.18,
+                          height: MediaQuery.of(context).size.height * 0.19,
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: PreferredServicesDetails,
@@ -769,7 +779,7 @@ Widget _PreferredServicesDetails(var data, BuildContext context) {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 0, 6),
+                            padding: const EdgeInsets.fromLTRB(10, 14, 0, 12),
                             child: Text(
                               data.srv_grp_name,
                               style: TextStyle(
@@ -778,7 +788,7 @@ Widget _PreferredServicesDetails(var data, BuildContext context) {
                                   fontWeight: FontWeight.w600),
                             )),
                         Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 18),
+                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
                             child: Text(
                               '\u{20B9} ' + data.srv_price,
                               style: TextStyle(
@@ -786,13 +796,14 @@ Widget _PreferredServicesDetails(var data, BuildContext context) {
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600),
                             )),
+                        Spacer(),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(5, 0, 2, 2),
+                          padding: const EdgeInsets.fromLTRB(6, 0, 2, 14),
                           child: Text(
                             data.srv_name,
                             style: TextStyle(
                                 color: Colors.blueGrey,
-                                fontSize: 11,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w500),
                           ),
                         )

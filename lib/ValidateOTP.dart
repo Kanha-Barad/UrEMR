@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:uremr/Reports.dart';
 import './UserProfile.dart';
 import './PatientLogin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,7 +55,13 @@ class _ValidateOTPState extends State<ValidateOTP> {
             globals.Global_Patient_Api_URL + '/PatinetMobileApp/ValidateOtp'),
         headers: {
           "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY",
+          "X-XSS-Protection": "1; mode=block",
+          "Content-Security-Policy":
+              "default-src 'self'; script-src 'self' 'unsafe-inline';",
         },
         body: data,
         encoding: Encoding.getByName("utf-8"));
@@ -118,6 +125,14 @@ class _ValidateOTPState extends State<ValidateOTP> {
               context,
               MaterialPageRoute(
                   builder: (context) => BookingINProgressNotification()));
+        }else if (ValiDate_Flag == "RF") {
+          setState(() {
+            isLoading = false; // Hide loading indicator
+          });
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RepoRTSBillWise()));
         } else {
           setState(() {
             isLoading = false; // Hide loading indicator

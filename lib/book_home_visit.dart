@@ -269,7 +269,13 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
     var response = await http.post(jobsListAPIUrl,
         headers: {
           "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY",
+          "X-XSS-Protection": "1; mode=block",
+          "Content-Security-Policy":
+              "default-src 'self'; script-src 'self' 'unsafe-inline';",
         },
         body: data,
         encoding: Encoding.getByName("utf-8"));
@@ -314,7 +320,13 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
             '/PatinetMobileApp/PreferedServices'),
         headers: {
           "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY",
+          "X-XSS-Protection": "1; mode=block",
+          "Content-Security-Policy":
+              "default-src 'self'; script-src 'self' 'unsafe-inline';",
         },
         body: data,
         encoding: Encoding.getByName("utf-8"));
@@ -348,7 +360,13 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
     var response = await http.post(jobsListAPIUrl,
         headers: {
           "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY",
+          "X-XSS-Protection": "1; mode=block",
+          "Content-Security-Policy":
+              "default-src 'self'; script-src 'self' 'unsafe-inline';",
         },
         body: data,
         encoding: Encoding.getByName("utf-8"));
@@ -381,7 +399,12 @@ class _Book_Home_VisitState extends State<Book_Home_Visit> {
               '/PatinetMobileApp/Location_list'),
           headers: {
             "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+            "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "DENY",
+            "X-XSS-Protection": "1; mode=block",
+            "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline';",
           },
           body: params,
           encoding: Encoding.getByName("utf-8"));
