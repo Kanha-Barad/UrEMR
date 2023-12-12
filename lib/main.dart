@@ -32,7 +32,6 @@ void main() async {
   }
   bool isRooted = await isDeviceRooted();
   if (isRooted) {
-    // Handle the rooted device scenario here, such as limiting functionalities
     print('Rooted device detected. App functionality limited.');
     runApp(MyApp(
       isRooted: isRooted,
